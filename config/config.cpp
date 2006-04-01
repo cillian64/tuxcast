@@ -34,17 +34,19 @@ void configuration::load(string filename)
 	}
 	root = xmlDocGetRootElement(doc);
 	curr = root->children;
-	while(strcmp((char *)curr->name,"podcastdir") != 0)
+	while(true)
 	{
-		cout << "Skipping node named " << curr->name << endl;
+		if(strcmp((char *)curr->name, "podcastdir") == 0)
+		{
+			this->podcastdir = (char *)curr->children->content;
+		}
+		// Other variables here...
+
 		if(curr->next == NULL)
 		{
-			cout << "Done" << endl;
 			break;
 		}
 		curr = curr->next;
 	}
-	cout << "Node name is " << curr->name << endl;
-	cout << "Podcastdir is: " << curr->children->content << endl;
 }
 
