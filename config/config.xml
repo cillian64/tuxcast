@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
   <podcastdir>nlindbald</podcastdir>
+  <numoffeeds>2</numoffeeds>
+  <feeds>
+    <feed>
+      <name>MyFeed</name>
+      <address>http://www.example.com/rss.xml</address>
+    </feed>
+    <feed>
+      <name>Feed2</name>
+      <address>Http://feed2.com/feedy.123</address>
+    </feed>
+  </feeds>
 </config>

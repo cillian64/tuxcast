@@ -3,6 +3,17 @@
 #include "config.h"
 #include <iostream>
 
+configuration::configuration()
+{
+	feeds=NULL;
+	numoffeeds=0;
+}
+
+configuration::~configuration()
+{
+	delete[] feeds;
+}
+
 void configuration::save(string filename)
 {
 	xmlDocPtr doc = NULL;
@@ -40,7 +51,50 @@ void configuration::load(string filename)
 		{
 			this->podcastdir = (char *)curr->children->content;
 		}
-		// Other variables here...
+		if(strcmp((char *)curr->name, "numoffeeds") == 0)
+		{
+			this->numoffeeds=atoi((char *)curr->children->content);
+		}
+		if((this->feeds == NULL) && (numoffeeds != 0))
+		{
+			this->feeds = new feed[numoffeeds];
+		}
+		// WARNING: At the moment, an evil config file could buffer overflow by having more <feed>s than specified in <numoffeeds>
+		if(strcmp((char *)curr->name, "feeds") == 0)
+		{
+			int i=0;
+			curr = curr->children; // step into feeds
+			while(true)
+			{
+					if(strcmp((char *)curr->name, "feed") == 0)
+				{
+					curr = curr->children;
+					while(true)
+					{
+						if(strcmp((char *)curr->name, "name") == 0)
+						{
+							this->feeds[i].name = (char *)curr->children->content;
+						}
+						if(strcmp((char *)curr->name, "address") == 0)
+						{
+							this->feeds[i].address = (char *)curr->children->content;
+						}
+
+						if(curr->next != NULL)
+							curr = curr->next;
+						else
+							break;
+					}
+					i++;
+					curr = curr->parent;
+				}
+				if(curr->next == NULL)
+					break;
+				else
+					curr = curr->next;
+			}
+			curr = curr->parent;
+		}
 
 		if(curr->next == NULL)
 		{
