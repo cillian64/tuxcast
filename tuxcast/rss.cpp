@@ -119,8 +119,11 @@ filelist *parse(string feed)
 						}
 
 						name = URL.substr(URL.rfind("/",URL.length())+1,URL.length()-URL.rfind("/",URL.length()));
-
-						
+						// Remove ?... if present...
+						if(name.find("?",0) != string::npos)
+						{
+							name = name.substr(0,name.find("?",0));
+						}
 						
 						myfilelist->setfile(currfile,URL,name,size);
 						currfile++;
