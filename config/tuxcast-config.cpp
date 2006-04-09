@@ -102,20 +102,13 @@ void add(int argc,char *argv[])
 	int myopt=0;
 	string name, address;
 	feed *newarray;
-	cout << "Adding" << endl;
 
 	while((myopt = getopt(argc,argv,options)) != -1)
 	{
 		if((char)myopt == 'A')
-		{
-			cout << "Address is " << optarg << endl;
 			address = optarg;
-		}
 		if((char)myopt == 'n')
-		{
-			cout << "Name is " << optarg << endl;
 			name = optarg;
-		}
 	}
 
 	if((strcmp(name.c_str(),"") != 0) && (strcmp(address.c_str(),"") != 0))
@@ -124,10 +117,7 @@ void add(int argc,char *argv[])
 		for(int i=0; i<myconfig.numoffeeds;i++)
 		{
 			newarray[i].name = myconfig.feeds[i].name;
-			cout << "Old name is " << myconfig.feeds[i].name;
-			cout << "New name is " << newarray[i].name;
-			cout << "i is " << i << endl;
-			newarray[i].address = myconfig.feeds[i].address;
+				newarray[i].address = myconfig.feeds[i].address;
 			// Copy over all old feeds' data
 		}
 		// Add the new feed:
@@ -142,9 +132,5 @@ void add(int argc,char *argv[])
 	else
 		cerr << "You must pass both the name and address of the feed to add" << endl;
 	
-	getall(); // To demo if the feed was added
-
-	
-	cout << "Done" << endl;
-
+	myconfig.save("config.xml");
 }

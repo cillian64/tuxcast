@@ -2,6 +2,7 @@
 #include <libxml/parser.h>
 #include "config.h"
 #include <iostream>
+#include <sstream>
 
 configuration::configuration()
 {
@@ -17,7 +18,7 @@ configuration::~configuration()
 void configuration::save(string filename)
 {
 	xmlDocPtr doc = NULL;
-	xmlNodePtr root_node = NULL, node = NULL;
+	xmlNodePtr root_node = NULL, node = NULL,node2=NULL;
 
 	doc = xmlNewDoc((xmlChar *)"1.0");
 	root_node = xmlNewNode(NULL, (xmlChar *)"config");
@@ -25,6 +26,17 @@ void configuration::save(string filename)
 
 	xmlNewChild(root_node, NULL, (xmlChar *)"podcastdir",
 			(xmlChar *)podcastdir.c_str());
+	std::ostringstream o;  o << this->numoffeeds;		// !?!?!?!?!?
+	xmlNewChild(root_node, NULL, (xmlChar *)"numoffeeds",
+			(xmlChar *)o.str().c_str());
+
+	node=xmlNewChild(root_node,NULL, (xmlChar *)"feeds",NULL);
+	for(int i=0; i<this->numoffeeds; i++)
+	{
+		node2=xmlNewChild(node,NULL,(xmlChar *)"feed",NULL);
+		xmlNewChild(node2,NULL,(xmlChar *)"name",(xmlChar *)this->feeds[i].name.c_str());
+		xmlNewChild(node2,NULL,(xmlChar *)"address",(xmlChar *)this->feeds[i].address.c_str());
+	}
 
 	xmlSaveFormatFileEnc(filename.c_str(), doc,  "UTF-8", 1);
 
