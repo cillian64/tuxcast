@@ -19,8 +19,7 @@ int main(void)
 		return -1;
 	}
 	
-	myfilelist = parse("http://www.lugradio.org/episodes.rss"); // parse takes a filelist pointer, makes a new filelist, and fills it
-
+	myfilelist = parse("http://geekbrief.podshow.com/?feed=rss2");
 	for(int i=0, size=myfilelist->numoffiles(); i<size; i++)
 	{
 		cout << "File(s) found..." << endl;
