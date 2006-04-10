@@ -1,4 +1,5 @@
 Resuming incomplete downloads
 Not redownloading already-downloaded files
+Remove the need to "numoffeeds" in the config file (loop through the feeds and count them, or something)
 --
-Fix segfault when adding a feed, with no feeds already present
+Get tuxcast to use the config file

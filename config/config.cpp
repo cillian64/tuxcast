@@ -73,7 +73,7 @@ void configuration::load(string filename)
 			this->feeds = new feed[numoffeeds];
 		}
 		// WARNING: At the moment, an evil config file could buffer overflow by having more <feed>s than specified in <numoffeeds>
-		if(strcmp((char *)curr->name, "feeds") == 0)
+		if((strcmp((char *)curr->name, "feeds") == 0) && numoffeeds != 0)
 		{
 			int i=0;
 			curr = curr->children; // step into feeds

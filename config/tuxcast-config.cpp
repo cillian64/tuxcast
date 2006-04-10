@@ -80,12 +80,15 @@ void getall(void)
 	cout << "podcastdir = " << myconfig.podcastdir << endl;
 	// ...
 	// Let's show some feeds:
-	cout << "There are " << myconfig.numoffeeds << " feeds:" << endl;
-	cout << "Feeds:" << endl;
+	if(myconfig.numoffeeds == 1)
+		cout << "There is 1 feed:" << endl;
+	else
+		cout << "There are " << myconfig.numoffeeds << " feeds:" << endl;
 	for(int i=0; i<myconfig.numoffeeds; i++)
 	{
 		cout << "Name: " << myconfig.feeds[i].name << endl;
 		cout << "Address: " << myconfig.feeds[i].address << endl;
+		cout << "--" << end;
 	}
 
 }
