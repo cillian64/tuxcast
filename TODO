@@ -4,5 +4,4 @@ Not redownloading already-downloaded files
 Remove the need to "numoffeeds" in the config file (loop through the feeds and count them, or something)
 --
   Short(er) Term:
-Create a filelist if one's not already there
 Clear up xml stuff at the end of functions

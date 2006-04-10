@@ -74,10 +74,14 @@ void newfile(string name)
         doc = xmlReadFile(path.c_str(), NULL, 0);
         if(doc == NULL)
         {
-                // TODO: Make a new filelist
+		doc = xmlNewDoc((xmlChar *)"1.0");
+		root = xmlNewNode(NULL,(xmlChar *)"filelist");
+		xmlDocSetRootElement(doc,root);
         }
+	else
+        	root = xmlDocGetRootElement(doc);
 
-        root = xmlDocGetRootElement(doc);
+
         // Add the new file:
         xmlNewChild(root,NULL,(xmlChar *)"file", (xmlChar *)name.c_str());
         // Save the filelist:
