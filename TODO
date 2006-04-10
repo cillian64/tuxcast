@@ -1,5 +1,8 @@
+  Long(er) Term:
 Resuming incomplete downloads
 Not redownloading already-downloaded files
 Remove the need to "numoffeeds" in the config file (loop through the feeds and count them, or something)
 --
-Get tuxcast to use the config file
+  Short(er) Term:
+Create a filelist if one's not already there
+Clear up xml stuff at the end of functions
