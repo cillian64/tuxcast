@@ -19,7 +19,7 @@ void BREAK(){}
 
 int main(int argc, char *argv[])
 {
-	myconfig.load("config.xml");
+	myconfig.load();
 	
 	switch(getopt(argc,argv,options))
 	{
@@ -88,7 +88,7 @@ void getall(void)
 	{
 		cout << "Name: " << myconfig.feeds[i].name << endl;
 		cout << "Address: " << myconfig.feeds[i].address << endl;
-		cout << "--" << end;
+		cout << "--" << endl;
 	}
 
 }
@@ -104,7 +104,7 @@ void set(string args)
 	}
 	// ...
 	
-	myconfig.save("config.xml");
+	myconfig.save();
 }
 
 void add(int argc,char *argv[])
@@ -142,7 +142,7 @@ void add(int argc,char *argv[])
 	else
 		cerr << "You must pass both the name and address of the feed to add" << endl;
 	
-	myconfig.save("config.xml");
+	myconfig.save();
 }
 
 void del(string name)
@@ -164,6 +164,6 @@ void del(string name)
 	BREAK();
 	myconfig.feeds = newarray;
 	myconfig.numoffeeds--;
-	myconfig.save("config.xml");
+	myconfig.save();
 }
 	

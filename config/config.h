@@ -16,8 +16,8 @@ class configuration
 		string podcastdir;
 		feed *feeds;
 		unsigned int numoffeeds;
-		void save(string filename);
-		void load(string filename);
+		void save();
+		void load();
 };
 
 class feed

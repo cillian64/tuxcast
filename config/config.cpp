@@ -16,10 +16,11 @@ configuration::~configuration()
 	delete[] feeds;
 }
 
-void configuration::save(string filename)
+void configuration::save()
 {
 	xmlDocPtr doc = NULL;
 	xmlNodePtr root_node = NULL, node = NULL,node2=NULL;
+	string path;
 
 	doc = xmlNewDoc((xmlChar *)"1.0");
 	root_node = xmlNewNode(NULL, (xmlChar *)"config");
@@ -39,19 +40,23 @@ void configuration::save(string filename)
 		xmlNewChild(node2,NULL,(xmlChar *)"address",(xmlChar *)this->feeds[i].address.c_str());
 	}
 
-	xmlSaveFormatFileEnc(filename.c_str(), doc,  "UTF-8", 1);
+	path = getenv("HOME");
+	path = path + "/.tuxcast/config.xml";
+	xmlSaveFormatFileEnc(path.c_str(), doc,  "UTF-8", 1);
 
 	xmlFreeDoc(doc);
 	xmlCleanupParser();
 }
 
-void configuration::load(string filename)
+void configuration::load()
 {
 	xmlDoc *doc;
 	xmlNode *root=NULL;
 	xmlNode *curr=NULL;
+	string path=getenv("HOME");
+	path = path + "/.tuxcast/config.xml";
 
-	doc = xmlReadFile(filename.c_str(), NULL, 0);
+	doc = xmlReadFile(path.c_str(), NULL, 0);
 	if(doc == NULL)
 	{
 		cerr << "Error loading config file" << endl;
