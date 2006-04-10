@@ -1,0 +1,4 @@
+Resuming incomplete downloads
+Not redownloading already-downloaded files
+--
+Fix segfault when adding a feed, with no feeds already present

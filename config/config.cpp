@@ -3,6 +3,7 @@
 #include "config.h"
 #include <iostream>
 #include <sstream>
+#include <stdlib.h>
 
 configuration::configuration()
 {

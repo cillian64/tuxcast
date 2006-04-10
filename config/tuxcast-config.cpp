@@ -2,7 +2,7 @@
 #include "config.h"
 #include <unistd.h>
 
-const char options[] = "aA:n:hs:g:G";
+const char options[] = "aA:d:n:hs:g:G";
 
 configuration myconfig;
 
@@ -14,6 +14,8 @@ void get(string args);
 void getall(void);
 void set(string args);
 void add(int argc,char *argc[]);
+void del(string name);
+void BREAK(){}
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +25,10 @@ int main(int argc, char *argv[])
 	{
 		case 'a':
 			add(argc,argv);
+			break;
+		
+		case 'd':
+			del(optarg);
 			break;
 		
 		case 'g':
@@ -54,6 +60,7 @@ void help(void)
 	cout << "tuxcast-config [action]" << endl;
 	cout << "Actions are:" << endl;
 	cout << "-a -n NAME -A ADDRESS: Add a feed with the specified name & address" << endl;
+	cout << "-d NAME: Delete the feed with the specified name" << endl;
 	cout << "-g OPTION: Get the value of option" << endl;
 	cout << "-G: Get the value of all options" << endl;
 	cout << "-h: Display this help message" << endl;
@@ -134,3 +141,26 @@ void add(int argc,char *argv[])
 	
 	myconfig.save("config.xml");
 }
+
+void del(string name)
+{
+	feed *newarray;
+	int j=0;
+	newarray = new feed[myconfig.numoffeeds-1];
+
+	for(int i=0; i<myconfig.numoffeeds; i++)
+	{
+		if(strcmp(myconfig.feeds[i].name.c_str(),name.c_str()) != 0)
+		{
+			newarray[j].name = myconfig.feeds[i].name;
+			newarray[j].address = myconfig.feeds[i].address;
+			j++;
+		}
+	}
+	delete[] myconfig.feeds;
+	BREAK();
+	myconfig.feeds = newarray;
+	myconfig.numoffeeds--;
+	myconfig.save("config.xml");
+}
+	
