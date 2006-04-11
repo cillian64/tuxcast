@@ -5,3 +5,4 @@ Remove the need to "numoffeeds" in the config file (loop through the feeds and c
 --
   Short(er) Term:
 Clear up xml stuff at the end of functions
+File managment
