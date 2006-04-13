@@ -60,65 +60,69 @@ void configuration::load()
 	if(doc == NULL)
 	{
 		cerr << "Error loading config file" << endl;
+		cerr << "If it's non-existant, it will be created" << endl;
 	}
-	root = xmlDocGetRootElement(doc);
-	curr = root->children;
-	while(true)
+	else
 	{
-		if(strcmp((char *)curr->name, "podcastdir") == 0)
+		root = xmlDocGetRootElement(doc);
+		curr = root->children;
+		while(true)
 		{
-			this->podcastdir = (char *)curr->children->content;
-		}
-		if(strcmp((char *)curr->name, "numoffeeds") == 0)
-		{
-			this->numoffeeds=atoi((char *)curr->children->content);
-		}
-		if((this->feeds == NULL) && (numoffeeds != 0))
-		{
-			this->feeds = new feed[numoffeeds];
-		}
-		// WARNING: At the moment, an evil config file could buffer overflow by having more <feed>s than specified in <numoffeeds>
-		if((strcmp((char *)curr->name, "feeds") == 0) && numoffeeds != 0)
-		{
-			int i=0;
-			curr = curr->children; // step into feeds
-			while(true)
+			if(strcmp((char *)curr->name, "podcastdir") == 0)
 			{
-					if(strcmp((char *)curr->name, "feed") == 0)
-				{
-					curr = curr->children;
-					while(true)
-					{
-						if(strcmp((char *)curr->name, "name") == 0)
-						{
-							this->feeds[i].name = (char *)curr->children->content;
-						}
-						if(strcmp((char *)curr->name, "address") == 0)
-						{
-							this->feeds[i].address = (char *)curr->children->content;
-						}
-
-						if(curr->next != NULL)
-							curr = curr->next;
-						else
-							break;
-					}
-					i++;
-					curr = curr->parent;
-				}
-				if(curr->next == NULL)
-					break;
-				else
-					curr = curr->next;
+				this->podcastdir = (char *)curr->children->content;
 			}
-			curr = curr->parent;
+			if(strcmp((char *)curr->name, "numoffeeds") == 0)
+			{
+				this->numoffeeds=atoi((char *)curr->children->content);
+			}
+			if((this->feeds == NULL) && (numoffeeds != 0))
+			{
+				this->feeds = new feed[numoffeeds];
+			}
+			// WARNING: At the moment, an evil config file could buffer overflow by having more <feed>s than specified in <numoffeeds>
+			if((strcmp((char *)curr->name, "feeds") == 0) && numoffeeds != 0)
+			{
+				int i=0;
+				curr = curr->children; // step into feeds
+				while(true)
+				{
+						if(strcmp((char *)curr->name, "feed") == 0)
+					{
+						curr = curr->children;
+						while(true)
+						{
+							if(strcmp((char *)curr->name, "name") == 0)
+							{
+								this->feeds[i].name = (char *)curr->children->content;
+							}
+							if(strcmp((char *)curr->name, "address") == 0)
+							{
+								this->feeds[i].address = (char *)curr->children->content;
+							}
+	
+							if(curr->next != NULL)
+								curr = curr->next;
+							else
+								break;
+						}
+						i++;
+						curr = curr->parent;
+					}
+					if(curr->next == NULL)
+						break;
+					else
+						curr = curr->next;
+				}
+				curr = curr->parent;
+			}
+	
+			if(curr->next == NULL)
+			{
+				break;
+			}
+			curr = curr->next;
 		}
-
-		if(curr->next == NULL)
-		{
-			break;
-		}
-		curr = curr->next;
 	}
 }
 
