@@ -1,3 +1,4 @@
+#include "../compile_flags.h"
 #include "rss.h"
 #include <libxml/tree.h>
 #include <libxml/parser.h>

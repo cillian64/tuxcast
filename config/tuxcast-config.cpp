@@ -1,3 +1,4 @@
+#include "../compile_flags.h"
 #include <iostream>
 #include "config.h"
 #include <unistd.h>

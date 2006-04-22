@@ -1,0 +1,11 @@
+Linux:
+In this directory, run
+make
+
+*BSD:
+In this directory, run
+make -f Makefile.BSD
+
+
+The main tuxcast program is in the tuxcast directory, a configuration program called tuxcast-config is in the config directory
+

@@ -1,9 +1,10 @@
-  Long(er) Term:
-Resuming incomplete downloads
-Not redownloading already-downloaded files
-Remove the need to "numoffeeds" in the config file (loop through the feeds and count them, or something)
---
-  Short(er) Term:
-Clear up xml stuff at the end of functions
-File managment
-Sanity checks in tuxcast-config, i.e. not adding feeds with a duplicate name, deleting non-existant feeds, etc.
+* Resuming incomplete downloads
+* Remove the need to "numoffeeds" in the config file (loop through the feeds and count them, or something)
+* Clear up xml stuff at the end of functions
+* Sanity checks in tuxcast-config, i.e. not adding feeds with a duplicate name, deleting non-existant feeds, etc.
+* Putting podcasts in directories
+* Customizable directories for each feed
+* Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
+* Making the ~/.tuxcast directory if it doesn't exist
+* Not trying to read the config file if it doesn't exist (this doesn't really break anything, but causes errors)
+

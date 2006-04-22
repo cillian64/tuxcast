@@ -1,3 +1,4 @@
+#include "../compile_flags.h"
 #include <iostream>
 #include "rss.h"
 #include "../config/config.h"

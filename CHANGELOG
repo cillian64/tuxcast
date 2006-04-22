@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Revision 16:
+* Added CHANGELOG
+* Added INSTALL
+* Added BSD-compatible makefile - Makefile.BSD
+* Added compile_flags.h to all files
+

@@ -1,3 +1,4 @@
+#include "../compile_flags.h"
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include "config.h"
