@@ -6,13 +6,69 @@
 #include <cstdio> // Needed to open a file in the classic way, so libcurl can write to it
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
+#include <unistd.h>
 
 using namespace std;
 
 void newfile(string name);
 bool checkfile(string name); // true if already downloaded
+void checkall(void);
+void up2date(void);
 
-int main(void)
+const char options[] = "cu";
+
+int main(int argc, char *argv[])
+{
+	switch(getopt(argc,argv,options))
+	{
+		case 'c':
+			cout << "Checking all feeds" << endl;
+			checkall();
+			break;
+		case 'u':
+			cout << "Getting up to date on all feeds" << endl;
+			up2date();
+			break;
+
+		default:
+			cout << "Usage: tuxcast <option>" << endl;
+			cout << "Where <option> is either -c or -u" << endl;
+			cout << "-c - Check all feeds" << endl;
+			cout << "-u - Get up to date on all feeds - ";
+			cout << "add files to files.xml but don't download";
+			cout << endl;
+	}
+
+	return 0;
+}
+			
+
+
+void up2date(void)
+{
+	filelist *myfilelist;
+	string temp;
+	FILE *outputfile;
+	configuration myconfig;
+
+	myconfig.load();
+	for(int i=0; i<myconfig.numoffeeds; i++)
+	{
+		cout << "Checking feed \"" << myconfig.feeds[i].name << "\"..." << endl;
+		myfilelist = parse(myconfig.feeds[i].address);
+		for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
+		{
+			cout << "File found..." << endl;
+			cout << "Name is " << myfilelist->getfilename(j) << endl;
+			newfile(myfilelist->getfilename(j));
+			cout << "Done." << endl;
+			
+		}
+	}
+	
+}
+
+void checkall(void)
 {
 	filelist *myfilelist;
 	string temp;
@@ -23,7 +79,7 @@ int main(void)
 	if(mycurl == NULL)
 	{
 		cerr << "Error initializing libcurl" << endl;
-		return -1;
+		return;
 	}
 	
 	myconfig.load();
@@ -62,7 +118,6 @@ int main(void)
 	
 	curl_easy_cleanup(mycurl);
 	
-	return 0;
 }
                                                                                
 void newfile(string name)
