@@ -21,7 +21,10 @@ filelist *parse(string feed)
 	doc = xmlReadFile(feed.c_str(),NULL,0);
 
 	if(doc == NULL)
+	{
 		cerr << "Error reading/parsing RSS file" << endl;
+		return NULL;
+	}
 	
 	curr = xmlDocGetRootElement(doc);
 	// curr == root node

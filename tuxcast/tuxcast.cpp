@@ -54,14 +54,19 @@ void up2date(void)
 	myconfig.load();
 	for(int i=0; i<myconfig.numoffeeds; i++)
 	{
-		cout << "Checking feed \"" << myconfig.feeds[i].name << "\"..." << endl;
+		cout << "up2date'ing feed \"" << myconfig.feeds[i].name << "\"..." << endl;
 		myfilelist = parse(myconfig.feeds[i].address);
+		if(myfilelist == NULL)
+		{
+			cerr << "*** parse() failed - aborting this feed ***" << endl;
+			cerr << "*** Check the URL is right, then go moan to your feed maintainer :-) ***" << endl;
+			continue;
+		}
+
+			
 		for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
 		{
-			cout << "File found..." << endl;
-			cout << "Name is " << myfilelist->getfilename(j) << endl;
 			newfile(myfilelist->getfilename(j));
-			cout << "Done." << endl;
 			
 		}
 	}
@@ -88,18 +93,21 @@ void checkall(void)
 	{
 		cout << "Checking feed \"" << myconfig.feeds[i].name << "\"..." << endl;
 		myfilelist = parse(myconfig.feeds[i].address);
+		if(myfilelist == NULL)
+		{
+			cerr << "*** parse() failed - aborting this feed ***" << endl;
+			cerr << "*** Check the URL is right, then go moan to your feed maintainer :-) ***" << endl;
+			continue;
+		}
 		for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
 		{
-			cout << "File found..." << endl;
-			cout << "Name is " << myfilelist->getfilename(j) << endl;
 			if(checkfile(myfilelist->getfilename(j)))
-			{
-				cout << "Already downloaded" << endl;
 				continue;
-			}
 			if(myconfig.ask == true)
 			{
-				cout << "Download?: (yes/no)" << endl;
+				cout << "Download ";
+				cout << myfilelist->getfilename(j);
+				cout << "?: (yes/no)" << endl;
 				cin >> temp;
 			}
 			else
@@ -107,7 +115,9 @@ void checkall(void)
 
 			if(strcmp(temp.c_str(),"yes") == 0)
 			{
-				cout << "Downloading..." << endl;
+				cout << "Downloading ";
+				cout << myfilelist->getfilename(j);
+				cout << "..." << endl;
 		
 				path = myconfig.podcastdir;
 				path += "/";
@@ -123,7 +133,6 @@ void checkall(void)
 				curl_easy_perform(mycurl);
 				fclose(outputfile);
 				newfile(myfilelist->getfilename(j));
-				cout << "Done." << endl;
 			}
 		}
 	}
