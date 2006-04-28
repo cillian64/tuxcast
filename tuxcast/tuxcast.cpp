@@ -72,9 +72,10 @@ void checkall(void)
 {
 	filelist *myfilelist;
 	string temp;
-	FILE *outputfile;
+	FILE *outputfile=NULL;
 	CURL *mycurl;
 	configuration myconfig;
+	string path;
 	mycurl = curl_easy_init();
 	if(mycurl == NULL)
 	{
@@ -96,15 +97,26 @@ void checkall(void)
 				cout << "Already downloaded" << endl;
 				continue;
 			}
-			cout << "Download?: (yes/no)" << endl;
-			cin >> temp;
+			if(myconfig.ask == true)
+			{
+				cout << "Download?: (yes/no)" << endl;
+				cin >> temp;
+			}
+			else
+				temp = "yes";
+
 			if(strcmp(temp.c_str(),"yes") == 0)
 			{
 				cout << "Downloading..." << endl;
-				outputfile = fopen(myfilelist->getfilename(j).c_str(), "w");
+		
+				path = myconfig.podcastdir;
+				path += "/";
+				path += myfilelist->getfilename(j);
+				outputfile = fopen(path.c_str(), "w");
 				if(outputfile == NULL)
 				{
 					cerr << "Error opening output file" << endl;
+
 				}
 				curl_easy_setopt(mycurl,CURLOPT_URL,myfilelist->getURL(j).c_str());
 				curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);

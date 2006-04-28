@@ -14,6 +14,8 @@ class configuration
 		~configuration();
 		
 		string podcastdir;
+		bool ask; // Though a string is stored in config
+			// it's converted to a bool on load/save
 		feed *feeds;
 		unsigned int numoffeeds;
 		void save();

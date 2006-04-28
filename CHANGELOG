@@ -1,5 +1,11 @@
 -------------------------------------------------------------------------------
 
+Revision 18:
+* Added the "ask" variable - if true, tuxcast
+	asks before downloading any files
+* Implemented "podcastdir" in tuxcast
+-------------------------------------------------------------------------------
+
 Revision 17:
 * Moved old contents of main() to checkall()
 * Added new function, up2date() which adds files to files.xml

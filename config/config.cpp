@@ -29,6 +29,18 @@ void configuration::save()
 
 	xmlNewChild(root_node, NULL, (xmlChar *)"podcastdir",
 			(xmlChar *)podcastdir.c_str());
+	
+	if(this->ask == true) // All this to convert a bool to a string...
+	{
+		xmlNewChild(root_node,NULL, (xmlChar *)"ask",
+			(xmlChar *)"true");
+	}
+	else
+	{
+		xmlNewChild(root_node,NULL,(xmlChar *)"ask",
+			(xmlChar *)"false");
+	}
+				
 	std::ostringstream o;  o << this->numoffeeds;		// !?!?!?!?!?
 	xmlNewChild(root_node, NULL, (xmlChar *)"numoffeeds",
 			(xmlChar *)o.str().c_str());
@@ -72,6 +84,15 @@ void configuration::load()
 			if(strcmp((char *)curr->name, "podcastdir") == 0)
 			{
 				this->podcastdir = (char *)curr->children->content;
+			}
+			if(strcmp((char *)curr->name, "ask") == 0)
+			{
+				if(strcmp((char *)curr->children->content,"true") == 0)
+				{
+					this->ask = true;
+				}
+				else
+					this->ask = false;
 			}
 			if(strcmp((char *)curr->name, "numoffeeds") == 0)
 			{

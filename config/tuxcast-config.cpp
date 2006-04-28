@@ -73,12 +73,27 @@ void get(string args)
 {
 	if(strcmp(args.c_str(),"podcastdir") == 0)
 		cout << myconfig.podcastdir << endl;
+	if(strcmp(args.c_str(),"ask") == 0)
+	{
+		if(myconfig.ask == true)
+			cout << "true" << endl;
+		else
+			cout << "false" << endl;
+	}
+
 	// other variables go here...
 }
 
 void getall(void)
 {
 	cout << "podcastdir = " << myconfig.podcastdir << endl;
+	if(myconfig.ask == true)
+	{
+		cout << "ask = true" << endl;
+	}
+	else
+		cout << "ask = false" << endl;
+	
 	// ...
 	// Let's show some feeds:
 	if(myconfig.numoffeeds == 1)
@@ -102,6 +117,26 @@ void set(string args)
 	if(strcmp(varname.c_str(),"podcastdir") == 0)
 	{
 		myconfig.podcastdir = value;
+	}
+	if(strcmp(varname.c_str(),"ask") == 0)
+	{
+		if(strcmp(value.c_str(),"true") == 0)
+		{
+			myconfig.ask = true;
+		}
+		else
+		{
+			if(strcmp(value.c_str(),"false") == 0)
+			{
+				myconfig.ask = false;
+			}
+			else
+			{
+				cerr << "The \"ask\" variable can only be \"true\" or \"false\"" << endl;
+				cerr << "Assuming true" << endl;
+				myconfig.ask = true;
+			}
+		}
 	}
 	// ...
 	
