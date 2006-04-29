@@ -18,7 +18,7 @@ filelist *parse(string feed)
 	string name;
 	unsigned int size;
 
-	doc = xmlReadFile(feed.c_str(),NULL,0);
+	doc = xmlReadFile(feed.c_str(),NULL,XML_PARSE_RECOVER | XML_PARSE_NOWARNING | XML_PARSE_NOERROR); // These options should help incorrect RSS feeds survive
 
 	if(doc == NULL)
 	{

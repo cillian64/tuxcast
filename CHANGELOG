@@ -1,3 +1,12 @@
+Revision 20:
+* libxml2 should no longer spit out errors or warnings - if the parse failed
+	then tuxcast should just print a small error and skip that feed
+* libxml2 can now survive some non-perfect RSS feeds, i.e. invalid characters
+-------------------------------------------------------------------------------
+
+Revision 19:
+* Fixed a segfault on broken feeds
+* Cleaned up the output
 -------------------------------------------------------------------------------
 
 Revision 18:
