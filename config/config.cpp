@@ -107,13 +107,16 @@ void configuration::load()
 	}
 	catch(...)
 	{
-		cout << "Invalid path in config::load()" << endl;
+		cerr << "Invalid path in config::load()" << endl;
 		return;
 	}
 	
-	if(fs::exists(mypath))
+	if(!fs::exists(mypath))
 	{
-		doc = xmlReadFile(path.c_str(), NULL, 0);
+		cerr << "No config file found..." << endl;
+		return;
+	}
+	doc = xmlReadFile(path.c_str(), NULL, 0);
 	if(doc == NULL)
 	{
 		cerr << "Error parsing your config file" << endl;
@@ -131,20 +134,20 @@ void configuration::load()
 	root = xmlDocGetRootElement(doc);
 	curr = root->children;
 	while(true)
+	{
+		if(strcmp((char *)curr->name, "podcastdir") == 0)
 		{
-			if(strcmp((char *)curr->name, "podcastdir") == 0)
-			{
-				this->podcastdir = (char *)curr->children->content;
-			}
-			if(strcmp((char *)curr->name, "ask") == 0)
-			{
-				if(strcmp((char *)curr->children->content,"true") == 0)
-				{
-				this->ask = true;
-			}
-			else
-				this->ask = false;
+			this->podcastdir = (char *)curr->children->content;
 		}
+		if(strcmp((char *)curr->name, "ask") == 0)
+		{
+			if(strcmp((char *)curr->children->content,"true") == 0)
+			{
+			this->ask = true;
+		}
+		else
+			this->ask = false;
+		
 		if(strcmp((char *)curr->name, "numoffeeds") == 0)
 		{
 			this->numoffeeds=atoi((char *)curr->children->content);
@@ -162,25 +165,26 @@ void configuration::load()
 			{
 					if(strcmp((char *)curr->name, "feed") == 0)
 					{
-					curr = curr->children;
-					while(true)
-					{
-						if(strcmp((char *)curr->name, "name") == 0)
+						curr = curr->children;
+						while(true)
 						{
-							this->feeds[i].name = (char *)curr->children->content;
-						}
-						if(strcmp((char *)curr->name, "address") == 0)
-						{
-							this->feeds[i].address = (char *)curr->children->content;
-						}
+							if(strcmp((char *)curr->name, "name") == 0)
+							{
+								this->feeds[i].name = (char *)curr->children->content;
+							}
+							if(strcmp((char *)curr->name, "address") == 0)
+							{
+								this->feeds[i].address = (char *)curr->children->content;
+							}
 
-						if(curr->next != NULL)
-							curr = curr->next;
-						else
-							break;
+							if(curr->next != NULL)
+								curr = curr->next;
+							else
+								break;
+						}
+						i++;
+						curr = curr->parent;
 					}
-					i++;
-				 	curr = curr->parent;
 				}
 				if(curr->next == NULL)
 					break;

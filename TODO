@@ -7,3 +7,4 @@
 * Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
 * Use WINDOWS or POSIX in compile_flags.h to decide what default_name_check
 	to use
+* Make sure any errors are spat out to cerr, not cout
