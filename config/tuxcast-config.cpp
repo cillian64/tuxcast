@@ -2,6 +2,8 @@
 #include <iostream>
 #include "config.h"
 #include <unistd.h>
+#include <boost/filesystem/path.hpp>
+// Don't need operations.hpp in here (yet)
 
 const char options[] = "aA:d:n:hs:g:G";
 
@@ -20,6 +22,9 @@ void BREAK(){}
 
 int main(int argc, char *argv[])
 {
+	boost::filesystem::path::default_name_check(boost::filesystem::portable_posix_name);
+	// THIS MUST ONLY BE DONE ONCE
+	
 	myconfig.load();
 	
 	switch(getopt(argc,argv,options))

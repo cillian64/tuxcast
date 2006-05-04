@@ -5,6 +5,10 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+
+#define fs boost::filesystem
 
 configuration::configuration()
 {
@@ -22,7 +26,8 @@ void configuration::save()
 	xmlDocPtr doc = NULL;
 	xmlNodePtr root_node = NULL, node = NULL,node2=NULL;
 	string path;
-
+	fs::path mypath;
+	
 	doc = xmlNewDoc((xmlChar *)"1.0");
 	root_node = xmlNewNode(NULL, (xmlChar *)"config");
 	xmlDocSetRootElement(doc, root_node);
@@ -54,7 +59,34 @@ void configuration::save()
 	}
 
 	path = getenv("HOME");
-	path = path + "/.tuxcast/config.xml";
+	path = path + "/.tuxcast";
+	try
+	{
+		mypath = path;
+	}
+	catch(...)
+	{
+		cout << "Invalid Path in config::save()" << endl;
+		return;
+	}
+
+	if(!fs::exists(mypath))
+	{
+		cout << "Directory ~/.tuxcast doesn't exist: creating it" << endl;
+		mypath = getenv("HOME");
+		mypath /= ".tuxcast";
+		try
+		{
+			fs::create_directory(mypath);
+		}
+		catch(...)
+		{
+			cerr << "Error creating ~/.tuxcast" << endl;
+			return;
+		}
+	}
+	
+	path = path + "/config.xml";
 	xmlSaveFormatFileEnc(path.c_str(), doc,  "UTF-8", 1);
 
 	xmlFreeDoc(doc);
@@ -67,19 +99,38 @@ void configuration::load()
 	xmlNode *root=NULL;
 	xmlNode *curr=NULL;
 	string path=getenv("HOME");
+	fs::path mypath;
 	path = path + "/.tuxcast/config.xml";
-
-	doc = xmlReadFile(path.c_str(), NULL, 0);
+	try
+	{
+		mypath = path;
+	}
+	catch(...)
+	{
+		cout << "Invalid path in config::load()" << endl;
+		return;
+	}
+	
+	if(fs::exists(mypath))
+	{
+		doc = xmlReadFile(path.c_str(), NULL, 0);
 	if(doc == NULL)
 	{
-		cerr << "Error loading config file" << endl;
-		cerr << "If it's non-existant, it will be created" << endl;
+		cerr << "Error parsing your config file" << endl;
+		cerr << "Please delete ~/.tuxcast/config.xml and make a new one" << endl;
+		return;
 	}
+
 	else
 	{
-		root = xmlDocGetRootElement(doc);
-		curr = root->children;
-		while(true)
+		doc = NULL;
+		cout << "No config file found" << endl;
+		return;
+	}
+		
+	root = xmlDocGetRootElement(doc);
+	curr = root->children;
+	while(true)
 		{
 			if(strcmp((char *)curr->name, "podcastdir") == 0)
 			{
@@ -89,62 +140,62 @@ void configuration::load()
 			{
 				if(strcmp((char *)curr->children->content,"true") == 0)
 				{
-					this->ask = true;
-				}
-				else
-					this->ask = false;
+				this->ask = true;
 			}
-			if(strcmp((char *)curr->name, "numoffeeds") == 0)
-			{
-				this->numoffeeds=atoi((char *)curr->children->content);
-			}
-			if((this->feeds == NULL) && (numoffeeds != 0))
-			{
-				this->feeds = new feed[numoffeeds];
-			}
-			// WARNING: At the moment, an evil config file could buffer overflow by having more <feed>s than specified in <numoffeeds>
-			if((strcmp((char *)curr->name, "feeds") == 0) && numoffeeds != 0)
-			{
-				int i=0;
-				curr = curr->children; // step into feeds
-				while(true)
-				{
-						if(strcmp((char *)curr->name, "feed") == 0)
-					{
-						curr = curr->children;
-						while(true)
-						{
-							if(strcmp((char *)curr->name, "name") == 0)
-							{
-								this->feeds[i].name = (char *)curr->children->content;
-							}
-							if(strcmp((char *)curr->name, "address") == 0)
-							{
-								this->feeds[i].address = (char *)curr->children->content;
-							}
-	
-							if(curr->next != NULL)
-								curr = curr->next;
-							else
-								break;
-						}
-						i++;
-						curr = curr->parent;
-					}
-					if(curr->next == NULL)
-						break;
-					else
-						curr = curr->next;
-				}
-				curr = curr->parent;
-			}
-	
-			if(curr->next == NULL)
-			{
-				break;
-			}
-			curr = curr->next;
+			else
+				this->ask = false;
 		}
+		if(strcmp((char *)curr->name, "numoffeeds") == 0)
+		{
+			this->numoffeeds=atoi((char *)curr->children->content);
+		}
+		if((this->feeds == NULL) && (numoffeeds != 0))
+		{
+			this->feeds = new feed[numoffeeds];
+		}
+		// WARNING: At the moment, an evil config file could buffer overflow by having more <feed>s than specified in <numoffeeds>
+		if((strcmp((char *)curr->name, "feeds") == 0) && numoffeeds != 0)
+		{
+			int i=0;
+			curr = curr->children; // step into feeds
+			while(true)
+			{
+					if(strcmp((char *)curr->name, "feed") == 0)
+					{
+					curr = curr->children;
+					while(true)
+					{
+						if(strcmp((char *)curr->name, "name") == 0)
+						{
+							this->feeds[i].name = (char *)curr->children->content;
+						}
+						if(strcmp((char *)curr->name, "address") == 0)
+						{
+							this->feeds[i].address = (char *)curr->children->content;
+						}
+
+						if(curr->next != NULL)
+							curr = curr->next;
+						else
+							break;
+					}
+					i++;
+				 	curr = curr->parent;
+				}
+				if(curr->next == NULL)
+					break;
+				else
+					curr = curr->next;
+			}
+			curr = curr->parent;
+		}
+
+		if(curr->next == NULL)
+		{
+			break;
+		}
+		curr = curr->next;
 	}
+
 }
 

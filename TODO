@@ -5,6 +5,5 @@
 * Putting podcasts in directories
 * Customizable directories for each feed
 * Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
-* Making the ~/.tuxcast directory if it doesn't exist
-* Not trying to read the config file if it doesn't exist (this doesn't really break anything, but causes errors)
-
+* Use WINDOWS or POSIX in compile_flags.h to decide what default_name_check
+	to use

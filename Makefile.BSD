@@ -1,5 +1,5 @@
 main: tuxcast/tuxcast.o tuxcast/rss.o config/config.o config/tuxcast-config
-	g++ -g -o tuxcast/tuxcast tuxcast/tuxcast.o tuxcast/rss.o config/config.o `xml2-config --libs` `curl-config --libs`
+	g++ -g -o tuxcast/tuxcast tuxcast/tuxcast.o tuxcast/rss.o config/config.o `xml2-config --libs` `curl-config --libs` -lboost_filesystem
 
 tuxcast/tuxcast.o: tuxcast/tuxcast.cpp
 	g++ -c -g tuxcast/tuxcast.cpp -o tuxcast/tuxcast.o `curl-config --cflags` `xml2-config --cflags`
@@ -8,7 +8,7 @@ tuxcast/rss.o: tuxcast/rss.cpp
 	g++ -c -g tuxcast/rss.cpp -o tuxcast/rss.o `xml2-config --cflags`
 
 config/tuxcast-config: config/config.o config/tuxcast-config.o
-	g++ -g -o config/tuxcast-config config/tuxcast-config.o config/config.o `xml2-config --libs`
+	g++ -g -o config/tuxcast-config config/tuxcast-config.o config/config.o `xml2-config --libs` -lboost_filesystem
 
 clean:
 	rm tuxcast/*.o

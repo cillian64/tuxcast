@@ -1,3 +1,9 @@
+Revision 21:
+* Added boost_filesystem into both makefiles
+* Added checks to see if stuff exists before opening
+* ~/.tuxcast is made if it doesn't exist, when config::save() is caleld
+-------------------------------------------------------------------------------
+
 Revision 20:
 * libxml2 should no longer spit out errors or warnings - if the parse failed
 	then tuxcast should just print a small error and skip that feed
