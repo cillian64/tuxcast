@@ -110,12 +110,12 @@ void configuration::load()
 		cerr << "Invalid path in config::load()" << endl;
 		return;
 	}
-	
 	if(!fs::exists(mypath))
 	{
 		cerr << "No config file found..." << endl;
 		return;
-	}
+	} 
+
 	doc = xmlReadFile(path.c_str(), NULL, 0);
 	if(doc == NULL)
 	{
@@ -123,18 +123,14 @@ void configuration::load()
 		cerr << "Please delete ~/.tuxcast/config.xml and make a new one" << endl;
 		return;
 	}
-
-	else
-	{
-		doc = NULL;
-		cout << "No config file found" << endl;
-		return;
-	}
 		
 	root = xmlDocGetRootElement(doc);
 	curr = root->children;
 	while(true)
 	{
+		// This loops through all the main elements
+		// Once an element is recognised, by an if
+		// the code "Does The Right Thing" (tm)
 		if(strcmp((char *)curr->name, "podcastdir") == 0)
 		{
 			this->podcastdir = (char *)curr->children->content;
@@ -142,16 +138,16 @@ void configuration::load()
 		if(strcmp((char *)curr->name, "ask") == 0)
 		{
 			if(strcmp((char *)curr->children->content,"true") == 0)
-			{
-			this->ask = true;
+				this->ask = true;
+			else
+				this->ask = false;
 		}
-		else
-			this->ask = false;
 		
 		if(strcmp((char *)curr->name, "numoffeeds") == 0)
 		{
 			this->numoffeeds=atoi((char *)curr->children->content);
 		}
+		
 		if((this->feeds == NULL) && (numoffeeds != 0))
 		{
 			this->feeds = new feed[numoffeeds];
@@ -163,28 +159,25 @@ void configuration::load()
 			curr = curr->children; // step into feeds
 			while(true)
 			{
-					if(strcmp((char *)curr->name, "feed") == 0)
+				if(strcmp((char *)curr->name, "feed") == 0)
+				{
+					curr = curr->children;
+					while(true)
 					{
-						curr = curr->children;
-						while(true)
-						{
-							if(strcmp((char *)curr->name, "name") == 0)
-							{
-								this->feeds[i].name = (char *)curr->children->content;
-							}
-							if(strcmp((char *)curr->name, "address") == 0)
-							{
-								this->feeds[i].address = (char *)curr->children->content;
-							}
+						if(strcmp((char *)curr->name, "name") == 0)
+							this->feeds[i].name = (char *)curr->children->content;
+						if(strcmp((char *)curr->name, "address") == 0)
+							this->feeds[i].address = (char *)curr->children->content;
+				
 
-							if(curr->next != NULL)
-								curr = curr->next;
-							else
-								break;
-						}
-						i++;
-						curr = curr->parent;
+						if(curr->next != NULL)
+							curr = curr->next;
+						else
+							break;
 					}
+					i++;
+					curr = curr->parent;
+					
 				}
 				if(curr->next == NULL)
 					break;

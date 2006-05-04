@@ -1,3 +1,8 @@
+Revision 23:
+* Another bugfix - added the default_name_check init to tuxcast
+* I kinda totally messed up some of the parse() code - it's fixed now
+-------------------------------------------------------------------------------
+
 Revision 22:
 * Small bugfix from the last commit - config.cpp wouldn't compile
 -------------------------------------------------------------------------------

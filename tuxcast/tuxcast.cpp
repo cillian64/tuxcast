@@ -7,6 +7,7 @@
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
+#include <boost/filesystem/path.hpp> // FOr the default_name_check init
 
 using namespace std;
 
@@ -19,6 +20,11 @@ const char options[] = "cu";
 
 int main(int argc, char *argv[])
 {
+	boost::filesystem::path::default_name_check(boost::filesystem::portable_posix_name);
+	// This must only be done ONCE!!!!!!!
+	// Hence, it's done in the main program, instead of in any libraries
+	// Maybe create an "init" function??
+	
 	switch(getopt(argc,argv,options))
 	{
 		case 'c':
