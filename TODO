@@ -5,7 +5,5 @@
 * Putting podcasts in directories
 * Customizable directories for each feed
 * Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
-* Use WINDOWS or POSIX in compile_flags.h to decide what default_name_check
-	to use
-* Make sure any errors are spat out to cerr, not cout
-* Fix the thingy in config.cpp which checks if the config file exists before trying to read it
+* Where to save the config file, defined in compile_flags.h
+	(this could help portability)

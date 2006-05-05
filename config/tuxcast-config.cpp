@@ -22,8 +22,23 @@ void BREAK(){}
 
 int main(int argc, char *argv[])
 {
-	boost::filesystem::path::default_name_check(boost::filesystem::portable_posix_name);
-	// THIS MUST ONLY BE DONE ONCE
+	try
+        {
+#ifdef POSIX
+                boost::filesystem::path::default_name_check(boost::filesystem::portable_posix_name);
+#endif
+#ifdef WINDOWS
+                boost::filesystem::path::default_name_check(boost::filesystem::windows_name);
+#endif
+        }
+        catch(...)
+        {       
+                // The only reason default_name_check should fail is if
+		// You have run it twice - this could be caused by:
+                cerr << "ERROR: you have both WINDOWS and POSIX compile flags enabled." << endl;
+                cerr << "If you compiled manually, check your compile_flags.h" << endl;
+                cerr << "Else, contact your package maintainer" << endl;
+        }
 	
 	myconfig.load();
 	
@@ -208,3 +223,5 @@ void del(string name)
 	myconfig.save();
 }
 	
+
+

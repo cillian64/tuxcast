@@ -66,13 +66,13 @@ void configuration::save()
 	}
 	catch(...)
 	{
-		cout << "Invalid Path in config::save()" << endl;
+		cerr << "Invalid Path in config::save()" << endl;
 		return;
 	}
 
 	if(!fs::exists(mypath))
 	{
-		cout << "Directory ~/.tuxcast doesn't exist: creating it" << endl;
+		cerr << "Directory ~/.tuxcast doesn't exist: creating it" << endl; // Not strictly an error, but....
 		mypath = getenv("HOME");
 		mypath /= ".tuxcast";
 		try

@@ -1,3 +1,8 @@
+Revision 24:
+* Checked through all of the code - no errors are going to cout, all to cerr
+* Now the correct default_name_check is used, based on compile_flags.h
+-------------------------------------------------------------------------------
+
 Revision 23:
 * Another bugfix - added the default_name_check init to tuxcast
 * I kinda totally messed up some of the parse() code - it's fixed now
