@@ -1,3 +1,9 @@
+Revision 25:
+* Enabled the FOLLOWLOCATION option of libcurl.  This means tuxcast will
+	download podcasts which use a HTTP 403 to link to the actual file
+	like, the Daily Source Code, and the PodShow Devcast
+-------------------------------------------------------------------------------
+
 Revision 24:
 * Checked through all of the code - no errors are going to cout, all to cerr
 * Now the correct default_name_check is used, based on compile_flags.h

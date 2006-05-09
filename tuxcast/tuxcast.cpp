@@ -152,6 +152,7 @@ void checkall(void)
 				}
 				curl_easy_setopt(mycurl,CURLOPT_URL,myfilelist->getURL(j).c_str());
 				curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
+				curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
 				curl_easy_perform(mycurl);
 				fclose(outputfile);
 				newfile(myfilelist->getfilename(j));
