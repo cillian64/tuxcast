@@ -7,9 +7,12 @@
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
-#include <boost/filesystem/path.hpp> // FOr the default_name_check init
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
 
 using namespace std;
+
+#define fs boost::filesystem
 
 void newfile(string name);
 bool checkfile(string name); // true if already downloaded
@@ -27,10 +30,10 @@ int main(int argc, char *argv[])
 	try
 	{
 #ifdef POSIX
-		boost::filesystem::path::default_name_check(boost::filesystem::portable_posix_name);
+		fs::path::default_name_check(fs::portable_posix_name);
 #endif
 #ifdef WINDOWS
-		boost::filesystem::path::default_name_check(boost::filesystem::windows_name);
+		fs::path::default_name_check(fs::windows_name);
 #endif
 	}
 	catch(...)
@@ -97,6 +100,9 @@ void up2date(void)
 
 void checkall(void)
 {
+	// In loops:
+	// i is the feed ID (myconfig.feeds[i])
+	// j is the file ID (myfilelist->get*(j))
 	filelist *myfilelist;
 	string temp;
 	FILE *outputfile=NULL;
@@ -137,17 +143,40 @@ void checkall(void)
 
 			if(strcmp(temp.c_str(),"yes") == 0)
 			{
-				cout << "Downloading ";
+				cout << "Downloading \"";
 				cout << myfilelist->getfilename(j);
-				cout << "..." << endl;
+				cout << "\"..." << endl;
 		
+				// Do folder'y stuff first
 				path = myconfig.podcastdir;
 				path += "/";
+				path += myconfig.feeds[i].folder;
+				if(!fs::exists(path))
+				{
+					try
+					{
+						fs::create_directory(path);
+					}
+					catch(...)
+					{
+						cerr << "Error creating folder, \"" << path << "\"" << endl;
+						cerr << "Aborting..." << endl;
+						return;
+					}
+				}
+				
+
+				// Done with the folder now
+				// Onto files
+				path += "/";
 				path += myfilelist->getfilename(j);
+				// Path = previousfolder/filename.XYZ
+				
 				outputfile = fopen(path.c_str(), "w");
 				if(outputfile == NULL)
 				{
-					cerr << "Error opening output file" << endl;
+					cerr << "Error opening output file \"";
+					cerr << path << "\"" << endl;
 
 				}
 				curl_easy_setopt(mycurl,CURLOPT_URL,myfilelist->getURL(j).c_str());

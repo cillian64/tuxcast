@@ -27,6 +27,7 @@ class feed
 	public:
 		string name;
 		string address;
+		string folder;
 };
 
 #endif

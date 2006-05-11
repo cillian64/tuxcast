@@ -5,7 +5,7 @@
 #include <boost/filesystem/path.hpp>
 // Don't need operations.hpp in here (yet)
 
-const char options[] = "aA:d:n:hs:g:G";
+const char options[] = "aA:d:n:hs:g:Gf:";
 
 configuration myconfig;
 
@@ -80,12 +80,15 @@ void help(void)
 {
 	cout << "tuxcast-config [action]" << endl;
 	cout << "Actions are:" << endl;
-	cout << "-a -n NAME -A ADDRESS: Add a feed with the specified name & address" << endl;
+	cout << "-a -n NAME -A ADDRESS -f FOLDER: Add a feed with the specified name, address and folder" << endl;
 	cout << "-d NAME: Delete the feed with the specified name" << endl;
 	cout << "-g OPTION: Get the value of option" << endl;
 	cout << "-G: Get the value of all options" << endl;
 	cout << "-h: Display this help message" << endl;
 	cout << "-s OPTION=VALUE: Set OPTION to VALUE" << endl;
+	cout << endl;
+	cout << "Available options are:" << endl;
+	cout << "podcastdir - where to save all your podcasts" << endl;
 
 }
 
@@ -124,6 +127,7 @@ void getall(void)
 	{
 		cout << "Name: " << myconfig.feeds[i].name << endl;
 		cout << "Address: " << myconfig.feeds[i].address << endl;
+		cout << "Folder: " << myconfig.feeds[i].folder << endl;
 		cout << "--" << endl;
 	}
 
@@ -166,7 +170,7 @@ void set(string args)
 void add(int argc,char *argv[])
 {
 	int myopt=0;
-	string name, address;
+	string name, address, folder;
 	feed *newarray;
 
 	while((myopt = getopt(argc,argv,options)) != -1)
@@ -175,6 +179,8 @@ void add(int argc,char *argv[])
 			address = optarg;
 		if((char)myopt == 'n')
 			name = optarg;
+		if((char)myopt == 'f')
+			folder = optarg;
 	}
 
 	if((strcmp(name.c_str(),"") != 0) && (strcmp(address.c_str(),"") != 0))
@@ -183,12 +189,15 @@ void add(int argc,char *argv[])
 		for(int i=0; i<myconfig.numoffeeds;i++)
 		{
 			newarray[i].name = myconfig.feeds[i].name;
-				newarray[i].address = myconfig.feeds[i].address;
+			newarray[i].address = myconfig.feeds[i].address;
+			newarray[i].folder = myconfig.feeds[i].folder;
 			// Copy over all old feeds' data
 		}
 		// Add the new feed:
 		newarray[myconfig.numoffeeds].name = name;
 		newarray[myconfig.numoffeeds].address = address;
+		newarray[myconfig.numoffeeds].folder = folder;
+
 		
 		// Finally, delete the old array of feeds, and swap in the new array of feeds, and update numoffeeds
 		delete[] myconfig.feeds;
@@ -213,6 +222,7 @@ void del(string name)
 		{
 			newarray[j].name = myconfig.feeds[i].name;
 			newarray[j].address = myconfig.feeds[i].address;
+			newarray[j].folder = myconfig.feeds[i].folder;
 			j++;
 		}
 	}

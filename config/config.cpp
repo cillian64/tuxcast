@@ -56,6 +56,7 @@ void configuration::save()
 		node2=xmlNewChild(node,NULL,(xmlChar *)"feed",NULL);
 		xmlNewChild(node2,NULL,(xmlChar *)"name",(xmlChar *)this->feeds[i].name.c_str());
 		xmlNewChild(node2,NULL,(xmlChar *)"address",(xmlChar *)this->feeds[i].address.c_str());
+		xmlNewChild(node2,NULL,(xmlChar *)"folder",(xmlChar *)this->feeds[i].folder.c_str());
 	}
 
 	path = getenv("HOME");
@@ -168,6 +169,8 @@ void configuration::load()
 							this->feeds[i].name = (char *)curr->children->content;
 						if(strcmp((char *)curr->name, "address") == 0)
 							this->feeds[i].address = (char *)curr->children->content;
+						if(strcmp((char *)curr->name, "folder") == 0)
+							this->feeds[i].folder = (char *)curr->children->content;
 				
 
 						if(curr->next != NULL)
