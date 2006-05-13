@@ -169,7 +169,7 @@ void set(string args)
 
 void add(int argc,char *argv[])
 {
-	int myopt=0;
+	int myopt=0, i=0;
 	string name, address, folder;
 	feed *newarray;
 
@@ -183,7 +183,26 @@ void add(int argc,char *argv[])
 			folder = optarg;
 	}
 
-	if((strcmp(name.c_str(),"") != 0) && (strcmp(address.c_str(),"") != 0))
+	// Let's check the feed isn't already there:
+	if(strcmp(name.c_str(),"") == 0)
+	{
+		cerr << "No name specified!!" << endl;
+		return;
+	}
+	while(i<myconfig.numoffeeds)
+	{
+		if(strcmp(myconfig.feeds[i].name.c_str(),name.c_str()) == 0)
+		{
+			cerr << "Feed already exists" << endl;
+			return;
+		}
+		else
+			i++;
+	}
+		
+	
+	if((strcmp(name.c_str(),"") != 0) && (strcmp(address.c_str(),"") != 0)) // No sanity check for folder here:
+		// folder can be blank - it means just put the podcast in podcastdir
 	{
 		newarray = new feed[myconfig.numoffeeds+1];
 		for(int i=0; i<myconfig.numoffeeds;i++)
@@ -213,7 +232,29 @@ void add(int argc,char *argv[])
 void del(string name)
 {
 	feed *newarray;
-	int j=0;
+	int i=0,j=0;
+	
+	while(true)
+	{
+		if(strcmp(name.c_str(),myconfig.feeds[i].name.c_str()) == 0)
+			break; // Found the feed to delete, we're good
+
+		if(i<myconfig.numoffeeds-1) // if i is 1 less than numoffeeds, we're
+			// at the end of the array, so we don't want to loop again:
+			// if we're at the end of the array and didn't just break,
+			// the feed doesn't exist
+		{
+			i++;
+			continue;
+		}
+
+		// If we get here, we're at the end of the array (we /should/ have
+		// either broken or continued if the feed exists anywhere
+		
+		cerr << "Feed \"" << name << "\" doesn't exist" << endl;
+		return;
+	}
+	
 	newarray = new feed[myconfig.numoffeeds-1];
 
 	for(int i=0; i<myconfig.numoffeeds; i++)

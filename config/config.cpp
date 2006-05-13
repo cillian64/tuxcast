@@ -165,12 +165,32 @@ void configuration::load()
 					curr = curr->children;
 					while(true)
 					{
+						if((strcmp((char *)curr->name,"name") == 0) || (strcmp((char *)curr->name, "address") == 0))
+						{
+							// if it's either of these 2, the value CANNOT be blank!!
+							if(curr->children == NULL)
+							{
+								cerr << "Error: blank name or address in config file, ";
+								cerr << "Please delete and recreate your config file";
+								cerr << " using tuxcast-config" << endl;
+								return;
+							}
+						}
+
 						if(strcmp((char *)curr->name, "name") == 0)
 							this->feeds[i].name = (char *)curr->children->content;
 						if(strcmp((char *)curr->name, "address") == 0)
 							this->feeds[i].address = (char *)curr->children->content;
 						if(strcmp((char *)curr->name, "folder") == 0)
-							this->feeds[i].folder = (char *)curr->children->content;
+						{
+							if(curr->children == NULL)
+								this->feeds[i].folder = "";
+							else
+								this->feeds[i].folder = (char *)curr->children->content;
+							// Previously, if the folder was "", curr->children would be NULL,
+							// so curr->children->content threw a segfault
+							// Since a blank folder is perfectly valid, we must be nice about it
+						}
 				
 
 						if(curr->next != NULL)
