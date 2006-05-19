@@ -1,6 +1,11 @@
+Revision 30:
+* Changed the Makefile install to install, instead of cp the binaries
+-------------------------------------------------------------------------------
+
 Revision 29:
 * Fixed a bug causing segfault if podcastdir wasn't set before other variables (thanks, Sionide)
 * Added some very basic documentation
+* Added install and uninstall targets to the makefile
 -------------------------------------------------------------------------------
 
 Revision 28:

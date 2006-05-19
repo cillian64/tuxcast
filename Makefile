@@ -5,6 +5,6 @@ clean:
 	make -C tuxcast clean
 
 install:
-	cp tuxcast/tuxcast /usr/bin
-	cp config/tuxcast-config /usr/bin/tuxcast-config /usr/bin
+	install -m 755 tuxcast/tuxcast /usr/bin
+	install -m 755 config/tuxcast-config /usr/bin/tuxcast-config
 
