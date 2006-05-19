@@ -4,3 +4,4 @@
 * Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
 * Where to save the config file, defined in compile_flags.h
 	(this could help portability)
+* An option to download the latest episode, instead of either all or no episodes

@@ -134,7 +134,14 @@ void configuration::load()
 		// the code "Does The Right Thing" (tm)
 		if(strcmp((char *)curr->name, "podcastdir") == 0)
 		{
-			this->podcastdir = (char *)curr->children->content;
+			if(curr->children == NULL)
+			{
+				cerr << "Please setup a podcast directory" << endl;
+				cerr << "For the moment, putting all podcasts in your home directory!" << endl;
+				this->podcastdir=getenv("HOME");
+			}
+			else
+				this->podcastdir = (char *)curr->children->content;
 		}
 		if(strcmp((char *)curr->name, "ask") == 0)
 		{

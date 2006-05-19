@@ -1,3 +1,8 @@
+Revision 29:
+* Fixed a bug causing segfault if podcastdir wasn't set before other variables (thanks, Sionide)
+* Added some very basic documentation
+-------------------------------------------------------------------------------
+
 Revision 28:
 * Added the "update" feature to tuxcast-config
 * Some general cleanup
