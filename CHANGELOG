@@ -1,3 +1,10 @@
+Revision 31:
+* Added the uninstall Makefile target
+* Changed -u to download the latest file, instead of no files at all
+* Rather major recode in tuxcast, shuffled some stuff around, moved stuff
+	into separate functions
+-------------------------------------------------------------------------------
+
 Revision 30:
 * Changed the Makefile install to install, instead of cp the binaries
 -------------------------------------------------------------------------------
@@ -5,7 +12,7 @@ Revision 30:
 Revision 29:
 * Fixed a bug causing segfault if podcastdir wasn't set before other variables (thanks, Sionide)
 * Added some very basic documentation
-* Added install and uninstall targets to the makefile
+* Added install target to the makefile
 -------------------------------------------------------------------------------
 
 Revision 28:

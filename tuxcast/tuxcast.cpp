@@ -18,6 +18,7 @@ void newfile(string name);
 bool checkfile(string name); // true if already downloaded
 void checkall(void);
 void up2date(void);
+void get(string name, string URL, int feed, configuration *myconfig);
 
 const char options[] = "cu";
 
@@ -59,8 +60,7 @@ int main(int argc, char *argv[])
 			cout << "Usage: tuxcast <option>" << endl;
 			cout << "Where <option> is either -c or -u" << endl;
 			cout << "-c - Check all feeds" << endl;
-			cout << "-u - Get up to date on all feeds - ";
-			cout << "add files to files.xml but don't download";
+			cout << "-u - Download only the latest file" << endl;
 			cout << endl;
 	}
 
@@ -71,12 +71,12 @@ int main(int argc, char *argv[])
 
 void up2date(void)
 {
+	// In loop, i is feed, j is file
 	filelist *myfilelist;
-	string temp;
-	FILE *outputfile;
 	configuration myconfig;
 
 	myconfig.load();
+	
 	for(int i=0; i<myconfig.numoffeeds; i++)
 	{
 		cout << "up2date'ing feed \"" << myconfig.feeds[i].name << "\"..." << endl;
@@ -91,8 +91,13 @@ void up2date(void)
 			
 		for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
 		{
-			newfile(myfilelist->getfilename(j));
-			
+			if(j==0)
+				get(myfilelist->getfilename(j), myfilelist->getURL(j),
+						i, &myconfig);
+			else
+				newfile(myfilelist->getfilename(j));
+			// First file, download it
+			// Other files, just pretend
 		}
 	}
 	
@@ -100,26 +105,15 @@ void up2date(void)
 
 void checkall(void)
 {
-	// In loops:
-	// i is the feed ID (myconfig.feeds[i])
-	// j is the file ID (myfilelist->get*(j))
+	// In loop, i is feed, j is file
 	filelist *myfilelist;
-	string temp;
-	FILE *outputfile=NULL;
-	CURL *mycurl;
 	configuration myconfig;
-	string path;
-	mycurl = curl_easy_init();
-	if(mycurl == NULL)
-	{
-		cerr << "Error initializing libcurl" << endl;
-		return;
-	}
-	
+
 	myconfig.load();
+
 	for(int i=0; i<myconfig.numoffeeds; i++)
 	{
-		cout << "Checking feed \"" << myconfig.feeds[i].name << "\"..." << endl;
+		cout << "Checking feed \"" << myconfig.feeds[i].name << endl;
 		myfilelist = parse(myconfig.feeds[i].address);
 		if(myfilelist == NULL)
 		{
@@ -127,71 +121,15 @@ void checkall(void)
 			cerr << "*** Check the URL is right, then go moan to your feed maintainer :-) ***" << endl;
 			continue;
 		}
+
 		for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
 		{
-			if(checkfile(myfilelist->getfilename(j)))
-				continue;
-			if(myconfig.ask == true)
-			{
-				cout << "Download ";
-				cout << myfilelist->getfilename(j);
-				cout << "?: (yes/no)" << endl;
-				cin >> temp;
-			}
-			else
-				temp = "yes";
-
-			if(strcmp(temp.c_str(),"yes") == 0)
-			{
-				cout << "Downloading \"";
-				cout << myfilelist->getfilename(j);
-				cout << "\"..." << endl;
-		
-				// Do folder'y stuff first
-				path = myconfig.podcastdir;
-				path += "/";
-				path += myconfig.feeds[i].folder;
-				if(!fs::exists(path))
-				{
-					try
-					{
-						fs::create_directory(path);
-					}
-					catch(...)
-					{
-						cerr << "Error creating folder, \"" << path << "\"" << endl;
-						cerr << "Aborting..." << endl;
-						return;
-					}
-				}
-				
-
-				// Done with the folder now
-				// Onto files
-				path += "/";
-				path += myfilelist->getfilename(j);
-				// Path = previousfolder/filename.XYZ
-				
-				outputfile = fopen(path.c_str(), "w");
-				if(outputfile == NULL)
-				{
-					cerr << "Error opening output file \"";
-					cerr << path << "\"" << endl;
-
-				}
-				curl_easy_setopt(mycurl,CURLOPT_URL,myfilelist->getURL(j).c_str());
-				curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
-				curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
-				curl_easy_perform(mycurl);
-				fclose(outputfile);
-				newfile(myfilelist->getfilename(j));
-			}
+			get(myfilelist->getfilename(j), myfilelist->getURL(j),
+					i, &myconfig);
 		}
 	}
-	
-	curl_easy_cleanup(mycurl);
-	
 }
+
                                                                                
 void newfile(string name)
 {
@@ -253,3 +191,80 @@ bool checkfile(string name)
         	curr = curr->next;
         }
 }
+
+void get(string name, string URL, int feed,  configuration *myconfig)
+{
+	string temp;
+	FILE *outputfile=NULL;
+	CURL *mycurl;
+	string path;
+	mycurl = curl_easy_init();
+	if(mycurl == NULL)
+	{
+		cerr << "Error initializing libcurl" << endl;
+		return;
+	}
+	
+	if(checkfile(name))
+		// Already downloaded
+		return;
+	
+	if(myconfig->ask == true)
+	{
+		cout << "Download ";
+		cout << name;
+		cout << "?: (yes/no)" << endl;
+		cin >> temp;
+	}
+	else
+		temp = "yes";
+
+	if(strcmp(temp.c_str(),"yes") == 0)
+	{
+		cout << "Downloading \"";
+		cout << name;
+		cout << "\"..." << endl;
+
+		// Do folder'y stuff first
+		path = myconfig->podcastdir;
+		path += "/";
+		path += myconfig->feeds[feed].folder;
+		if(!fs::exists(path))
+		{
+			try
+			{
+				fs::create_directory(path);
+			}
+			catch(...)
+			{
+				cerr << "Error creating folder, \"" << path << "\"" << endl;
+				cerr << "Aborting..." << endl;
+				return;
+			}
+		}
+		
+
+		// Done with the folder now
+		// Onto files
+		path += "/";
+		path += name;
+		// Path = previousfolder/filename.XYZ
+		
+		outputfile = fopen(path.c_str(), "w");
+		if(outputfile == NULL)
+		{
+			cerr << "Error opening output file \"";
+			cerr << path << "\"" << endl;
+
+		}
+		curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
+		curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
+		curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
+		curl_easy_perform(mycurl);
+		fclose(outputfile);
+		newfile(name);
+	}
+
+	curl_easy_cleanup(mycurl);
+}
+
