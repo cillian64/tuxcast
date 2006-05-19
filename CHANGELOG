@@ -1,3 +1,8 @@
+Revision 28:
+* Added the "update" feature to tuxcast-config
+* Some general cleanup
+-------------------------------------------------------------------------------
+
 Revision 27:
 * Check if a feed already exists before adding
 * Check if a feed exists before trying to delete

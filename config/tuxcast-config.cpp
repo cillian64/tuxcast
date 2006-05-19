@@ -5,7 +5,7 @@
 #include <boost/filesystem/path.hpp>
 // Don't need operations.hpp in here (yet)
 
-const char options[] = "aA:d:n:hs:g:Gf:";
+const char options[] = "aA:d:n:hs:g:Gf:u";
 
 configuration myconfig;
 
@@ -18,7 +18,7 @@ void getall(void);
 void set(string args);
 void add(int argc,char *argc[]);
 void del(string name);
-void BREAK(){}
+void update(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
 {
@@ -63,6 +63,9 @@ int main(int argc, char *argv[])
 		case 's':
 			set(optarg);
 			break;
+		case 'u':
+			update(argc,argv);
+			break;
 
 		case 'h':
 			help();	
@@ -86,6 +89,7 @@ void help(void)
 	cout << "-G: Get the value of all options" << endl;
 	cout << "-h: Display this help message" << endl;
 	cout << "-s OPTION=VALUE: Set OPTION to VALUE" << endl;
+	cout << "-u -n NAME [ -A ADDRESS | -f FOLDER ]" << endl;
 	cout << endl;
 	cout << "Available options are:" << endl;
 	cout << "podcastdir - where to save all your podcasts" << endl;
@@ -268,11 +272,66 @@ void del(string name)
 		}
 	}
 	delete[] myconfig.feeds;
-	BREAK();
 	myconfig.feeds = newarray;
 	myconfig.numoffeeds--;
 	myconfig.save();
 }
 	
+void update(int argc, char *argv[])
+{
+	int i=0;
+	char myopt;
+	string name;
+	// The -u option was already sucked up
+	// The next option must be -n so we know what to update
+	// After that, we need either -f or -A
+	
+	myopt = getopt(argc,argv,options);
+	if(myopt != 'n')
+	{
+		cerr << "You must pass -n and either -A or -f, when updating a feed's info" << endl;
+		return;
+	}
+	name = optarg;
+	myopt = getopt(argc,argv,options);
+		
+	while(true)
+	{
+		if(strcmp(myconfig.feeds[i].name.c_str(),name.c_str()) == 0)
+		{
+			// Found the feed, update it:
+			switch(myopt)
+			{
+				case 'A':
+					if(strcmp(optarg,"") == 0)
+					{
+						cerr << "Error: Blank address" << endl;
+						return;
+					}
+					
+					myconfig.feeds[i].address = optarg;
+					break;
 
+				case 'f':
+					myconfig.feeds[i].folder = optarg;
+					break;
+				default:
+					cerr << "You must pass either -A or -f, when updating a feed's info" << endl;
+					return;
+			}
+			break;
+		}
 
+		if(i<myconfig.numoffeeds-1)
+		{
+			i++;
+			continue;
+		}
+		// This means i is 1 less than numoffeeds
+		// We still haven't found the feed
+		// This means the feed aint there
+		cerr << "Error: feed \"" << name << "\" doesn't exist." << endl;
+		return;
+	}
+	myconfig.save();
+}
