@@ -1,0 +1,17 @@
+General Stuff
+-------------
+
+At the moment, you can't perform these actions on an individual feed.  You can only do them on all feeds.
+
+Checking feeds
+---------------
+
+This will download ALL new episodes in all feeds.  If there are 100 episodes you haven't downloaded before, it'll download them all.  You have been warned.
+
+To check a feed:
+tuxcast -c
+
+Updating Feeds
+--------------
+
+OK, I admit that's a pretty stupid name.  What this feature ACTUALLY does, is, it downloads the latest episode in a feed.  It just marks the rest as downloaded.  This is useful when you first subscribe to a feed, or come back off holiday, etc. and you only want the latest episode.

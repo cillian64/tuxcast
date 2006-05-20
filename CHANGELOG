@@ -1,3 +1,8 @@
+Revision 32:
+* Added lots of documentation
+* Added individual feeds to TODO
+-------------------------------------------------------------------------------
+
 Revision 31:
 * Added the uninstall Makefile target
 * Changed -u to download the latest file, instead of no files at all
