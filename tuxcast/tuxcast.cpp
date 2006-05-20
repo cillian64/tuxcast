@@ -15,15 +15,19 @@ using namespace std;
 #define fs boost::filesystem
 
 void newfile(string name);
-bool checkfile(string name); // true if already downloaded
-void checkall(void);
-void up2date(void);
+bool alreadydownloaded(string name); // true if already downloaded
+void check(configuration *myconfig, int feed);
+void up2date(configuration *myconfig, int feed);
+void checkall(configuration *myconfig);
+void up2dateall(configuration *myconfig);
 void get(string name, string URL, int feed, configuration *myconfig);
 
-const char options[] = "cu";
+const char options[] = "cuC:U:";
 
 int main(int argc, char *argv[])
 {
+	configuration myconfig;
+	
 	// This must only be done ONCE!!!!!!!
 	// Hence, it's done in the main program, instead of in any libraries
 	// Maybe create an "init" function??
@@ -40,97 +44,167 @@ int main(int argc, char *argv[])
 	catch(...)
 	{
 		// The only reason default_name_check should fail is if
+		// It's called twice.  This could be caused by:
 		cerr << "ERROR: you have both WINDOWS and POSIX compile flags enabled." << endl;
 		cerr << "If you compiled manually, check your compile_flags.h" << endl;
 		cerr << "Else, contact your package maintainer" << endl;
 	}
+
+	// We MUST setup the default_name_check before calling load():
+	// load() uses some boost stuff which will mess up badly if
+	// the default_name_check isn't POSIX or WINDOWS
+	
+	myconfig.load();
+
 	
 	switch(getopt(argc,argv,options))
 	{
 		case 'c':
 			cout << "Checking all feeds" << endl;
-			checkall();
+			checkall(&myconfig);
 			break;
 		case 'u':
 			cout << "Getting up to date on all feeds" << endl;
-			up2date();
+			up2dateall(&myconfig);
 			break;
+
+		case 'C':
+			cout << "Checking feed, \"" << optarg << "\"" << endl;
+			// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
+			if(strcmp(optarg,"") == 0)
+			{
+				cerr << "You must pass a non-blank feed name" << endl;
+				return -1;
+			}
+			for(int i=0; i<myconfig.numoffeeds; i++)
+			{
+				if(strcmp(optarg,myconfig.feeds[i].name.c_str()) == 0)
+				{
+					// Found the feed
+					check(&myconfig, i);
+					return 0;
+				}
+			}
+			// If we got all through the feeds, and it wasn't found (and we returned),
+			// then the feed doesn't exist:
+			cerr << "Unknown feed, \"" << optarg << "\"" << endl;
+			return -1;
+			break; // Bah
+		case 'U':
+			cout << "Getting up2date on feed, \"" << optarg << "\"" << endl;
+			// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
+			if(strcmp(optarg,"") == 0)
+			{
+				cerr << "You must pass a non-blank feed name" << endl;
+				return -1;
+			}
+			for(int i=0; i<myconfig.numoffeeds; i++)
+			{
+				if(strcmp(optarg,myconfig.feeds[i].name.c_str()) == 0)
+				{
+					// Found the feed
+					up2date(&myconfig, i);
+					return 0;
+				}
+			}
+			// If we got all through the feeds, and it wasn't found (and we returned),
+			// then the feed doesn't exist:
+			cerr << "Unknown feed, \"" << optarg << "\"" << endl;
+			return -1;
+			break; // Bah
+
 
 		default:
 			cout << "Usage: tuxcast <option>" << endl;
 			cout << "Where <option> is either -c or -u" << endl;
 			cout << "-c - Check all feeds" << endl;
-			cout << "-u - Download only the latest file" << endl;
+			cout << "-u - Download only the latest file from all feeds" << endl;
+			cout << "-C NAME - check the specified feed" << endl;
+			cout << "-U name - download only the latest episode from the specified feed" << endl;
 			cout << endl;
 	}
 
 	return 0;
 }
 			
-
-
-void up2date(void)
+// Check a particular feed
+void check(configuration *myconfig, int feed)
 {
-	// In loop, i is feed, j is file
 	filelist *myfilelist;
-	configuration myconfig;
-
-	myconfig.load();
 	
-	for(int i=0; i<myconfig.numoffeeds; i++)
+	myfilelist = parse(myconfig->feeds[feed].address);
+	if(myfilelist == NULL)
 	{
-		cout << "up2date'ing feed \"" << myconfig.feeds[i].name << "\"..." << endl;
-		myfilelist = parse(myconfig.feeds[i].address);
-		if(myfilelist == NULL)
-		{
-			cerr << "*** parse() failed - aborting this feed ***" << endl;
-			cerr << "*** Check the URL is right, then go moan to your feed maintainer :-) ***" << endl;
-			continue;
-		}
-
-			
-		for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
-		{
-			if(j==0)
-				get(myfilelist->getfilename(j), myfilelist->getURL(j),
-						i, &myconfig);
-			else
-				newfile(myfilelist->getfilename(j));
-			// First file, download it
-			// Other files, just pretend
-		}
+		cerr << "*** parse() failed - aborting this feed ***" << endl;
+		cerr << "*** Check the URL is right, then go moan to your feed maintainer :-) ***" << endl;
+		return;
 	}
-	
+
+	for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
+	{
+		get(myfilelist->getfilename(j), myfilelist->getURL(j),
+				feed, myconfig);
+	}
+
 }
 
-void checkall(void)
+
+
+// Downloads the latest episode on a particular feed
+// Adds other episodes to files.xml without downloading
+void up2date(configuration *myconfig, int feed)
 {
-	// In loop, i is feed, j is file
 	filelist *myfilelist;
-	configuration myconfig;
-
-	myconfig.load();
-
-	for(int i=0; i<myconfig.numoffeeds; i++)
+	
+	myfilelist = parse(myconfig->feeds[feed].address);
+	if(myfilelist == NULL)
 	{
-		cout << "Checking feed \"" << myconfig.feeds[i].name << endl;
-		myfilelist = parse(myconfig.feeds[i].address);
-		if(myfilelist == NULL)
-		{
-			cerr << "*** parse() failed - aborting this feed ***" << endl;
-			cerr << "*** Check the URL is right, then go moan to your feed maintainer :-) ***" << endl;
-			continue;
-		}
+		cerr << "*** parse() failed - aborting this feed ***" << endl;
+		cerr << "*** Check the URL is right, then go moan to your feed maintainer :-) ***" << endl;
+		return;
+	}
 
-		for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
-		{
+		
+	for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
+	{
+		if(j==0)
 			get(myfilelist->getfilename(j), myfilelist->getURL(j),
-					i, &myconfig);
-		}
+					feed, myconfig);
+		else
+			newfile(myfilelist->getfilename(j));
+		// First file, download it
+		// Other files, just pretend
+	}
+
+}
+
+
+
+
+// This loops through all feeds and passes them to check()
+void checkall(configuration *myconfig)
+{
+	for(int i=0; i<myconfig->numoffeeds; i++)
+	{
+		cout << "Checking feed \"" << myconfig->feeds[i].name << endl;
+		check(myconfig, i);
 	}
 }
 
-                                                                               
+// This loops through all feeds and passes them to up2date()
+void up2dateall(configuration *myconfig)
+{
+	filelist *myfilelist;
+	
+	for(int i=0; i<myconfig->numoffeeds; i++)
+	{
+		cout << "up2date'ing feed \"" << myconfig->feeds[i].name << "\"..." << endl;
+		up2date(myconfig,i);
+	}
+	
+}
+                                                          
+// This adds a file to files.xml
 void newfile(string name)
 {
         // Load the current filelist:
@@ -155,7 +229,9 @@ void newfile(string name)
         xmlSaveFormatFileEnc(path.c_str(), doc, "UTF-8", 1);
 }
 
-bool checkfile(string name)
+
+// This returns true if a file is already in files.xml
+bool alreadydownloaded(string name)
 {
         // Load the filelist:
         xmlDoc *doc;
@@ -192,6 +268,7 @@ bool checkfile(string name)
         }
 }
 
+// Download an episode
 void get(string name, string URL, int feed,  configuration *myconfig)
 {
 	string temp;
@@ -205,7 +282,7 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 		return;
 	}
 	
-	if(checkfile(name))
+	if(alreadydownloaded(name))
 		// Already downloaded
 		return;
 	
