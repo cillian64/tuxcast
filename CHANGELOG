@@ -1,3 +1,8 @@
+Revision 34:
+* Updated TODO
+* Updated some documentation
+-------------------------------------------------------------------------------
+
 Revision 33:
 * Lots of stuff in tuxcast.cpp:
 	* Added the -C and -U options
