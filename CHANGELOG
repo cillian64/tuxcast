@@ -1,3 +1,13 @@
+Revision 36:
+* Fixed the arch in the debian package (was all, now i686)
+-------------------------------------------------------------------------------
+
+Revision 35:
+* Added packages directory
+* Added a debian .deb package (can only be manually installed with dpkg, no
+	dependancies or apt
+-------------------------------------------------------------------------------
+
 Revision 34:
 * Updated TODO
 * Updated some documentation
