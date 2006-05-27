@@ -1,3 +1,8 @@
+Revision 38:
+* Fixed a bug in the Makefile which could get weird if /usr/bin doesn't
+	exist
+-------------------------------------------------------------------------------
+
 Revision 37:
 * Removed the packaged directory - see the release page for packages
 * Added a package makefile, for creating packages for debian-based distros
