@@ -1,3 +1,10 @@
+Revision 37:
+* Removed the packaged directory - see the release page for packages
+* Added a package makefile, for creating packages for debian-based distros
+* Added the package-files directory, containing the control files for
+	making packages for different distros, versions and archs
+-------------------------------------------------------------------------------
+
 Revision 36:
 * Fixed the arch in the debian package (was all, now i686)
 -------------------------------------------------------------------------------
