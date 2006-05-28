@@ -1,3 +1,21 @@
+Revision 40:
+* Updated TODO
+* Updated Makefile so make install builds first
+* Fixed a bug with trailing /s (Thanks cypher_ for noticing this)
+	( Not really a fix, just prevented trailing /s from actually
+	getting into the program and doing any damage)
+-------------------------------------------------------------------------------
+
+Revision 39:
+* I don't have a clue :-)
+-------------------------------------------------------------------------------
+
+###############################################################################
+===============================================================================
+------------------------- Tuxcast 0.1 Released! -------------------------------
+===============================================================================
+###############################################################################
+
 Revision 38:
 * Fixed a bug in the Makefile which could get weird if /usr/bin doesn't
 	exist

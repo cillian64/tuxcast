@@ -275,6 +275,7 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	FILE *outputfile=NULL;
 	CURL *mycurl;
 	string path;
+	fs::path mypath;
 	mycurl = curl_easy_init();
 	if(mycurl == NULL)
 	{
@@ -306,11 +307,20 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 		path = myconfig->podcastdir;
 		path += "/";
 		path += myconfig->feeds[feed].folder;
-		if(!fs::exists(path))
+		try
+		{
+			mypath = path;
+		}
+		catch(...)
+		{
+			cerr << "Error: This is most likely because you have a trailing / in your podcastdir" << endl;
+			return;
+		}
+		if(!fs::exists(mypath))
 		{
 			try
 			{
-				fs::create_directory(path);
+				fs::create_directory(mypath);
 			}
 			catch(...)
 			{
@@ -323,10 +333,10 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 
 		// Done with the folder now
 		// Onto files
-		path += "/";
-		path += name;
+		mypath /= name; // The / operator appends a / then the operand
 		// Path = previousfolder/filename.XYZ
 		
+		path = mypath.string();
 		outputfile = fopen(path.c_str(), "w");
 		if(outputfile == NULL)
 		{

@@ -32,6 +32,11 @@ void configuration::save()
 	root_node = xmlNewNode(NULL, (xmlChar *)"config");
 	xmlDocSetRootElement(doc, root_node);
 
+	if(podcastdir[podcastdir.length()-1] == '/')
+	{
+		cerr << "Trimming trailing / from podcastdir..." << endl;
+		podcastdir.erase(podcastdir.length()-1,1);
+	}
 	xmlNewChild(root_node, NULL, (xmlChar *)"podcastdir",
 			(xmlChar *)podcastdir.c_str());
 	
@@ -142,6 +147,14 @@ void configuration::load()
 			}
 			else
 				this->podcastdir = (char *)curr->children->content;
+
+			if(podcastdir[podcastdir.length()-1] == '/')
+			{
+				cerr << "Trimming trailing / from podcastdir..." << endl;
+				cerr << "If you make a custom config file, please be careful" << endl;
+				podcastdir.erase(podcastdir.length()-1,1);
+			}
+
 		}
 		if(strcmp((char *)curr->name, "ask") == 0)
 		{
