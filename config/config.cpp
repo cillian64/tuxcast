@@ -12,13 +12,13 @@
 
 configuration::configuration()
 {
-	feeds=NULL;
-	numoffeeds=0;
+	// Nothing needed here anymore,
+	// since the vector should initialize itself just fine
 }
 
 configuration::~configuration()
 {
-	delete[] feeds;
+	// ditto
 }
 
 void configuration::save()
@@ -51,17 +51,14 @@ void configuration::save()
 			(xmlChar *)"false");
 	}
 				
-	std::ostringstream o;  o << this->numoffeeds;		// !?!?!?!?!?
-	xmlNewChild(root_node, NULL, (xmlChar *)"numoffeeds",
-			(xmlChar *)o.str().c_str());
 
 	node=xmlNewChild(root_node,NULL, (xmlChar *)"feeds",NULL);
-	for(int i=0; i<this->numoffeeds; i++)
+	for(int i=0; i<this->feeds.size(); i++)
 	{
 		node2=xmlNewChild(node,NULL,(xmlChar *)"feed",NULL);
-		xmlNewChild(node2,NULL,(xmlChar *)"name",(xmlChar *)this->feeds[i].name.c_str());
-		xmlNewChild(node2,NULL,(xmlChar *)"address",(xmlChar *)this->feeds[i].address.c_str());
-		xmlNewChild(node2,NULL,(xmlChar *)"folder",(xmlChar *)this->feeds[i].folder.c_str());
+		xmlNewChild(node2,NULL,(xmlChar *)"name",(xmlChar *)this->feeds[i]->name.c_str());
+		xmlNewChild(node2,NULL,(xmlChar *)"address",(xmlChar *)this->feeds[i]->address.c_str());
+		xmlNewChild(node2,NULL,(xmlChar *)"folder",(xmlChar *)this->feeds[i]->folder.c_str());
 	}
 
 	path = getenv("HOME");
@@ -135,7 +132,7 @@ void configuration::load()
 	while(true)
 	{
 		// This loops through all the main elements
-		// Once an element is recognised, by an if
+		// Once an element is recognised, by an if,
 		// the code "Does The Right Thing" (tm)
 		if(strcmp((char *)curr->name, "podcastdir") == 0)
 		{
@@ -164,17 +161,9 @@ void configuration::load()
 				this->ask = false;
 		}
 		
-		if(strcmp((char *)curr->name, "numoffeeds") == 0)
-		{
-			this->numoffeeds=atoi((char *)curr->children->content);
-		}
+	
 		
-		if((this->feeds == NULL) && (numoffeeds != 0))
-		{
-			this->feeds = new feed[numoffeeds];
-		}
-		// WARNING: At the moment, an evil config file could buffer overflow by having more <feed>s than specified in <numoffeeds>
-		if((strcmp((char *)curr->name, "feeds") == 0) && numoffeeds != 0)
+		if(strcmp((char *)curr->name, "feeds") == 0)
 		{
 			int i=0;
 			curr = curr->children; // step into feeds
@@ -182,6 +171,10 @@ void configuration::load()
 			{
 				if(strcmp((char *)curr->name, "feed") == 0)
 				{
+					// We've found a feed.  Let's make a new element in our array:
+					feeds.push_back(NULL);
+					// Let's make a new feed in the pointer in the vector:
+					feeds[feeds.size()-1] = new feed;
 					curr = curr->children;
 					while(true)
 					{
@@ -198,15 +191,15 @@ void configuration::load()
 						}
 
 						if(strcmp((char *)curr->name, "name") == 0)
-							this->feeds[i].name = (char *)curr->children->content;
+							this->feeds[i]->name = (char *)curr->children->content;
 						if(strcmp((char *)curr->name, "address") == 0)
-							this->feeds[i].address = (char *)curr->children->content;
+							this->feeds[i]->address = (char *)curr->children->content;
 						if(strcmp((char *)curr->name, "folder") == 0)
 						{
 							if(curr->children == NULL)
-								this->feeds[i].folder = "";
+								this->feeds[i]->folder = "";
 							else
-								this->feeds[i].folder = (char *)curr->children->content;
+								this->feeds[i]->folder = (char *)curr->children->content;
 							// Previously, if the folder was "", curr->children would be NULL,
 							// so curr->children->content threw a segfault
 							// Since a blank folder is perfectly valid, we must be nice about it

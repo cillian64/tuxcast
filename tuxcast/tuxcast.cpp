@@ -76,9 +76,9 @@ int main(int argc, char *argv[])
 				cerr << "You must pass a non-blank feed name" << endl;
 				return -1;
 			}
-			for(int i=0; i<myconfig.numoffeeds; i++)
+			for(int i=0; i<myconfig.feeds.size(); i++)
 			{
-				if(strcmp(optarg,myconfig.feeds[i].name.c_str()) == 0)
+				if(strcmp(optarg,myconfig.feeds[i]->name.c_str()) == 0)
 				{
 					// Found the feed
 					check(&myconfig, i);
@@ -98,9 +98,9 @@ int main(int argc, char *argv[])
 				cerr << "You must pass a non-blank feed name" << endl;
 				return -1;
 			}
-			for(int i=0; i<myconfig.numoffeeds; i++)
+			for(int i=0; i<myconfig.feeds.size(); i++)
 			{
-				if(strcmp(optarg,myconfig.feeds[i].name.c_str()) == 0)
+				if(strcmp(optarg,myconfig.feeds[i]->name.c_str()) == 0)
 				{
 					// Found the feed
 					up2date(&myconfig, i);
@@ -132,7 +132,7 @@ void check(configuration *myconfig, int feed)
 {
 	filelist *myfilelist;
 	
-	myfilelist = parse(myconfig->feeds[feed].address);
+	myfilelist = parse(myconfig->feeds[feed]->address);
 	if(myfilelist == NULL)
 	{
 		cerr << "*** parse() failed - aborting this feed ***" << endl;
@@ -140,9 +140,9 @@ void check(configuration *myconfig, int feed)
 		return;
 	}
 
-	for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
+	for(int j=0, size=myfilelist->files.size(); j<size; j++)
 	{
-		get(myfilelist->getfilename(j), myfilelist->getURL(j),
+		get(myfilelist->files[j]->filename, myfilelist->files[j]->URL,
 				feed, myconfig);
 	}
 
@@ -156,7 +156,7 @@ void up2date(configuration *myconfig, int feed)
 {
 	filelist *myfilelist;
 	
-	myfilelist = parse(myconfig->feeds[feed].address);
+	myfilelist = parse(myconfig->feeds[feed]->address);
 	if(myfilelist == NULL)
 	{
 		cerr << "*** parse() failed - aborting this feed ***" << endl;
@@ -165,13 +165,13 @@ void up2date(configuration *myconfig, int feed)
 	}
 
 		
-	for(int j=0, size=myfilelist->numoffiles(); j<size; j++)
+	for(int j=0, size=myfilelist->files.size(); j<size; j++)
 	{
 		if(j==0)
-			get(myfilelist->getfilename(j), myfilelist->getURL(j),
+			get(myfilelist->files[j]->filename, myfilelist->files[j]->URL,
 					feed, myconfig);
 		else
-			newfile(myfilelist->getfilename(j));
+			newfile(myfilelist->files[j]->filename);
 		// First file, download it
 		// Other files, just pretend
 	}
@@ -184,9 +184,9 @@ void up2date(configuration *myconfig, int feed)
 // This loops through all feeds and passes them to check()
 void checkall(configuration *myconfig)
 {
-	for(int i=0; i<myconfig->numoffeeds; i++)
+	for(int i=0; i<myconfig->feeds.size(); i++)
 	{
-		cout << "Checking feed \"" << myconfig->feeds[i].name << endl;
+		cout << "Checking feed \"" << myconfig->feeds[i]->name << endl;
 		check(myconfig, i);
 	}
 }
@@ -194,11 +194,10 @@ void checkall(configuration *myconfig)
 // This loops through all feeds and passes them to up2date()
 void up2dateall(configuration *myconfig)
 {
-	filelist *myfilelist;
-	
-	for(int i=0; i<myconfig->numoffeeds; i++)
+	// God knows why we had a filelist pointer here
+	for(int i=0; i<myconfig->feeds.size(); i++)
 	{
-		cout << "up2date'ing feed \"" << myconfig->feeds[i].name << "\"..." << endl;
+		cout << "up2date'ing feed \"" << myconfig->feeds[i]->name << "\"..." << endl;
 		up2date(myconfig,i);
 	}
 	
@@ -306,7 +305,7 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 		// Do folder'y stuff first
 		path = myconfig->podcastdir;
 		path += "/";
-		path += myconfig->feeds[feed].folder;
+		path += myconfig->feeds[feed]->folder;
 		try
 		{
 			mypath = path;

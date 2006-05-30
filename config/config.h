@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -16,8 +17,8 @@ class configuration
 		string podcastdir;
 		bool ask; // Though a string is stored in config
 			// it's converted to a bool on load/save
-		feed *feeds;
-		unsigned int numoffeeds;
+		vector<feed *> feeds; // A vector of feed pointers
+		
 		void save();
 		void load();
 };

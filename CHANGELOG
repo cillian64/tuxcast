@@ -1,3 +1,17 @@
+Revision 41:
+* Changed configuration::feeds from an array to an STL vector - 
+	now configuration::numoffeeds is replaced by
+	configuration::feeds.size().
+* Lots of code changed to work with vectors instead of arrays,
+	in particular, numoffeeds isn't required in the config file anymore
+* Changed filelist::files from an array to an STL vector.
+	filelist::numoffiles is now filelist::files.size()
+* filelist no longer has accessor functions - now everything just goes
+	directly through filelist::files[i]->...
+* Changed a bunch of code to support the new filelist
+* Fixed a segfault in the above changes :-)
+-------------------------------------------------------------------------------
+
 Revision 40:
 * Updated TODO
 * Updated Makefile so make install builds first

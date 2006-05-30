@@ -123,15 +123,15 @@ void getall(void)
 	
 	// ...
 	// Let's show some feeds:
-	if(myconfig.numoffeeds == 1)
+	if(myconfig.feeds.size() == 1)
 		cout << "There is 1 feed:" << endl;
-	else
-		cout << "There are " << myconfig.numoffeeds << " feeds:" << endl;
-	for(int i=0; i<myconfig.numoffeeds; i++)
+	else // Yay for bulky code for the sake of good grammar :-)
+		cout << "There are " << myconfig.feeds.size() << " feeds:" << endl;
+	for(int i=0; i<myconfig.feeds.size(); i++)
 	{
-		cout << "Name: " << myconfig.feeds[i].name << endl;
-		cout << "Address: " << myconfig.feeds[i].address << endl;
-		cout << "Folder: " << myconfig.feeds[i].folder << endl;
+		cout << "Name: " << myconfig.feeds[i]->name << endl;
+		cout << "Address: " << myconfig.feeds[i]->address << endl;
+		cout << "Folder: " << myconfig.feeds[i]->folder << endl;
 		cout << "--" << endl;
 	}
 
@@ -175,7 +175,6 @@ void add(int argc,char *argv[])
 {
 	int myopt=0, i=0;
 	string name, address, folder;
-	feed *newarray;
 
 	while((myopt = getopt(argc,argv,options)) != -1)
 	{
@@ -193,9 +192,9 @@ void add(int argc,char *argv[])
 		cerr << "No name specified!!" << endl;
 		return;
 	}
-	while(i<myconfig.numoffeeds)
+	while(i<myconfig.feeds.size())
 	{
-		if(strcmp(myconfig.feeds[i].name.c_str(),name.c_str()) == 0)
+		if(strcmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0)
 		{
 			cerr << "Feed already exists" << endl;
 			return;
@@ -208,24 +207,11 @@ void add(int argc,char *argv[])
 	if((strcmp(name.c_str(),"") != 0) && (strcmp(address.c_str(),"") != 0)) // No sanity check for folder here:
 		// folder can be blank - it means just put the podcast in podcastdir
 	{
-		newarray = new feed[myconfig.numoffeeds+1];
-		for(int i=0; i<myconfig.numoffeeds;i++)
-		{
-			newarray[i].name = myconfig.feeds[i].name;
-			newarray[i].address = myconfig.feeds[i].address;
-			newarray[i].folder = myconfig.feeds[i].folder;
-			// Copy over all old feeds' data
-		}
-		// Add the new feed:
-		newarray[myconfig.numoffeeds].name = name;
-		newarray[myconfig.numoffeeds].address = address;
-		newarray[myconfig.numoffeeds].folder = folder;
-
-		
-		// Finally, delete the old array of feeds, and swap in the new array of feeds, and update numoffeeds
-		delete[] myconfig.feeds;
-		myconfig.feeds = newarray;
-		myconfig.numoffeeds++;
+		myconfig.feeds.push_back(NULL);
+		myconfig.feeds[myconfig.feeds.size()-1] = new feed;
+		myconfig.feeds[myconfig.feeds.size()-1]->name = name;
+		myconfig.feeds[myconfig.feeds.size()-1]->address = address;
+		myconfig.feeds[myconfig.feeds.size()-1]->folder = folder;
 	}
 	else
 		cerr << "You must pass both the name and address of the feed to add" << endl;
@@ -235,15 +221,15 @@ void add(int argc,char *argv[])
 
 void del(string name)
 {
-	feed *newarray;
 	int i=0,j=0;
+	vector<feed *>::iterator myiterator;
 	
 	while(true)
 	{
-		if(strcmp(name.c_str(),myconfig.feeds[i].name.c_str()) == 0)
+		if(strcmp(name.c_str(),myconfig.feeds[i]->name.c_str()) == 0)
 			break; // Found the feed to delete, we're good
 
-		if(i<myconfig.numoffeeds-1) // if i is 1 less than numoffeeds, we're
+		if(i<myconfig.feeds.size()-1) // if i is 1 less than numoffeeds, we're
 			// at the end of the array, so we don't want to loop again:
 			// if we're at the end of the array and didn't just break,
 			// the feed doesn't exist
@@ -259,21 +245,20 @@ void del(string name)
 		return;
 	}
 	
-	newarray = new feed[myconfig.numoffeeds-1];
-
-	for(int i=0; i<myconfig.numoffeeds; i++)
+	for(int i=0; i<myconfig.feeds.size(); i++)
 	{
-		if(strcmp(myconfig.feeds[i].name.c_str(),name.c_str()) != 0)
+		if(strcmp(myconfig.feeds[i]->name.c_str(), name.c_str()) == 0)
 		{
-			newarray[j].name = myconfig.feeds[i].name;
-			newarray[j].address = myconfig.feeds[i].address;
-			newarray[j].folder = myconfig.feeds[i].folder;
-			j++;
+			// We've found the feed - wipe it:
+			myiterator = myconfig.feeds.begin();
+			myiterator += i;
+			myconfig.feeds.erase(myiterator,myiterator+1);
+			// Stupid STL functions not taking subscripts
+			// >:-(
 		}
 	}
-	delete[] myconfig.feeds;
-	myconfig.feeds = newarray;
-	myconfig.numoffeeds--;
+	// Yup, that really is all - yay for STL vectors
+	
 	myconfig.save();
 }
 	
@@ -297,7 +282,7 @@ void update(int argc, char *argv[])
 		
 	while(true)
 	{
-		if(strcmp(myconfig.feeds[i].name.c_str(),name.c_str()) == 0)
+		if(strcmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0)
 		{
 			// Found the feed, update it:
 			switch(myopt)
@@ -309,11 +294,11 @@ void update(int argc, char *argv[])
 						return;
 					}
 					
-					myconfig.feeds[i].address = optarg;
+					myconfig.feeds[i]->address = optarg;
 					break;
 
 				case 'f':
-					myconfig.feeds[i].folder = optarg;
+					myconfig.feeds[i]->folder = optarg;
 					break;
 				default:
 					cerr << "You must pass either -A or -f, when updating a feed's info" << endl;
@@ -322,7 +307,7 @@ void update(int argc, char *argv[])
 			break;
 		}
 
-		if(i<myconfig.numoffeeds-1)
+		if(i<myconfig.feeds.size()-1)
 		{
 			i++;
 			continue;

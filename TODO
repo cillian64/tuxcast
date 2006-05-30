@@ -1,5 +1,4 @@
 * Resuming incomplete downloads
-* Remove the need to "numoffeeds" in the config file (loop through the feeds and count them, or something)
 * Clear up xml stuff at the end of functions
 * Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
 * Where to save the config file, defined in compile_flags.h

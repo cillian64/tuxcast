@@ -11,14 +11,13 @@ filelist *parse(string feed)
 {
 	xmlDocPtr doc;
 	xmlNode *curr = NULL;
-	unsigned int numoffiles = 0;
-	unsigned int currfile=0;
 	filelist *myfilelist;
 	string URL;
 	string name;
-	unsigned int size;
+	unsigned int size; // the length of the file, in bytes I think
 
 	doc = xmlReadFile(feed.c_str(),NULL,XML_PARSE_RECOVER | XML_PARSE_NOWARNING | XML_PARSE_NOERROR); // These options should help incorrect RSS feeds survive
+	// Not ideal, but easier than convincing feed maintainers to escape stuff, etc...
 
 	if(doc == NULL)
 	{
@@ -35,43 +34,10 @@ filelist *parse(string feed)
 		curr = curr->next; // Keep going
 	}
 
-	// Curr = channel
 
-	curr = curr->children;
-	while(curr != NULL) // Untill we hit the end of channel
-	{
-		if(curr->type == 1) // It seems trying to access the name of a text segfaults...
-		{
-			if(strcmp("item", (char *)curr->name) == 0)
-			{
-				curr = curr->children;
-				while(1)
-				{
-					if(strcmp((char *)curr->name,"enclosure") == 0)
-					{
-						numoffiles++;
-						break;
-					}
-					else
-					{
-						if(curr->next != NULL)
-						{
-							curr = curr->next;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-				curr = curr->parent;
-			}
-		}
+	// All that mucking about counting stuff is eliminated, thanks to STL :-)
 
-		curr = curr->next;
-	}
-
-	myfilelist = new filelist(numoffiles);
+	myfilelist = new filelist();
 
 	curr = xmlDocGetRootElement(doc);
 	// curr == root node
@@ -96,6 +62,11 @@ filelist *parse(string feed)
 				{
 					if(strcmp((char *)curr->name,"enclosure") == 0)
 					{
+						// FILE FOUND!!! :-)
+						// Let's add a new element to the vector:
+						myfilelist->files.push_back(NULL);
+						myfilelist->files[myfilelist->files.size()-1] = new file;
+						
 						_xmlAttr *attribute;
 						
 						URL = "";
@@ -128,9 +99,12 @@ filelist *parse(string feed)
 						{
 							name = name.substr(0,name.find("?",0));
 						}
-						
-						myfilelist->setfile(currfile,URL,name,size);
-						currfile++;
+						// Setting up the file we made earlier...:
+						myfilelist->files[myfilelist->files.size()-1]->filename = name;
+						myfilelist->files[myfilelist->files.size()-1]->URL = URL; // Watch out - filename != name && length != size
+						myfilelist->files[myfilelist->files.size()-1]->length = size;
+
+
 						break;
 					}
 					else
@@ -160,26 +134,13 @@ filelist *parse(string feed)
 }
 
 // -------------------------------------------------------------------------
-filelist::filelist(unsigned int numoffiles)
+filelist::filelist()
 {
-	files = new file[numoffiles];
-	this->length = numoffiles;
-	for(int i=0; i<numoffiles; i++)
-	{
-		setfile(i, "", "", 0);
-	}
+	// No init needed, thanks to the STL vector
 }
 
 filelist::~filelist()
 {
-	delete[] files;
+	// ditto
 }
-
-void filelist::setfile(unsigned int file, string URL, string filename, unsigned long length)
-{
-	files[file].URL = URL;
-	files[file].filename = filename;
-	files[file].length = length;
-}
-
 
