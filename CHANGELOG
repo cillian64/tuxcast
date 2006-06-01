@@ -1,3 +1,12 @@
+Revision 42:
+* Added the -b option to tuxcast
+* Added the backend.h and backend.cpp files
+* Added sample input and output files for the backend
+* Coded the backend's parser, error handler and basic output
+* Moved some functions from tuxcast.cpp to tuxcast.h, so backend.cpp can
+	call them (though most will need to be rewritten to output to XML)
+-------------------------------------------------------------------------------
+
 Revision 41:
 * Changed configuration::feeds from an array to an STL vector - 
 	now configuration::numoffeeds is replaced by

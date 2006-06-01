@@ -9,20 +9,16 @@
 #include <unistd.h>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
+#include "tuxcast.h"
 
 using namespace std;
 
 #define fs boost::filesystem
 
-void newfile(string name);
-bool alreadydownloaded(string name); // true if already downloaded
-void check(configuration *myconfig, int feed);
-void up2date(configuration *myconfig, int feed);
-void checkall(configuration *myconfig);
-void up2dateall(configuration *myconfig);
-void get(string name, string URL, int feed, configuration *myconfig);
 
-const char options[] = "cuC:U:";
+void backend(void);
+
+const char options[] = "cuC:U:b";
 
 int main(int argc, char *argv[])
 {
@@ -113,6 +109,11 @@ int main(int argc, char *argv[])
 			return -1;
 			break; // Bah
 
+		case 'b':
+			// Backend mode:
+			backend(); // From backend.[cpp,h]
+			break;
+
 
 		default:
 			cout << "Usage: tuxcast <option>" << endl;
@@ -121,6 +122,7 @@ int main(int argc, char *argv[])
 			cout << "-u - Download only the latest file from all feeds" << endl;
 			cout << "-C NAME - check the specified feed" << endl;
 			cout << "-U name - download only the latest episode from the specified feed" << endl;
+			cout << "-b - enter the XML backend mode" << endl;
 			cout << endl;
 	}
 
