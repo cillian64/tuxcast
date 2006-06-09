@@ -1,5 +1,5 @@
-main: config.o tuxcast-config.o
-	g++ -g -o tuxcast-config tuxcast-config.o config.o `xml2-config --libs` -lboost_filesystem
+main: config.o tuxcast-config.o ../libraries/filestuff.o
+	g++ -g -o tuxcast-config tuxcast-config.o config.o ../libraries/filestuff.o `xml2-config --libs`
 
 clean:
 	rm *.o
@@ -10,3 +10,6 @@ config.o: config.cpp
 
 tuxcast-config.o: tuxcast-config.cpp
 	g++ -g -c tuxcast-config.cpp
+
+../libraries/filestuff.o: ../libraries/filestuff.cpp
+	make filestuff.o -C ../libraries/

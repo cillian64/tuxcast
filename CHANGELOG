@@ -1,3 +1,10 @@
+Revision 43:
+* Due to popular demand, I moved most of the file related functions into 
+	libraries/filestuff.[cpp,h].  Now it should be easy to add
+	compile_flags to select whether to use native functions or boost
+-------------------------------------------------------------------------------
+
+
 Revision 42:
 * Added the -b option to tuxcast
 * Added the backend.h and backend.cpp files

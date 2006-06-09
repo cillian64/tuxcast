@@ -5,10 +5,8 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
+#include "../libraries/filestuff.h"
 
-#define fs boost::filesystem
 
 configuration::configuration()
 {
@@ -26,7 +24,6 @@ void configuration::save()
 	xmlDocPtr doc = NULL;
 	xmlNodePtr root_node = NULL, node = NULL,node2=NULL;
 	string path;
-	fs::path mypath;
 	
 	doc = xmlNewDoc((xmlChar *)"1.0");
 	root_node = xmlNewNode(NULL, (xmlChar *)"config");
@@ -63,32 +60,11 @@ void configuration::save()
 
 	path = getenv("HOME");
 	path = path + "/.tuxcast";
-	try
+	if(!checkfolderexists(path))
 	{
-		mypath = path;
-	}
-	catch(...)
-	{
-		cerr << "Invalid Path in config::save()" << endl;
+		cerr << "Can't create folder .tuxcast, or it exists but is not a folder" << endl;
 		return;
 	}
-
-	if(!fs::exists(mypath))
-	{
-		cerr << "Directory ~/.tuxcast doesn't exist: creating it" << endl; // Not strictly an error, but....
-		mypath = getenv("HOME");
-		mypath /= ".tuxcast";
-		try
-		{
-			fs::create_directory(mypath);
-		}
-		catch(...)
-		{
-			cerr << "Error creating ~/.tuxcast" << endl;
-			return;
-		}
-	}
-	
 	path = path + "/config.xml";
 	xmlSaveFormatFileEnc(path.c_str(), doc,  "UTF-8", 1);
 
@@ -102,22 +78,13 @@ void configuration::load()
 	xmlNode *root=NULL;
 	xmlNode *curr=NULL;
 	string path=getenv("HOME");
-	fs::path mypath;
 	path = path + "/.tuxcast/config.xml";
-	try
-	{
-		mypath = path;
-	}
-	catch(...)
-	{
-		cerr << "Invalid path in config::load()" << endl;
-		return;
-	}
-	if(!fs::exists(mypath))
+	if(checkfileexists(path) == false)
 	{
 		cerr << "No config file found..." << endl;
+		// Or BSD or boost is being used...
 		return;
-	} 
+	}
 
 	doc = xmlReadFile(path.c_str(), NULL, 0);
 	if(doc == NULL)

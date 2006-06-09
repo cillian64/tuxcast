@@ -2,7 +2,6 @@
 #include <iostream>
 #include "config.h"
 #include <unistd.h>
-#include <boost/filesystem/path.hpp>
 // Don't need operations.hpp in here (yet)
 
 const char options[] = "aA:d:n:hs:g:Gf:u";
@@ -22,24 +21,6 @@ void update(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
 {
-	try
-        {
-#ifdef POSIX
-                boost::filesystem::path::default_name_check(boost::filesystem::portable_posix_name);
-#endif
-#ifdef WINDOWS
-                boost::filesystem::path::default_name_check(boost::filesystem::windows_name);
-#endif
-        }
-        catch(...)
-        {       
-                // The only reason default_name_check should fail is if
-		// You have run it twice - this could be caused by:
-                cerr << "ERROR: you have both WINDOWS and POSIX compile flags enabled." << endl;
-                cerr << "If you compiled manually, check your compile_flags.h" << endl;
-                cerr << "Else, contact your package maintainer" << endl;
-        }
-	
 	myconfig.load();
 	
 	switch(getopt(argc,argv,options))

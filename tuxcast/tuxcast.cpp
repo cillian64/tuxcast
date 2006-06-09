@@ -7,13 +7,11 @@
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
 #include "tuxcast.h"
+#include "../libraries/filestuff.h"
 
 using namespace std;
 
-#define fs boost::filesystem
 
 
 void backend(void);
@@ -24,31 +22,6 @@ int main(int argc, char *argv[])
 {
 	configuration myconfig;
 	
-	// This must only be done ONCE!!!!!!!
-	// Hence, it's done in the main program, instead of in any libraries
-	// Maybe create an "init" function??
-
-	try
-	{
-#ifdef POSIX
-		fs::path::default_name_check(fs::portable_posix_name);
-#endif
-#ifdef WINDOWS
-		fs::path::default_name_check(fs::windows_name);
-#endif
-	}
-	catch(...)
-	{
-		// The only reason default_name_check should fail is if
-		// It's called twice.  This could be caused by:
-		cerr << "ERROR: you have both WINDOWS and POSIX compile flags enabled." << endl;
-		cerr << "If you compiled manually, check your compile_flags.h" << endl;
-		cerr << "Else, contact your package maintainer" << endl;
-	}
-
-	// We MUST setup the default_name_check before calling load():
-	// load() uses some boost stuff which will mess up badly if
-	// the default_name_check isn't POSIX or WINDOWS
 	
 	myconfig.load();
 
@@ -276,7 +249,6 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	FILE *outputfile=NULL;
 	CURL *mycurl;
 	string path;
-	fs::path mypath;
 	mycurl = curl_easy_init();
 	if(mycurl == NULL)
 	{
@@ -308,36 +280,17 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 		path = myconfig->podcastdir;
 		path += "/";
 		path += myconfig->feeds[feed]->folder;
-		try
+		
+		if(!checkfolderexists(path))
 		{
-			mypath = path;
-		}
-		catch(...)
-		{
-			cerr << "Error: This is most likely because you have a trailing / in your podcastdir" << endl;
+			cerr << "Cannot create folder \"" << myconfig->feeds[feed]->folder;
+			cerr << "\" - It might already exist but not be a folder" << endl;
 			return;
 		}
-		if(!fs::exists(mypath))
-		{
-			try
-			{
-				fs::create_directory(mypath);
-			}
-			catch(...)
-			{
-				cerr << "Error creating folder, \"" << path << "\"" << endl;
-				cerr << "Aborting..." << endl;
-				return;
-			}
-		}
 		
-
-		// Done with the folder now
-		// Onto files
-		mypath /= name; // The / operator appends a / then the operand
-		// Path = previousfolder/filename.XYZ
+		path += "/";
+		path += name;
 		
-		path = mypath.string();
 		outputfile = fopen(path.c_str(), "w");
 		if(outputfile == NULL)
 		{

@@ -1,5 +1,5 @@
-main: tuxcast.o rss.o backend.o ../config.o
-	g++ -g -o tuxcast tuxcast.o rss.o backend.o ../config/config.o `xml2-config --libs` `curl-config --libs` -lboost_filesystem
+main: tuxcast.o rss.o backend.o ../config.o ../libraries/filestuff.o
+	g++ -g -o tuxcast tuxcast.o rss.o backend.o ../config/config.o ../libraries/filestuff.o `xml2-config --libs` `curl-config --libs`
 
 tuxcast.o: tuxcast.cpp
 	g++ -c -g tuxcast.cpp `curl-config --cflags` `xml2-config --cflags`
@@ -12,6 +12,9 @@ backend.o: backend.cpp
 
 ../config.o:	
 	make -f ../config/Makefile -C ../config
+
+../libraries/filestuff.o: ../libraries/filestuff.cpp
+	make filestuff.o -C ../libraries/
 
 clean:
 	rm *.o tuxcast
