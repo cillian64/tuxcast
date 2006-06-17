@@ -3,6 +3,7 @@
 #include "unistd.h"
 #include "../compile_flags.h"
 
+
 bool init(void)
 {
 #ifdef POSIX
@@ -32,19 +33,23 @@ bool checkfolderexists(string folder)
 		// FIXME
 		// Let's create the folder:
 		if(mkdir(folder.c_str(), 0777) == -1)
+		{
 			return false;
+		}
 		else
 			return true;
 	}
 	
 	// It already exists: let's check it's type:
-	if(!S_ISDIR(mystat.st_mode))
+	if(S_ISDIR(mystat.st_mode))
 		// Already is a dir
 		return true;
 	else
 		// Uh oh, exists but isn't a dir
 		// Instead of trying to delete or anything, abort!
+	{
 		return false;
+	}
 #endif
 #ifdef BSD
 	return false;
@@ -72,10 +77,10 @@ bool checkfileexists(string file)
 	else
 	{
 		// Ok, it exists, let's check it's a file:
-		if(!S_ISREG(mystat.st_mode))
-			return false;
+		if(S_ISREG(mystat.st_mode))
+			return true; // It's a file, we're fine
 		else
-			true;
+			return false; // Isn't a file, oops
 	}
 #endif
 #ifdef BSD
