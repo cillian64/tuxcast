@@ -8,7 +8,7 @@ rss.o: rss.cpp
 	g++ -c -g rss.cpp `xml2-config --cflags`
 
 backend.o: backend.cpp
-	g++ -c -g backend.cpp `xml2-config --cflags`
+	g++ -c -g backend.cpp `xml2-config --cflags` `curl-config --cflags`
 
 ../config.o:	
 	make -f ../config/Makefile -C ../config

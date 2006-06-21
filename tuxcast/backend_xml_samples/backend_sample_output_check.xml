@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tuxcast>
+	<version>0.2</version>
+	<server>Tuxcast Backend</server>
+	<output>
+		<feed>
+			<name>LugRadio</name>
+			<episode>
+				<filename>lugradio-123.ogg</filename>
+				<url>http://example.com/lugradio-123.ogg</url>
+				<status>OK</status>
+			</episode>
+		</feed>
+	</output>
+</tuxcast>

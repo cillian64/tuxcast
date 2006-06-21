@@ -3,6 +3,7 @@ main:
 
 clean:
 	make -C tuxcast clean
+	make -C libraries clean
 
 install: main
 	install -m 755 tuxcast/tuxcast /usr/bin/tuxcast

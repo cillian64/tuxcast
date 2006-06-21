@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tuxcast>
+	<version>0.2</version>
+	<client>Unknown</client>
+	<request>
+		<type>Check</type>
+		<feed>TWiT</feed>
+	</request>
+</tuxcast>

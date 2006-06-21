@@ -2,6 +2,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <string>
+#include <curl/curl.h>
 
 using namespace std; // Watch out:
 // This must be before tuxcast.h, as it uses strings
@@ -10,19 +11,46 @@ using namespace std; // Watch out:
 #include "tuxcast.h"
 #include "../config/config.h" // just incase
 #include "rss.h"
+#include "../libraries/filestuff.h"
+
 
 // Request types:
 // (TODO - convert this to an enum)
 #define INFO 0
-#define GET 1
+#define CHECK 1
+
+// Unimplemented types:
+#define CHECKALL 2
+#define UP2DATE 3
+#define UP2DATEALL 4
 
 #define PROTOCOL_VERSION "0.2"
 
-
+// Function to output a nice error tree:
 void OutputError(string error);
-// Function to output a nice error tree
 
-void OutputInfo(void);
+// Outputs server info
+void OutputInfo();
+
+// Parses the XML for the request type and calls the appropriate function
+void parsexml(int request_type, xmlNodePtr node);
+
+// XML-outputting replicas of functions in tuxcast.h
+// (These load their own config, and search the config file, so they only take a feed name)
+// (Backend still uses the newfile/alreadydownled from tuxcast.h)
+bool xmlget(string filename, string url, string folder); // True is good, false is error
+void xmlcheck(string name);
+
+// Unimplemented:
+void xmlcheckall(void);
+void xmlup2date(string name);
+void xmlup2dateall(void);
+
+// Some nice internal helper functions
+// (Mostly copies of tuxcast.h stuff)
+int idfromname(string name);
+
+
 
 void backend(void)
 {
@@ -94,9 +122,9 @@ void backend(void)
 				request_type = INFO;
 				break; // Out of while loop
 			}
-			if(strcmp((char *)curr->children->content, "Get") == 0)
+			if(strcmp((char *)curr->children->content, "Check") == 0)
 			{
-				request_type = GET;
+				request_type = CHECK;
 				break;
 			}
 
@@ -116,52 +144,27 @@ void backend(void)
 	switch(request_type)
 	{
 		case INFO:
-			OutputInfo();		
+			OutputInfo(); // No point in parsing any more, really...
 			break;
-/* Not finished yet
-		case GET:
-			// Get a single feed...
-			// First let's parse out the feed name:
-			// 
-			while((strcmp((char *)curr->name, "text") == 0) && (curr->next != NULL))
-				// Loop till we're a node, or hit the end of request
-				curr = curr->next;
+		case CHECK:
+			parsexml(CHECK, curr);
+			break;
 
-			if(curr->next = NULL)
-			{
-				cerr << "Oops, hit the end of request, still no feed name" << endl;
-				OutputError("No Feed Name");
-				return;
-			}
+		case CHECKALL:
+			cerr << "Unimplemented Request (CheckAll)" << endl;
+			OutputError("Unimplemented Request, CheckAll");
+			break;
 
-			if(strcmp((char *)curr->name, "Name") != 0)
-			{
-				cerr << "Eh? Next node in request isn't a feed name!?" << endl;
-				OutputError("No Feed Name");
-				return;
-			}
+		case UP2DATE:
+			cerr << "Unimplemented Request (Up2Date)" << endl;
+			OutputError("Unimplemented Request, Up2Date");
+			break;
 
-			// Ok, We need to loop through the config to find this feed's ID
-			// Then we pass this to check() which does all the hard work.
-			// 
-			// Feed name *should* be:
-			name = curr->children->content;
-
-			// Loop through myconfig.feeds:
-			for(int i=0; i<myconfig.feeds.size(); i++)
-				if(strcmp(name.c_str(), myconfig.feeds[i]->name) == 0)
-					// Found it:
-					// Store the ID
-					id = i;
+		case UP2DATEALL:
+			cerr << "Unimplemented Request (Up2DateAll)" << endl;
+			OutputError("Unimplemented Request, Up2DateAll");
+			break;
 			
-			// Check the feed:
-			check(&myconfig, id);
-
-			
-
-			
-				
-		*/		
 			
 
 		default:
@@ -177,7 +180,7 @@ void OutputError(string error)
 	xmlDocPtr doc=NULL;
 	xmlNodePtr root=NULL, curr=NULL;
 	
-	cerr << "Outputting hardcoded XML tree: Invalid Input" << endl;
+	cerr << "Outputting error tree for error \"" << error << "\"" << endl;
 
 	doc = xmlNewDoc((xmlChar *)"1.0");
 	root = xmlNewNode(NULL, (xmlChar *)"tuxcast");
@@ -213,3 +216,137 @@ void OutputInfo(void)
 	xmlCleanupParser();
 
 }
+
+void parsexml(int request_type, xmlNodePtr node)
+{
+	xmlNodePtr curr=0;
+	switch(request_type)
+	{
+		case CHECK:
+			// We just need to find the feed name, then call xmlcheck(feedname)
+			curr = node;
+
+			// Step into whitespace:
+			curr = curr->next;
+			// Loop till <feed>
+			while(curr->type == XML_TEXT_NODE)
+				curr = curr->next;
+				
+
+			xmlcheck((char *)curr->children->content);
+	}
+}
+
+
+int idfromname(string name)
+{
+	configuration myconfig;
+	myconfig.load();
+	
+
+	// Find the feed's ID
+	for(int i=0; i<myconfig.feeds.size(); i++)
+		if(strcmp(myconfig.feeds[i]->name.c_str(), name.c_str()) == 0)
+			return i;
+
+	
+	// If we didn't return above:
+	OutputError("Unknown feed");
+	cerr << "Unknown feed, \"" << name << "\"" << endl;
+	return -1;
+}
+
+void xmlcheck(string name)
+{
+	int id=0;
+	configuration myconfig;
+	filelist *myfilelist;
+	xmlDocPtr doc=NULL;
+	xmlNodePtr root=NULL, curr=NULL, curr2=NULL;
+	
+	myconfig.load();
+	
+	if((id=idfromname(name)) < 0)
+		return;
+
+	if(!(myfilelist = parse(myconfig.feeds[id]->address)))
+	{
+		OutputError("Cannot parse feed");
+		return;
+	}
+
+	// See the sample output for what this actually produces
+	doc = xmlNewDoc((xmlChar *)"1.0");
+	root = xmlNewNode(NULL, (xmlChar *)"tuxcast");
+	xmlDocSetRootElement(doc, root);
+	xmlNewChild(root, NULL, (xmlChar *)"version", (xmlChar *)PROTOCOL_VERSION);
+	xmlNewChild(root, NULL, (xmlChar *)"server", (xmlChar *)"Tuxcast Backend");
+	curr = xmlNewChild(root, NULL, (xmlChar *)"output", (xmlChar *)"");
+	curr = xmlNewChild(curr, NULL, (xmlChar *)"feed", (xmlChar *)"");
+	xmlNewChild(curr, NULL, (xmlChar *)"name", (xmlChar *)name.c_str());
+	
+	
+	for(int i=0; i<myfilelist->files.size(); i++)
+	{
+		// For each episode, add a new node to feed:
+		curr2 = xmlNewChild(curr, NULL, (xmlChar *)"episode", (xmlChar *)"");
+		xmlNewChild(curr2, NULL, (xmlChar *)"filename", (xmlChar *)myfilelist->files[i]->filename.c_str());
+		xmlNewChild(curr2, NULL, (xmlChar *)"url", (xmlChar *)myfilelist->files[i]->URL.c_str());
+		
+		if(!(xmlget(name, myfilelist->files[i]->URL, myconfig.feeds[id]->folder)))
+			xmlNewChild(curr2, NULL, (xmlChar *)"status", (xmlChar *)"Error");
+		else
+			xmlNewChild(curr2, NULL, (xmlChar *)"status", (xmlChar *)"OK");
+	}
+			
+	// Finish off the doc:
+	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+	xmlFreeDoc(doc);
+	xmlCleanupParser();
+}
+
+// FIXME: More return types, i.e. already downloaded
+// Probably some sort of enum or #define / int
+// Also, should this function kill the whole request with OutputError if a request dies?
+// (probably not, as half the tree is already outputted)
+bool xmlget(string filename, string url, string folder)
+{
+	FILE *outputfile=NULL;
+	CURL *mycurl;
+	string path;
+	configuration myconfig;
+	myconfig.load();
+	mycurl = curl_easy_init();
+	if(mycurl == NULL)
+		return false;
+	if(alreadydownloaded(filename))
+	{
+		cerr << "Skipping file, " << filename << endl;
+		return true; // No point in throwing an error over it
+	}
+
+	cerr << "Downloading \"" << url << "\" to filename \"" << filename << "\"" << endl;
+	path = myconfig.podcastdir;
+	path += "/";
+	path += folder;
+	if(!checkfolderexists(path))
+		return false;
+	path += "/";
+	path += filename;
+
+	outputfile = fopen(path.c_str(), "w");
+	if(outputfile == NULL)
+		return false;
+
+	curl_easy_setopt(mycurl, CURLOPT_URL, url.c_str());
+	curl_easy_setopt(mycurl, CURLOPT_WRITEDATA, outputfile);
+	curl_easy_setopt(mycurl, CURLOPT_FOLLOWLOCATION, 1);
+	curl_easy_perform(mycurl);
+	fclose(outputfile);
+	newfile(filename);
+
+	curl_easy_cleanup(mycurl);
+	
+}
+
+

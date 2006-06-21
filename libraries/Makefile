@@ -5,3 +5,6 @@ main: filestuff.o
 
 filestuff.o: filestuff.cpp
 	g++ -c -g filestuff.cpp
+
+clean:
+	rm filestuff.o
