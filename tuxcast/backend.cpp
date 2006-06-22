@@ -38,7 +38,7 @@ void parsexml(int request_type, xmlNodePtr node);
 // XML-outputting replicas of functions in tuxcast.h
 // (These load their own config, and search the config file, so they only take a feed name)
 // (Backend still uses the newfile/alreadydownled from tuxcast.h)
-bool xmlget(string filename, string url, string folder); // True is good, false is error
+string xmlget(string filename, string url, string folder); // Returns a status string
 void xmlcheck(string name);
 
 // Unimplemented:
@@ -293,10 +293,8 @@ void xmlcheck(string name)
 		xmlNewChild(curr2, NULL, (xmlChar *)"filename", (xmlChar *)myfilelist->files[i]->filename.c_str());
 		xmlNewChild(curr2, NULL, (xmlChar *)"url", (xmlChar *)myfilelist->files[i]->URL.c_str());
 		
-		if(!(xmlget(name, myfilelist->files[i]->URL, myconfig.feeds[id]->folder)))
-			xmlNewChild(curr2, NULL, (xmlChar *)"status", (xmlChar *)"Error");
-		else
-			xmlNewChild(curr2, NULL, (xmlChar *)"status", (xmlChar *)"OK");
+		// The following adds a new node, "status", containing the output of xmlget
+		xmlNewChild(curr2, NULL, (xmlChar *)"status", (xmlChar *)xmlget(myfilelist->files[i]->filename, myfilelist->files[i]->URL, myconfig.feeds[id]->folder).c_str());
 	}
 			
 	// Finish off the doc:
@@ -305,11 +303,9 @@ void xmlcheck(string name)
 	xmlCleanupParser();
 }
 
-// FIXME: More return types, i.e. already downloaded
-// Probably some sort of enum or #define / int
 // Also, should this function kill the whole request with OutputError if a request dies?
 // (probably not, as half the tree is already outputted)
-bool xmlget(string filename, string url, string folder)
+string xmlget(string filename, string url, string folder)
 {
 	FILE *outputfile=NULL;
 	CURL *mycurl;
@@ -318,11 +314,11 @@ bool xmlget(string filename, string url, string folder)
 	myconfig.load();
 	mycurl = curl_easy_init();
 	if(mycurl == NULL)
-		return false;
+		return "Error";
 	if(alreadydownloaded(filename))
 	{
 		cerr << "Skipping file, " << filename << endl;
-		return true; // No point in throwing an error over it
+		return "Skipped";
 	}
 
 	cerr << "Downloading \"" << url << "\" to filename \"" << filename << "\"" << endl;
@@ -330,13 +326,13 @@ bool xmlget(string filename, string url, string folder)
 	path += "/";
 	path += folder;
 	if(!checkfolderexists(path))
-		return false;
+		return "Error";
 	path += "/";
 	path += filename;
 
 	outputfile = fopen(path.c_str(), "w");
 	if(outputfile == NULL)
-		return false;
+		return "Error";
 
 	curl_easy_setopt(mycurl, CURLOPT_URL, url.c_str());
 	curl_easy_setopt(mycurl, CURLOPT_WRITEDATA, outputfile);

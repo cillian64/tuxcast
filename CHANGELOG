@@ -1,3 +1,7 @@
+Revision 46:
+* Altered the way xmlget does statuses, now it can output more detailed info
+-------------------------------------------------------------------------------
+
 Revision 45:
 * Back on track, implemented the xmlcheck function and associated stuff in
 	backend.cpp (Though I'll probably be taking some time off devving
