@@ -1,3 +1,7 @@
+Revision 47:
+* Fixed a small yet annoying (to me, anyway) bug in check()
+-------------------------------------------------------------------------------
+
 Revision 46:
 * Altered the way xmlget does statuses, now it can output more detailed info
 -------------------------------------------------------------------------------

@@ -161,7 +161,7 @@ void checkall(configuration *myconfig)
 {
 	for(int i=0; i<myconfig->feeds.size(); i++)
 	{
-		cout << "Checking feed \"" << myconfig->feeds[i]->name << endl;
+		cout << "Checking feed \"" << myconfig->feeds[i]->name << "\"" << endl;
 		check(myconfig, i);
 	}
 }
