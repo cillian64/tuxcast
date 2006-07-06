@@ -13,17 +13,17 @@ void TCPlistener::listen(int port)
 	struct sockaddr_in remoteaddr;
 
 	if((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1)
-		throw eCannotOpenSocket(errno);
+		throw eCannotOpenSocket();
 	
 	localaddr.sin_family = AF_INET;
 	localaddr.sin_port = htons(port);
 	localaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if(bind(sock, (struct sockaddr *)&localaddr, sizeof(struct sockaddr_in)) == -1)
-		throw eCannotBind(errno);
+		throw eCannotBind();
 
 	if(::listen(sock, 0) == -1)
-		throw eCannotListen(errno);
+		throw eCannotListen();
 
 	FD=sock;
 }

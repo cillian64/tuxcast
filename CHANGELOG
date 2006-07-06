@@ -1,3 +1,9 @@
+Revision 49:
+* The socket exceptions no longer remember errno's.  This makes them a whole
+	lot simpler.  If the main program wants to print an error, it uses
+	errno or strerr itself.  (This also removes the errlist warning)
+-------------------------------------------------------------------------------
+
 Revision 48:
 * Added a new socket library to the libraries folder (It's not yet integrated
 	into anything, but the main program still links against it).
