@@ -3,6 +3,7 @@
 #include <libxml/tree.h>
 #include <string>
 #include <curl/curl.h>
+#include <errno.h>
 
 using namespace std; // Watch out:
 // This must be before tuxcast.h, as it uses strings
@@ -12,6 +13,7 @@ using namespace std; // Watch out:
 #include "../config/config.h" // just incase
 #include "rss.h"
 #include "../libraries/filestuff.h"
+#include "../libraries/socket.h" // SHOULD include the socket exceptions
 
 
 // Request types:
@@ -24,7 +26,9 @@ using namespace std; // Watch out:
 #define UP2DATE 3
 #define UP2DATEALL 4
 
+// Random globals:
 #define PROTOCOL_VERSION "0.2"
+#define PORT 1759
 
 // Function to output a nice error tree:
 void OutputError(string error);
@@ -32,8 +36,6 @@ void OutputError(string error);
 // Outputs server info
 void OutputInfo();
 
-// Parses the XML for the request type and calls the appropriate function
-void parsexml(int request_type, xmlNodePtr node);
 
 // XML-outputting replicas of functions in tuxcast.h
 // (These load their own config, and search the config file, so they only take a feed name)
@@ -50,11 +52,89 @@ void xmlup2dateall(void);
 // (Mostly copies of tuxcast.h stuff)
 int idfromname(string name);
 
+// *** WARNING, THIS HAS CHANGED: ***
+// Now, the XML is parsed in here:
+void parsexml1(xmlDocPtr doc);
+// The listener loop, all TCP stuff, and the code to load XML from a FD
+// is all in backend()
+// The parsexml2 function is called by parsexml1
+// It goes actually parses and does the request -
+// parsexml1 only checks the request type
+
+// Parses the XML for the request type and calls the appropriate function
+void parsexml2(int request_type, xmlNodePtr node);
 
 
 void backend(void)
 {
-	xmlDocPtr doc=NULL;
+	// We run all this in a try so we can catch exceptions
+	// and do a nice OutputError.  Currently, only this function
+	// does this, as the socket code is the only stuff with exceptions
+	try
+	{
+		TCPlistener socket;
+		TCPconnection connection;
+		string buffer="";
+		char buffer2[4096];
+		socket.listen(PORT);
+
+		cerr << "Listening on " << PORT << endl;
+
+		while(true)
+		{
+			// Clear out the buffers from the last connection:
+			buffer="";
+			socket.getconnection(&connection);
+			cerr << "Got connection!" << endl;
+			cerr << "(FD = " << connection.FD << ")" << endl;
+
+			// What we do here, is keep reading from teh socket
+			// till we get an error, or the XML doc is finished
+			// This allows us to have the XML session sent in lots
+			// of bits, over a period of time
+			while(true)
+			{
+				if(read(connection.FD, buffer2, 4096) == 0)
+					break; // EOF - can't read anymore
+				buffer = buffer + buffer2;
+				if(strstr(buffer.c_str(), "</tuxcast"))
+						break;
+				cerr << "Incomplete input, looping..." << endl;
+			}
+			if(!strstr(buffer.c_str(), "</tuxcast>"))
+			{
+				cerr << "Incomplete input and EOF" << endl;
+				cerr << "Bailing" << endl;
+				OutputError("Incomplete Input");
+				return;
+			}
+
+			// Now lets call the parser:
+			parsexml1(xmlReadMemory(buffer.c_str(), buffer.size(), "", "", 0));
+					
+						
+		}
+		// End of connect loop, we should never get here
+		// UNLESS, some sort of quit request is implemented
+			
+	}
+	// TODO: Put more specific catches, so I can OutputError with more
+	// details as to what went wrong
+	catch(eException &e)
+	{
+		cerr << "Exception caught: " << endl;
+		cerr << strerror(errno) << endl;
+		cerr << "Outputting XML error and bailing" << endl;
+		OutputError("Exception Caught");
+		return;
+	}
+}
+		
+
+
+
+void parsexml1(xmlDocPtr doc)
+{
 	xmlNodePtr root=NULL, curr=NULL;
 	int request_type;
 	configuration myconfig;
@@ -64,21 +144,6 @@ void backend(void)
 	filelist *myfilelist;
 
 
-	// We ***MUST*** output all status messages or errors to stderr.
-	// Anything going to STDOUT *WILL* be interpreted as XML, and could
-	// screw up the interfacing program.
-	cerr << "Backend mode" << endl;
-
-	// Let's start parsing out input (the request)
-	
-	doc = xmlReadFile("-", NULL, 0);
-	if(doc == NULL)
-	{
-		cerr << "ERROR: Cannot parse input" << endl;
-		// Don't panic, let's still try and exit gracefully:
-		OutputError("Invalid Input");
-		return;
-	}
 
 	root = xmlDocGetRootElement(doc);
 	
@@ -147,7 +212,7 @@ void backend(void)
 			OutputInfo(); // No point in parsing any more, really...
 			break;
 		case CHECK:
-			parsexml(CHECK, curr);
+			parsexml2(CHECK, curr);
 			break;
 
 		case CHECKALL:
@@ -217,7 +282,7 @@ void OutputInfo(void)
 
 }
 
-void parsexml(int request_type, xmlNodePtr node)
+void parsexml2(int request_type, xmlNodePtr node)
 {
 	xmlNodePtr curr=0;
 	switch(request_type)

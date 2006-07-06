@@ -1,3 +1,10 @@
+Revision 50:
+* Started shuffling around some functions in backend.cpp to convert it to TCP
+* Changed the main backend() function to a basic TCP listener
+* Converted all the input stuff to TCP
+* Got the input parser working with TCP
+-------------------------------------------------------------------------------
+
 Revision 49:
 * The socket exceptions no longer remember errno's.  This makes them a whole
 	lot simpler.  If the main program wants to print an error, it uses

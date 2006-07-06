@@ -1,9 +1,16 @@
+#ifndef SOCKET_H
+#define SOCKET_H
+
 #include <string>
 #include <iostream>
 #include <netinet/in.h>
 
+using namespace std; // Careful to put this before exceptions:
+// Some of the inline functions use IO functions blindly
 
-using namespace std;
+#include "socket_exceptions.h"
+
+
 
 // Thanks to loufoque, from freenode, for showing my how to catch
 // these exceptions properly, :)
@@ -56,4 +63,5 @@ class TCPlistener : public TCPsocket
 		void close(void)
 		{ ::close(this->FD); }
 };
-		
+
+#endif

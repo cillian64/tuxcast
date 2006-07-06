@@ -1,3 +1,6 @@
+#ifndef SOCKET_EXCEPTIONS_H
+#define SOCKET_EXCEPTIONS_H
+
 class eException
 {
 	public:
@@ -56,3 +59,5 @@ class eCannotAccept : public eException
 		virtual void print(void)
 		{ cout << "Cannot accept connection" << endl; }
 };
+
+#endif
