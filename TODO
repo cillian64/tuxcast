@@ -6,3 +6,4 @@
 * More folder sanity checking
 * Bittorrenting
 * Exceptions
+* In the socket library, convert sys_errlist to strerror (causes a gcc warning)

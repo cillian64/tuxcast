@@ -1,3 +1,10 @@
+Revision 48:
+* Added a new socket library to the libraries folder (It's not yet integrated
+	into anything, but the main program still links against it).
+	This library will play a pretty major part in the upcoming backend,
+	as well as in the first GUI tuxcast client
+-------------------------------------------------------------------------------
+
 Revision 47:
 * Fixed a small yet annoying (to me, anyway) bug in check()
 -------------------------------------------------------------------------------
