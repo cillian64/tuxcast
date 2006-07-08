@@ -7,5 +7,4 @@
 * Bittorrenting
 * Exceptions (The socket library is already done, other libraries and functions
 	should follow suite)
-* Convert backend output to TCP
 

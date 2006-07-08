@@ -1,3 +1,8 @@
+Revision 51:
+* Finished the output code (Using pure strings, no libxml - libxml outputting
+	to a file descriptor is a pain, and strings are probably faster too
+-------------------------------------------------------------------------------
+
 Revision 50:
 * Started shuffling around some functions in backend.cpp to convert it to TCP
 * Changed the main backend() function to a basic TCP listener

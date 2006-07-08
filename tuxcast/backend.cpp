@@ -64,6 +64,8 @@ void parsexml1(xmlDocPtr doc);
 // Parses the XML for the request type and calls the appropriate function
 void parsexml2(int request_type, xmlNodePtr node);
 
+// Yes, I know globals are evil, but it beats having int FD in every single function's arguments
+int FD;
 
 void backend(void)
 {
@@ -87,6 +89,7 @@ void backend(void)
 			socket.getconnection(&connection);
 			cerr << "Got connection!" << endl;
 			cerr << "(FD = " << connection.FD << ")" << endl;
+			FD = connection.FD;
 
 			// What we do here, is keep reading from teh socket
 			// till we get an error, or the XML doc is finished
@@ -242,44 +245,32 @@ void parsexml1(xmlDocPtr doc)
 
 void OutputError(string error)
 {
-	xmlDocPtr doc=NULL;
-	xmlNodePtr root=NULL, curr=NULL;
-	
+	string output=""; // Static XML - can't be assed to get
+	// libXML to output to a FD
 	cerr << "Outputting error tree for error \"" << error << "\"" << endl;
 
-	doc = xmlNewDoc((xmlChar *)"1.0");
-	root = xmlNewNode(NULL, (xmlChar *)"tuxcast");
-	xmlDocSetRootElement(doc, root);
+	output="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<tuxcast>";
+	output=output+"<version>" + PROTOCOL_VERSION + "</version>\n";
+	output=output+"<server>Tuxcast Backend</server>\n"; // += seems to break these
+	output=output+"<error>" + error + "</error>\n</tuxcast>\n";
 
-	xmlNewChild(root, NULL, (xmlChar *)"version", (xmlChar *)PROTOCOL_VERSION);
-	xmlNewChild(root, NULL, (xmlChar *)"server", (xmlChar *)"Tuxcast Backend");
-	xmlNewChild(root, NULL, (xmlChar *)"error", (xmlChar *)error.c_str());
-
-	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
-
-	xmlFreeDoc(doc);
-	xmlCleanupParser();
+	write(FD, output.c_str(), output.size());
+	close(FD); // Usually the program quits straight after calling me - 
+	// Might aswell close the connection here
 }
 
 void OutputInfo(void)
 {
-	xmlDocPtr doc=NULL;
-	xmlNodePtr root=NULL, curr=NULL;
-
+	string output="";
+	
 	cerr << "Outputting Info XML tree" << endl;
 
-	doc = xmlNewDoc((xmlChar *)"1.0");
-	root = xmlNewNode(NULL, (xmlChar *)"tuxcast");
-	xmlDocSetRootElement(doc, root);
-
-	xmlNewChild(root, NULL, (xmlChar *)"version", (xmlChar *)PROTOCOL_VERSION);
-	xmlNewChild(root, NULL, (xmlChar *)"server", (xmlChar *)"Tuxcast Backend");
-
-	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
-
-	xmlFreeDoc(doc);
-	xmlCleanupParser();
-
+	output="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<tuxcast>\n";
+	output=output+"<version>" + PROTOCOL_VERSION + "</version>\n";// += breaks these
+	output=output+"<server>Tuxcast Backend</server>\n</tuxcast>\n";
+		
+	write(FD, output.c_str(), output.size());
+	close(FD);
 }
 
 void parsexml2(int request_type, xmlNodePtr node)
@@ -326,8 +317,7 @@ void xmlcheck(string name)
 	int id=0;
 	configuration myconfig;
 	filelist *myfilelist;
-	xmlDocPtr doc=NULL;
-	xmlNodePtr root=NULL, curr=NULL, curr2=NULL;
+	string output="";
 	
 	myconfig.load();
 	
@@ -340,32 +330,33 @@ void xmlcheck(string name)
 		return;
 	}
 
-	// See the sample output for what this actually produces
-	doc = xmlNewDoc((xmlChar *)"1.0");
-	root = xmlNewNode(NULL, (xmlChar *)"tuxcast");
-	xmlDocSetRootElement(doc, root);
-	xmlNewChild(root, NULL, (xmlChar *)"version", (xmlChar *)PROTOCOL_VERSION);
-	xmlNewChild(root, NULL, (xmlChar *)"server", (xmlChar *)"Tuxcast Backend");
-	curr = xmlNewChild(root, NULL, (xmlChar *)"output", (xmlChar *)"");
-	curr = xmlNewChild(curr, NULL, (xmlChar *)"feed", (xmlChar *)"");
-	xmlNewChild(curr, NULL, (xmlChar *)"name", (xmlChar *)name.c_str());
+	// New static output:
+	output="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+	output=output+"<tuxcast>\n";
+	output=output+"<version>"+PROTOCOL_VERSION+"</version>\n";
+	output=output+"<server>Tuxcast Backend</server>\n";
+	output=output+"<output>\n<feed>\n";
+	output=output+"<name>"+name+"</name>\n";
 	
 	
 	for(int i=0; i<myfilelist->files.size(); i++)
 	{
 		// For each episode, add a new node to feed:
-		curr2 = xmlNewChild(curr, NULL, (xmlChar *)"episode", (xmlChar *)"");
-		xmlNewChild(curr2, NULL, (xmlChar *)"filename", (xmlChar *)myfilelist->files[i]->filename.c_str());
-		xmlNewChild(curr2, NULL, (xmlChar *)"url", (xmlChar *)myfilelist->files[i]->URL.c_str());
-		
-		// The following adds a new node, "status", containing the output of xmlget
-		xmlNewChild(curr2, NULL, (xmlChar *)"status", (xmlChar *)xmlget(myfilelist->files[i]->filename, myfilelist->files[i]->URL, myconfig.feeds[id]->folder).c_str());
+
+		// Static..:
+		output=output+"<episode>\n";
+		output=output+"<filename>"+myfilelist->files[i]->filename+"</filename>\n";
+		output=output+"<url>"+myfilelist->files[i]->URL+"</url>\n";
+		output=output+"<status>"+xmlget(myfilelist->files[i]->filename, myfilelist->files[i]->URL, myconfig.feeds[id]->folder)+"</status>\n";
+		// Urgh, that last line calls xmlget with all the right parameters, then sticks the output in output
+		output=output+"</episode>\n";
 	}
 			
 	// Finish off the doc:
-	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
-	xmlFreeDoc(doc);
-	xmlCleanupParser();
+	output=output+"</feed>\n</output>\n</tuxcast>\n";
+
+	write(FD, output.c_str(), output.size());
+	close(FD);
 }
 
 // Also, should this function kill the whole request with OutputError if a request dies?
