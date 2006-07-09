@@ -10,4 +10,4 @@ socket.o: socket.cpp
 	g++ -c -g socket.cpp
 
 clean:
-	rm filestuff.o socket.o
+	rm -f filestuff.o socket.o

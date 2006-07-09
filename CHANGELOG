@@ -1,3 +1,11 @@
+Revision 52:
+* Updated the TCP library with a new class, TCPconnecter.  This will be used
+	in the GUIs to connect to the backend
+* Added -f to the rm's in makefiles' cleans.  This means no more errors
+	with permissions when doing sudo make install, and no more
+	errors if cleaning when not built
+-------------------------------------------------------------------------------
+
 Revision 51:
 * Finished the output code (Using pure strings, no libxml - libxml outputting
 	to a file descriptor is a pain, and strings are probably faster too

@@ -12,7 +12,7 @@ using namespace std; // Careful to put this before exceptions:
 
 
 
-// Thanks to loufoque, from freenode, for showing my how to catch
+// Thanks to loufoque, from freenode's ##c++, for showing me how to catch
 // these exceptions properly, :)
 
 class TCPconnection
@@ -43,16 +43,19 @@ class TCPsocket
 		int FD;
 };
 
-/*class TCPconnecter : public TCPsocket
+class TCPconnecter : public TCPsocket
 {
 	public:
 		TCPconnecter()
 		{ FD=0; }
 		void connect(string host, int port);
 		void disconnect(void);
-		void resolve(string host, struct in_addr *ip);
+	private:
+		void resolve(string host);
+		struct in_addr remoteaddr;
 };
-*/
+
+
 class TCPlistener : public TCPsocket
 {
 	public:

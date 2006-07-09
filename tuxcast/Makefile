@@ -20,5 +20,5 @@ backend.o: backend.cpp
 	make socket.o -C ../libraries/
 
 clean:
-	rm *.o tuxcast
+	rm -f *.o tuxcast
 	make -f ../config/Makefile -C ../config clean
