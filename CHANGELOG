@@ -1,3 +1,9 @@
+Revision 53:
+* Added in gTuxcast.  *** WARNING, THIS CODE IS NOT EVEN NEARLY READY FOR USE,
+	YET.  THIS CODE DOES *NOT* WORK UNTIL FURTHER NOTICE ***
+* Mixed around some makefiles, etc....
+-------------------------------------------------------------------------------
+
 Revision 52:
 * Updated the TCP library with a new class, TCPconnecter.  This will be used
 	in the GUIs to connect to the backend
