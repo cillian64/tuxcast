@@ -1,25 +1,23 @@
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <gtk/gtk.h>
 
 #include "callbacks.h"
 #include "interface.h"
 #include "support.h"
 
-#include <libxml2/libxml/parser.h>
-#include <libxml2/libxml/tree.h>
-// TODO: Fix that stuff!!
-// (xml2-config, or pkg-config)
+#include <libxml/parser.h>
+#include <libxml/tree.h>
 
 #include <string.h>
 
 // TCP stuff:
-#include <netinet/in.h>
+/*#include <netinet/in.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+*/
+
+
+#include "../libraries/socket.h"
 
 
 GtkTextBuffer *checkoutputtext;
@@ -35,8 +33,8 @@ on_check_clicked                     (GtkButton       *button,
 	
 	
 	// Variables etc. first:
-	GtkWidget *input = lookup_widget(button, "checkentry");
-	GtkWidget *output = lookup_widget(button, "checkoutput");
+	GtkWidget *input = lookup_widget((GtkWidget *)button, "checkentry");
+	GtkWidget *output = lookup_widget((GtkWidget *)button, "checkoutput");
 
 	// Make a doc:
 	// Staticced:

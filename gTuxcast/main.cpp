@@ -50,8 +50,8 @@ main (int argc, char *argv[])
   checkoutput = lookup_widget(window1, "checkoutput");
   up2dateoutput = lookup_widget(window1, "up2dateoutput");
   
-  gtk_text_view_set_buffer(checkoutput, checkoutputtext);
-  gtk_text_view_set_buffer(up2dateoutput, up2dateoutputtext);
+  gtk_text_view_set_buffer((GtkTextView *)checkoutput, checkoutputtext);
+  gtk_text_view_set_buffer((GtkTextView *)up2dateoutput, up2dateoutputtext);
 	  
 
   gtk_main ();

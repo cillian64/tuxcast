@@ -1,6 +1,9 @@
 #ifndef SOCKET_EXCEPTIONS_H
 #define SOCKET_EXCEPTIONS_H
 
+#include <iostream>
+using namespace std;
+
 class eException
 {
 	public:

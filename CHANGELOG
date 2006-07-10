@@ -1,3 +1,11 @@
+Revision 54:
+* Converted gTuxcast to c++ (well, it's still mostly C, but it compiles with g++).
+	This means it can use the C++ TCP library for connecting to the backend
+* Fixed a bug caused by the above - some weird stuff in support.h was breaking
+	the compile.  If glade ever regenerates support.h, make sure to comment
+	out all the NLS and gettext stuff
+-------------------------------------------------------------------------------
+
 Revision 53:
 * Added in gTuxcast.  *** WARNING, THIS CODE IS NOT EVEN NEARLY READY FOR USE,
 	YET.  THIS CODE DOES *NOT* WORK UNTIL FURTHER NOTICE ***

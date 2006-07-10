@@ -2,11 +2,10 @@
 #define SOCKET_H
 
 #include <string>
-#include <iostream>
 #include <netinet/in.h>
 
 using namespace std; // Careful to put this before exceptions:
-// Some of the inline functions use IO functions blindly
+// Some inline IO functions use cout, etc...
 
 #include "socket_exceptions.h"
 
