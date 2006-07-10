@@ -1,5 +1,6 @@
 main:
 	make -C tuxcast
+	make -C frontend
 
 gTuxcast: gTuxcast/gTuxcast
 	echo ""
@@ -15,10 +16,12 @@ clean:
 	make -C tuxcast clean
 	make -C libraries clean
 	make -C gTuxcast clean
+	make -C frontend clean
 
 install: main
 	install -m 755 tuxcast/tuxcast /usr/bin/tuxcast
 	install -m 755 config/tuxcast-config /usr/bin/tuxcast-config
+	install -m 755 frontend/frontend /usr/bin/tuxcast-frontend
 	
 gTuxcast-install: gTuxcast
 	install -m 755 gTuxcast/gTuxcast /usr/bin/gTuxcast

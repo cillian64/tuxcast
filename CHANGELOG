@@ -1,3 +1,10 @@
+Revision 55:
+* Given up on gTuxcast.  I'm calling it dead until someone else comes along to
+	revive it.  It won't compile, and it useless even if it does
+* Started the shiny new tuxcast-frontend.  It's a simple frontend to
+	the tuxcast backend server, mainly for testing at the moment
+-------------------------------------------------------------------------------
+
 Revision 54:
 * Converted gTuxcast to c++ (well, it's still mostly C, but it compiles with g++).
 	This means it can use the C++ TCP library for connecting to the backend
