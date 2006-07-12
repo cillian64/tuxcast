@@ -114,6 +114,7 @@ void backend(void)
 
 			// Now lets call the parser:
 			parsexml1(xmlReadMemory(buffer.c_str(), buffer.size(), "", "", 0));
+			cerr << "Parser quit" << endl;
 					
 						
 		}
@@ -347,8 +348,10 @@ void xmlcheck(string name)
 		output=output+"<episode>\n";
 		output=output+"<filename>"+myfilelist->files[i]->filename+"</filename>\n";
 		output=output+"<url>"+myfilelist->files[i]->URL+"</url>\n";
-		output=output+"<status>"+xmlget(myfilelist->files[i]->filename, myfilelist->files[i]->URL, myconfig.feeds[id]->folder)+"</status>\n";
-		// Urgh, that last line calls xmlget with all the right parameters, then sticks the output in output
+		output=output+"<status>";
+		output=output+xmlget(myfilelist->files[i]->filename, myfilelist->files[i]->URL, myconfig.feeds[id]->folder);
+		output=output+"</status>\n";
+		// Urgh, that last line calls xmlget with all the right parameters, then sticks the output in output.  Split up to help track down segfaults
 		output=output+"</episode>\n";
 	}
 			

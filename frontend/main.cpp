@@ -6,6 +6,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 	backend *mybackend;
+	backendoutput *output = new backendoutput;
 	char tmp;
 	int tmp2;
 	string tmp3;
@@ -56,7 +57,13 @@ int main(int argc, char *argv[])
 			return -1;
 	}
 			
-
+	mybackend->getoutput(output);
+	for(int i=0; i < output->names.size(); i++)
+	{
+			cout << output->names[i] << endl;
+			cout << output->URLs[i] << endl;
+			cout << output->statuses[i] << endl;
+	}
 
 	// Disconnect:
 	mybackend->disconnect();

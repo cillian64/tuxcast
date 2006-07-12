@@ -1,3 +1,8 @@
+Revision 56:
+* Frontend going rather well, though still some segfaults and some stuff is
+	a mess.  Just committing as a checkpoint
+-------------------------------------------------------------------------------
+
 Revision 55:
 * Given up on gTuxcast.  I'm calling it dead until someone else comes along to
 	revive it.  It won't compile, and it useless even if it does

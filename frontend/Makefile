@@ -1,8 +1,8 @@
 main: backend.o main.o ../libraries/socket.o
-	g++ -g -o frontend backend.o main.o ../libraries/socket.o
+	g++ -g -o frontend backend.o main.o ../libraries/socket.o `xml2-config --libs`
 
 backend.o: backend.cpp
-	g++ -c -g backend.cpp
+	g++ -c -g backend.cpp `xml2-config --cflags`
 
 main.o: main.cpp
 	g++ -c -g main.cpp
