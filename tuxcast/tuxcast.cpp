@@ -84,7 +84,8 @@ int main(int argc, char *argv[])
 
 		case 'b':
 			// Backend mode:
-			backend(); // From backend.[cpp,h]
+			cerr << "Backend mode gone for now" << endl;
+			cerr << "See the tuxcast blog, tuxcast.sf.net" << endl;
 			break;
 
 
