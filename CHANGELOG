@@ -1,3 +1,9 @@
+Revision 63:
+* Removed the bug I fixed below from TODO
+* Added checkfileexists to config::save, so it fails nicely with folders
+	and doesn't hang with fifo's
+-------------------------------------------------------------------------------
+
 Revision 62:
 * Fixed a bug in tuxcast-config where it would segfault with a brand new
 	config file, with no feeds in (Just a simple change to an if in load)

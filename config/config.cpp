@@ -66,6 +66,7 @@ void configuration::save()
 	{
 		checkfolderexists(path); // If an exception is thrown, the stack should
 	// Be unrolled all the way back to the beginning, where it'll display and quit.
+		checkfileexists(path+"/config.xml");
 	}
 	catch(eFilestuff_CannotCreateFolder &e)
 	{
@@ -75,6 +76,14 @@ void configuration::save()
 		return; // Here we can just return and forget:
 		// Nothing should depend on config being saved right
 		// From now on the program can just end normally
+	}
+	catch(eFilestuff_NotAFile &e)
+	{
+		cerr << "Oops, couldn't save your new config," << endl;
+		cerr << "~/.tuxcast/config.xml exists but isn't a file" << endl;
+		cerr << "Exception caught: ";
+		e.print();
+		return; // Ditto
 	}
 		
 	path = path + "/config.xml";
