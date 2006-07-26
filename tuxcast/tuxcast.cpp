@@ -9,6 +9,8 @@
 #include <unistd.h>
 #include "tuxcast.h"
 #include "../libraries/filestuff.h"
+#include "../libraries/filestuff_exceptions.h"
+#include "../config/config_exceptions.h"
 
 using namespace std;
 
@@ -22,8 +24,20 @@ int main(int argc, char *argv[])
 {
 	configuration myconfig;
 	
-	
-	myconfig.load();
+	try
+	{
+		myconfig.load();
+	}
+	catch(eConfig_NoConfigFile &e)
+	{
+		cerr << "Cannot load config file - please create one" << endl;
+		return -1; // No need to print the exception
+		// We know exactly what this one means
+	}
+	// If theres no config file, then
+	// a) checkfileexists will throw an exception, which will be
+	// caught here, and we abort.
+	// b) checkfileexists will return false
 
 	
 	switch(getopt(argc,argv,options))
@@ -118,8 +132,20 @@ void check(configuration *myconfig, int feed)
 
 	for(int j=0, size=myfilelist->files.size(); j<size; j++)
 	{
-		get(myfilelist->files[j]->filename, myfilelist->files[j]->URL,
+		try
+		{
+			get(myfilelist->files[j]->filename, myfilelist->files[j]->URL,
 				feed, myconfig);
+		}
+		catch(eFilestuff_CannotCreateFolder &e)
+		{
+			cerr << "Oops, couldn't create folder for feed \"" << myconfig->feeds[feed]->name << "\"" << endl;
+			cerr << "Exception caught: ";
+			e.print();
+			return; // Skip this feed:
+			// If we can't create the folder, no point in trying to
+			// get any other files
+		}
 	}
 
 }
@@ -282,12 +308,9 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 		path += "/";
 		path += myconfig->feeds[feed]->folder;
 		
-		if(!checkfolderexists(path))
-		{
-			cerr << "Cannot create folder \"" << myconfig->feeds[feed]->folder;
-			cerr << "\" - It might already exist but not be a folder" << endl;
-			return;
-		}
+		checkfolderexists(path);
+		// If anything goes wrong here, the exception should
+		// abort everything...
 		
 		path += "/";
 		path += name;

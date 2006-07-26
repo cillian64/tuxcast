@@ -2,6 +2,7 @@
 #include "sys/stat.h"
 #include "unistd.h"
 #include "../compile_flags.h"
+#include "filestuff_exceptions.h"
 
 
 bool init(void)
@@ -13,7 +14,7 @@ bool init(void)
 	return true;
 #endif
 #ifdef BOOST
-	return false;
+	throw eFilestuff_NoBoost();
 	// ATM boost isn't here yet
 	// We'll do the default_name_check init in here in future
 	// FIXME
@@ -34,7 +35,7 @@ bool checkfolderexists(string folder)
 		// Let's create the folder:
 		if(mkdir(folder.c_str(), 0777) == -1)
 		{
-			return false;
+			throw eFilestuff_CannotCreateFolder();
 		}
 		else
 			return true;
@@ -47,19 +48,17 @@ bool checkfolderexists(string folder)
 	else
 		// Uh oh, exists but isn't a dir
 		// Instead of trying to delete or anything, abort!
-	{
-		return false;
-	}
+		throw eFilestuff_IsAFile(folder);
 #endif
 #ifdef BSD
-	return false;
+	throw eFilestuff_NoBSD();
 	// No BSD yet
 	// FIXME
 #endif
 #ifdef BOOST
-	return false;
-	// Boost is in the main program atm,
-	// not here
+	throw eFilestuff_NoBoost();
+	// No boost support in here atm.
+	// FIXME
 #endif
 }
 
@@ -72,7 +71,9 @@ bool checkfileexists(string file)
 	{
 		// We'll assume the error is because it doesn't exist
 		// FIXME
-		return false;
+		return false; // Not throwing an exception - 
+		// Returning false here is teh right thing to do,
+		// Not an error - we're just saying the file doesn't exist
 	}
 	else
 	{
@@ -80,15 +81,16 @@ bool checkfileexists(string file)
 		if(S_ISREG(mystat.st_mode))
 			return true; // It's a file, we're fine
 		else
-			return false; // Isn't a file, oops
+			throw eFilestuff_NotAFile(file); // Not a file
+		// Oops
 	}
 #endif
 #ifdef BSD
-	return false;
+	throw eFilestuff_NoBSD();
 	// No BSD yet
 #endif
 #ifdef BOOST
-	return false;
+	throw eFilestuff_NoBoost();
 	// No boost here yet
 #endif
 }

@@ -6,6 +6,8 @@
 #include <sstream>
 #include <stdlib.h>
 #include "../libraries/filestuff.h"
+#include "../libraries/filestuff_exceptions.h"
+#include "config_exceptions.h"
 
 
 configuration::configuration()
@@ -60,11 +62,21 @@ void configuration::save()
 
 	path = getenv("HOME");
 	path = path + "/.tuxcast";
-	if(!checkfolderexists(path))
+	try
 	{
-		cerr << "Can't create folder .tuxcast, or it exists but is not a folder" << endl;
-		return;
+		checkfolderexists(path); // If an exception is thrown, the stack should
+	// Be unrolled all the way back to the beginning, where it'll display and quit.
 	}
+	catch(eFilestuff_CannotCreateFolder &e)
+	{
+		cerr << "Oops, couldn't save your new config:" << endl;
+		cerr << "Exception caught: ";
+		e.print();
+		return; // Here we can just return and forget:
+		// Nothing should depend on config being saved right
+		// From now on the program can just end normally
+	}
+		
 	path = path + "/config.xml";
 	xmlSaveFormatFileEnc(path.c_str(), doc,  "UTF-8", 1);
 
@@ -79,21 +91,34 @@ void configuration::load()
 	xmlNode *curr=NULL;
 	string path=getenv("HOME");
 	path = path + "/.tuxcast/config.xml";
-	if(checkfileexists(path) == false)
+	try
 	{
-		cerr << "No config file found..." << endl;
-		// Or BSD or boost is being used...
-		return;
+		if(checkfileexists(path) == false)
+		{
+			cerr << "No config file found..." << endl;
+			throw eConfig_NoConfigFile();
+		}
 	}
-
+	catch(eFilestuff_NotAFile &e)
+	{
+		cerr << "No config file: Aborting" << endl;
+		throw eConfig_NoConfigFile();
+	}
+	// The caller should catch eNoConfigFile
+	// If configuration is essential, the program should abort
+	// If config is optional, it can catch and continue
 	doc = xmlReadFile(path.c_str(), NULL, 0);
 	if(doc == NULL)
 	{
 		cerr << "Error parsing your config file" << endl;
 		cerr << "Please delete ~/.tuxcast/config.xml and make a new one" << endl;
-		return;
+		throw eConfig_NoConfigFile(); // Yeh, I know this isn't really
+		// the right thing to call, but it works just fine
+		// Nothing should need to know the difference between
+		// An invalid config or none at all
 	}
 		
+	
 	root = xmlDocGetRootElement(doc);
 	curr = root->children;
 	while(true)

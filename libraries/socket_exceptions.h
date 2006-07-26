@@ -2,61 +2,54 @@
 #define SOCKET_EXCEPTIONS_H
 
 #include <iostream>
+#include "../exceptions.h"
 using namespace std;
 
-class eException
-{
-	public:
-		virtual void print(void)
-		{ cout << "Vanilla Exception (This shouldn't happen)" << endl;}
+// The vanilla exception is now global to everything
+// So it's now in ../exceptions.h
 
-		// Removed all the constructor and variable junk:
-		// If the main program wants to see what went wrong, it can
-		// just check strerr or errno itself
-};
-
-class eCannotOpenSocket : public eException
+class eSocket_CannotOpenSocket : public eException
 {
 	public:
 		virtual void print(void)
 		{ cout << "Cannot open socket" << endl; }
 };
-class eCannotConnect : public eException
+class eSocket_CannotConnect : public eException
 {
 	public:
 		virtual void print(void)
 		{ cout << "Cannot connect" << endl; }
 };
 
-class eAlreadyConnected : public eException
+class eSocket_AlreadyConnected : public eException
 {
 	public:
 		virtual void print(void)
 		{ cout << "Socket already connected" << endl; }
 };
 
-class eCannotResolve : public eException
+class eSocket_CannotResolve : public eException
 {
 	public:
 		virtual void print(void)
 		{ cout << "Cannot resolve hostname" << endl; }
 };
 
-class eCannotBind : public eException
+class eSocket_CannotBind : public eException
 {
 	public:
 		virtual void print(void)
 		{ cout << "Cannot bind to port" << endl;}
 };
 
-class eCannotListen : public eException
+class eSocket_CannotListen : public eException
 {
 	public:
 		virtual void print(void)
 		{ cout << "Cannot listen on port" << endl; }
 };
 
-class eCannotAccept : public eException
+class eSocket_CannotAccept : public eException
 {
 	public:
 		virtual void print(void)

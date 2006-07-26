@@ -1,3 +1,9 @@
+Revision 60:
+* Now all of the "filestuff" library uses exceptions.  The vanilla exception
+	has been moved to exceptions.h in the root dir.  Lots of code around
+	the place has been changed to use the new filestuff exceptions
+-------------------------------------------------------------------------------
+
 Revision 59:
 * New roadmap for tuxcast on the blog, at http://tuxcast.sf.net
 * All frontend and backend-related code is gone, for now (see above)

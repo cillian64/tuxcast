@@ -16,17 +16,17 @@ void TCPlistener::listen(int port)
 	struct sockaddr_in remoteaddr;
 
 	if((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1)
-		throw eCannotOpenSocket();
+		throw eSocket_CannotOpenSocket();
 	
 	localaddr.sin_family = AF_INET;
 	localaddr.sin_port = htons(port);
 	localaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if(bind(sock, (struct sockaddr *)&localaddr, sizeof(struct sockaddr_in)) == -1)
-		throw eCannotBind();
+		throw eSocket_CannotBind();
 
 	if(::listen(sock, 0) == -1)
-		throw eCannotListen();
+		throw eSocket_CannotListen();
 
 	FD=sock;
 }
@@ -46,7 +46,7 @@ void TCPconnecter::connect(string host, int port)
 	struct sockaddr_in server;
 
 	if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-		throw eCannotOpenSocket();
+		throw eSocket_CannotOpenSocket();
 
 	resolve(host);
 
@@ -58,7 +58,7 @@ void TCPconnecter::connect(string host, int port)
 	cout << inet_ntoa(server.sin_addr) << endl;
 
 	if(::connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0)
-		throw eCannotConnect();
+		throw eSocket_CannotConnect();
 
 	FD = sock;
 }
@@ -73,7 +73,7 @@ void TCPconnecter::resolve(string host)
 	struct hostent *theirhost;
 	
 	if((theirhost = gethostbyname(host.c_str())) == NULL)
-		throw eCannotResolve();
+		throw eSocket_CannotResolve();
 
 	remoteaddr.s_addr = *((unsigned long *)theirhost->h_addr_list[0]);
 	
