@@ -1,3 +1,8 @@
+Revision 62:
+* Fixed a bug in tuxcast-config where it would segfault with a brand new
+	config file, with no feeds in (Just a simple change to an if in load)
+-------------------------------------------------------------------------------
+
 Revision 61:
 * Added filestuff exception support to tuxcast-config
 -------------------------------------------------------------------------------

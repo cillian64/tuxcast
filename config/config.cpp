@@ -155,7 +155,8 @@ void configuration::load()
 		
 	
 		
-		if(strcmp((char *)curr->name, "feeds") == 0)
+		if((strcmp((char *)curr->name, "feeds") == 0) && (curr->children != NULL))
+			// Check this isn't a fresh config file without any feeds in...
 		{
 			int i=0;
 			curr = curr->children; // step into feeds
