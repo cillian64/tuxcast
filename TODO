@@ -7,4 +7,5 @@
 * Bittorrenting
 * Exceptions (The socket library is already done, other libraries and functions
 	should follow suite)
-
+* Fix a bug where a newly created config file contains no feeds and so
+	crashes configuration::load

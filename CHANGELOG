@@ -1,3 +1,7 @@
+Revision 61:
+* Added filestuff exception support to tuxcast-config
+-------------------------------------------------------------------------------
+
 Revision 60:
 * Now all of the "filestuff" library uses exceptions.  The vanilla exception
 	has been moved to exceptions.h in the root dir.  Lots of code around

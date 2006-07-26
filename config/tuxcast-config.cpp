@@ -2,6 +2,8 @@
 #include <iostream>
 #include "config.h"
 #include <unistd.h>
+#include "config_exceptions.h"
+#include "../libraries/filestuff_exceptions.h"
 // Don't need operations.hpp in here (yet)
 
 const char options[] = "aA:d:n:hs:g:Gf:u";
@@ -21,42 +23,62 @@ void update(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
 {
-	myconfig.load();
-	
-	switch(getopt(argc,argv,options))
+	try
 	{
-		case 'a':
-			add(argc,argv);
-			break;
-		
-		case 'd':
-			del(optarg);
-			break;
-		
-		case 'g':
-			get(optarg);
-			break;
-
-		case 'G':
-			getall();
-			break;
-
-		case 's':
-			set(optarg);
-			break;
-		case 'u':
-			update(argc,argv);
-			break;
-
-		case 'h':
-			help();	
-			break;
-
-		default:
-			cerr << "Error: You must pass either -a, -s, -g, -G or -h" << endl;
-			cerr << "Pass -h for help" << endl;
+		myconfig.load();
+	}
+	catch(eConfig_NoConfigFile &e)
+	{
+		cerr << "Warning, No config file" << endl;
+		cerr << "If you're changing an option or adding a feed, a config file will be created later" << endl;
 	}
 	
+	try
+	{
+		switch(getopt(argc,argv,options))
+		{
+			case 'a':
+				add(argc,argv);
+				break;
+			
+			case 'd':
+				del(optarg);
+				break;
+			
+			case 'g':
+				get(optarg);
+				break;
+
+			case 'G':
+				getall();
+				break;
+
+			case 's':
+				set(optarg);
+				break;
+			case 'u':
+				update(argc,argv);
+				break;
+
+			case 'h':
+				help();	
+				break;
+
+			default:
+				cerr << "Error: You must pass either -a, -s, -g, -G or -h" << endl;
+				cerr << "Pass -h for help" << endl;
+		}
+	}
+	catch(eFilestuff_CannotCreateFolder &e)
+	{
+		cerr << "Cannot save config file, because I cannot create the ~/.tuxcast folder" << endl;
+		cerr << "Exception caught: ";
+		e.print();
+		return -1;
+	}
+	// No point in catching that exception separatly in every action
+	// Just catch here to avoid SIGABRT and exit cleanly
+		
 	return 0;
 }
 
