@@ -2,6 +2,8 @@ Revision 60:
 * Now all of the "filestuff" library uses exceptions.  The vanilla exception
 	has been moved to exceptions.h in the root dir.  Lots of code around
 	the place has been changed to use the new filestuff exceptions
+* Oops, EDIT: All teh stuff above actually happened in r59.  r60 is just this
+	update to CHANGELOG to get things back in sync
 -------------------------------------------------------------------------------
 
 Revision 59:
