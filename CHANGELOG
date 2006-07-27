@@ -1,3 +1,7 @@
+Revision 66:
+* Actually added rss_exceptions,h into SVN (forgot last time)
+-------------------------------------------------------------------------------
+
 Revision 65:
 * Removed a bug in the last revision - I removed the constructors but forgot
 	to remove them from config.h
