@@ -9,7 +9,7 @@ class eException
 {
         public:
                 virtual void print(void)
-	                { cout << "Vanilla Exception (This shouldn't happen)" << endl; }
+	                { cerr << "Vanilla Exception (This shouldn't happen)" << endl; }
 };
 
 // Each separate module's exception header will include this

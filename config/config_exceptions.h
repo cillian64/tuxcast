@@ -10,7 +10,14 @@ class eConfig_NoConfigFile : public eException
 {
 	public:
 		virtual void print(void)
-		{ cout << "No config file found.  (This isn't always fatal)" << endl; }
+		{ cerr << "No config file found.  (This isn't always fatal)" << endl; }
+};
+
+class eConfig_CannotSaveConfig : public eException
+{
+	public:
+		virtual void print(void)
+		{ cerr << "Couldn't save your config, for some reason" << endl; }
 };
 
 

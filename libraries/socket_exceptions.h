@@ -12,48 +12,48 @@ class eSocket_CannotOpenSocket : public eException
 {
 	public:
 		virtual void print(void)
-		{ cout << "Cannot open socket" << endl; }
+		{ cerr << "Cannot open socket" << endl; }
 };
 class eSocket_CannotConnect : public eException
 {
 	public:
 		virtual void print(void)
-		{ cout << "Cannot connect" << endl; }
+		{ cerr << "Cannot connect" << endl; }
 };
 
 class eSocket_AlreadyConnected : public eException
 {
 	public:
 		virtual void print(void)
-		{ cout << "Socket already connected" << endl; }
+		{ cerr << "Socket already connected" << endl; }
 };
 
 class eSocket_CannotResolve : public eException
 {
 	public:
 		virtual void print(void)
-		{ cout << "Cannot resolve hostname" << endl; }
+		{ cerr << "Cannot resolve hostname" << endl; }
 };
 
 class eSocket_CannotBind : public eException
 {
 	public:
 		virtual void print(void)
-		{ cout << "Cannot bind to port" << endl;}
+		{ cerr << "Cannot bind to port" << endl;}
 };
 
 class eSocket_CannotListen : public eException
 {
 	public:
 		virtual void print(void)
-		{ cout << "Cannot listen on port" << endl; }
+		{ cerr << "Cannot listen on port" << endl; }
 };
 
 class eSocket_CannotAccept : public eException
 {
 	public:
 		virtual void print(void)
-		{ cout << "Cannot accept connection" << endl; }
+		{ cerr << "Cannot accept connection" << endl; }
 };
 
 #endif

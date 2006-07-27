@@ -69,9 +69,9 @@ int main(int argc, char *argv[])
 				cerr << "Pass -h for help" << endl;
 		}
 	}
-	catch(eFilestuff_CannotCreateFolder &e)
+	catch(eConfig_CannotSaveConfig &e)
 	{
-		cerr << "Cannot save config file, because I cannot create the ~/.tuxcast folder" << endl;
+		cerr << "Cannot save config file" << endl;
 		cerr << "Exception caught: ";
 		e.print();
 		return -1;

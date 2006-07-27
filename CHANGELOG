@@ -1,3 +1,10 @@
+Revision 64:
+* Removed the configuration constructor and destructor, as they have been
+	siting around empty for a long time
+* Changed all exception print() functions to use cerr instead of cout
+* Added a new exception, eConfig_CannotSaveConfig
+-------------------------------------------------------------------------------
+
 Revision 63:
 * Removed the bug I fixed below from TODO
 * Added checkfileexists to config::save, so it fails nicely with folders

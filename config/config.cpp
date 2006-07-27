@@ -73,9 +73,7 @@ void configuration::save()
 		cerr << "Oops, couldn't save your new config:" << endl;
 		cerr << "Exception caught: ";
 		e.print();
-		return; // Here we can just return and forget:
-		// Nothing should depend on config being saved right
-		// From now on the program can just end normally
+		throw eConfig_CannotSaveConfig();
 	}
 	catch(eFilestuff_NotAFile &e)
 	{
@@ -83,7 +81,7 @@ void configuration::save()
 		cerr << "~/.tuxcast/config.xml exists but isn't a file" << endl;
 		cerr << "Exception caught: ";
 		e.print();
-		return; // Ditto
+		throw eCannotSaveConfig();
 	}
 		
 	path = path + "/config.xml";
