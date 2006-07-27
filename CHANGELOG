@@ -1,3 +1,7 @@
+Revision 68:
+* Applied the GPL to every file, and added COPYING
+--------------------------------------------------------------------------------
+
 Revision 67:
 * Actually added the exception handler for eRSS_CannotParseFeed into tuxcast.cpp
 --------------------------------------------------------------------------------
