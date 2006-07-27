@@ -1,3 +1,7 @@
+Revision 67:
+* Actually added the exception handler for eRSS_CannotParseFeed into tuxcast.cpp
+--------------------------------------------------------------------------------
+
 Revision 66:
 * Actually added rss_exceptions,h into SVN (forgot last time)
 -------------------------------------------------------------------------------

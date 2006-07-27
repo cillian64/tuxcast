@@ -11,6 +11,7 @@
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
 #include "../config/config_exceptions.h"
+#include "rss_exceptions.h"
 
 using namespace std;
 
@@ -122,13 +123,22 @@ void check(configuration *myconfig, int feed)
 {
 	filelist *myfilelist;
 	
-	myfilelist = parse(myconfig->feeds[feed]->address);
-	if(myfilelist == NULL)
+	try
 	{
-		cerr << "*** parse() failed - aborting this feed ***" << endl;
-		cerr << "*** Check the URL is right, then go moan to your feed maintainer :-) ***" << endl;
+		myfilelist = parse(myconfig->feeds[feed]->address);
+	}
+	catch(eRSS_CannotParseFeed &e)
+	{
+		cerr << "Couldn't parse feed." << endl;
+		cerr << "Please check the URL is correct, then contact your feed maintainer." << endl;
+		cerr << "Exception caught: ";
+		e.print();
+		cerr << "Aborting this feed." << endl;
 		return;
 	}
+	// This NULL check shouldn't be required now -
+	// All errors should throw and be caught above
+	
 
 	for(int j=0, size=myfilelist->files.size(); j<size; j++)
 	{
