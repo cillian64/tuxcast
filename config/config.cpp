@@ -9,18 +9,6 @@
 #include "../libraries/filestuff_exceptions.h"
 #include "config_exceptions.h"
 
-
-configuration::configuration()
-{
-	// Nothing needed here anymore,
-	// since the vector should initialize itself just fine
-}
-
-configuration::~configuration()
-{
-	// ditto
-}
-
 void configuration::save()
 {
 	xmlDocPtr doc = NULL;
@@ -81,7 +69,7 @@ void configuration::save()
 		cerr << "~/.tuxcast/config.xml exists but isn't a file" << endl;
 		cerr << "Exception caught: ";
 		e.print();
-		throw eCannotSaveConfig();
+		throw eConfig_CannotSaveConfig();
 	}
 		
 	path = path + "/config.xml";

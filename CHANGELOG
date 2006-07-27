@@ -1,3 +1,11 @@
+Revision 65:
+* Removed a bug in the last revision - I removed the constructors but forgot
+	to remove them from config.h
+* Removed the filelist constructor and destructor (from the header too :)
+* Added rss_exceptions.h and eRSS_CannotParseFeed
+* Fixed some bugs in the last commit
+-------------------------------------------------------------------------------
+
 Revision 64:
 * Removed the configuration constructor and destructor, as they have been
 	siting around empty for a long time

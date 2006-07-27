@@ -133,14 +133,3 @@ filelist *parse(string feed)
 	return myfilelist;
 }
 
-// -------------------------------------------------------------------------
-filelist::filelist()
-{
-	// No init needed, thanks to the STL vector
-}
-
-filelist::~filelist()
-{
-	// ditto
-}
-
