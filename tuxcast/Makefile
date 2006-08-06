@@ -1,8 +1,11 @@
-main: tuxcast.o rss.o ../config.o ../libraries/filestuff.o ../libraries/socket.o
-	g++ -g -o tuxcast tuxcast.o rss.o ../config/config.o ../libraries/filestuff.o ../libraries/socket.o `xml2-config --libs` `curl-config --libs`
+main: tuxcast.o rss.o ../config.o ../libraries/filestuff.o ../libraries/socket.o tuxcast_functions.o
+	g++ -g -o tuxcast tuxcast.o tuxcast_functions.o rss.o ../config/config.o ../libraries/filestuff.o ../libraries/socket.o `xml2-config --libs` `curl-config --libs`
 
 tuxcast.o: tuxcast.cpp
-	g++ -c -g tuxcast.cpp `curl-config --cflags` `xml2-config --cflags`
+	g++ -c -g tuxcast.cpp `xml2-config --cflags` `curl-config --cflags`
+
+tuxcast_functions.o: tuxcast_functions.cpp
+	g++ -c -g tuxcast_functions.cpp `curl-config --cflags` `xml2-config --cflags`
 
 rss.o: rss.cpp
 	g++ -c -g rss.cpp `xml2-config --cflags`

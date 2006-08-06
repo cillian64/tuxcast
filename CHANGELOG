@@ -1,3 +1,11 @@
+Revision 70:
+* Moved many tuxcast functions to tuxcast_functions.cpp
+* Added tuxcast_functions.cpp and .h
+* Added a new backend folder.  At the moment it contains the basic layout,
+	and a simple test program.  It will not compile by default with the
+	rest of tuxcast.  You must compile it manually to test the backend
+--------------------------------------------------------------------------------
+
 Revision 69:
 * Test commit to diagnose an SVN bug
 --------------------------------------------------------------------------------
