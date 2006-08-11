@@ -1,3 +1,12 @@
+###############################################################################
+===============================================================================
+------------------------- Tuxcast 0.2 Released! -------------------------------
+===============================================================================
+###############################################################################
+(Ok, not quite released yet.  I'm going on holiday in a week, but I thought
+	now would be a good time to stick 0.2.  So, 0.2 will be made from
+	subversion at revision 70)
+
 Revision 70:
 * Moved many tuxcast functions to tuxcast_functions.cpp
 * Added tuxcast_functions.cpp and .h
