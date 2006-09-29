@@ -1,3 +1,15 @@
+Revision 73:
+* Added in protocol.h and .cpp - this is the basis of the TCP protocol parser
+--------------------------------------------------------------------------------
+
+Revision 72:
+* Not sure...
+--------------------------------------------------------------------------------
+
+Revision 71:
+* Not sure...
+--------------------------------------------------------------------------------
+
 Revision 71:
 * Added some new TODOs
 --------------------------------------------------------------------------------
@@ -10,6 +22,9 @@ Revision 71:
 (Ok, not quite released yet.  I'm going on holiday in a week, but I thought
 	now would be a good time to stick 0.2.  So, 0.2 will be made from
 	subversion at revision 70)
+	Edit: Cypher has disappeared, so I'll try and hack the ebuild together
+	myself, and leave out the manpages till he reappears or someone else
+	volunteers to help.)
 
 Revision 70:
 * Moved many tuxcast functions to tuxcast_functions.cpp

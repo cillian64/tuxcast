@@ -20,7 +20,6 @@
  */
 
 
-#include "../tuxcast/tuxcast_functions.h"
 #include <iostream>
 #include <pthread.h>
 #include <stdlib.h>
