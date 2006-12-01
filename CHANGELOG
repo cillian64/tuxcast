@@ -1,3 +1,10 @@
+Revision 74:
+* Added in the basis of the tuxcast->amarok plugin.  This will not build by
+	default - it's all commented out in the makefiles.  Also, since
+	tuxcast-0.2 hasn't officially been released yet, I might add in
+	tuxcast-amarok.
+--------------------------------------------------------------------------------
+
 Revision 73:
 * Added in protocol.h and .cpp - this is the basis of the TCP protocol parser
 --------------------------------------------------------------------------------
