@@ -63,3 +63,22 @@ static int callback_dud(void *cookie, int argc, char **argv, char **colname)
 {
 	return 0;
 }
+
+void collection::add_episode(string url, string localurl, string parent, string title)
+{ // *cough* *cough*
+	int returncode;
+	char *errormsg;
+	string sql="INSERT INTO podcastepisodes (url,localurl,parent,title,isNew) VALUES ('"+url+"','"+localurl+"','"+parent+"','"+title+"',1);";
+	if(db == 0)
+	{
+		// throw someexception()
+		return;
+	}
+
+	returncode = sqlite3_exec(db, sql.c_str(), callback_dud, 0, &errormsg);
+	if(returncode != SQLITE_OK)
+	{
+		// throw someexception()
+		return;
+	}
+}

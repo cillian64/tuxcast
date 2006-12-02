@@ -1,3 +1,11 @@
+Revision 75:
+* Added the add_episode function, and the relevent 'e' option to the
+	tuxcast-amarok test program.
+* In other news, tuxcast-0.2 should be released this weekend - it will use
+	the snapshot from the 0.2 entry earlier (revision 70).  I'm going to
+	carry on committing but new changes won't go into 0.2.
+--------------------------------------------------------------------------------
+
 Revision 74:
 * Added in the basis of the tuxcast->amarok plugin.  This will not build by
 	default - it's all commented out in the makefiles.  Also, since
