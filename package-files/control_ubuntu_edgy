@@ -1,14 +1,14 @@
 
 
 Package: tuxcast
-Version: 0.1
+Version: 0.2
 Section: Web
 Priority: optional
 Architecture: i386
 Essential: no
-Depends: libboost-filesystem1.33.1, libcurl3, libxml2
-Installed-Size: 1584
-Maintainer: Cillian <cillian64@hotmail.com>
+Depends: libcurl3, libxml2
+Installed-Size: 60724
+Maintainer: David Turner <cillian64@hotmail.com>
 Conflicts:
 Replaces:
 Provides:
