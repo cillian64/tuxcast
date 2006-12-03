@@ -1,3 +1,10 @@
+Revision 76:
+* Added strips to make install - By the way, release 0.1 wasn't stripped, hence
+	the huge binaries.  0.2 was stripped even though strip wasn't in the
+	makefile - I did it manually.  TODO: Check if strip should go in make
+	or make install.
+--------------------------------------------------------------------------------
+
 Revision 75:
 * Added the add_episode function, and the relevent 'e' option to the
 	tuxcast-amarok test program.
