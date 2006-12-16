@@ -35,13 +35,10 @@ filelist *parse(string feed)
 	xmlDocPtr doc;
 	xmlNode *curr = NULL;
 	filelist *myfilelist;
-	string URL;
-	string name;
-	unsigned int size; // the length of the file, in bytes I think
 
 	doc = xmlReadFile(feed.c_str(),NULL,XML_PARSE_RECOVER | XML_PARSE_NOWARNING | XML_PARSE_NOERROR); // These options should help incorrect RSS feeds survive
 	// Not ideal, but easier than convincing feed maintainers to escape stuff, etc...
-
+	
 	if(doc == NULL)
 	{
 		cerr << "Error reading/parsing RSS file" << endl;
@@ -74,60 +71,20 @@ filelist *parse(string feed)
 	// Curr = channel
 
 	curr = curr->children;
-	while(curr != NULL) // Untill we hit the end of channel
+	int items=0;
+	while(true) // Untill we hit the end of channel
 	{
 		if(curr->type == 1) // It seems trying to access the name of a text segfaults...
-		{
+		{ // FIXME - enum or define, PLEASE!?
 			if(strcmp("item", (char *)curr->name) == 0)
 			{
+				items++;
 				curr = curr->children;
 				while(1)
 				{
 					if(strcmp((char *)curr->name,"enclosure") == 0)
 					{
-						// FILE FOUND!!! :-)
-						// Let's add a new element to the vector:
-						myfilelist->files.push_back(NULL);
-						myfilelist->files[myfilelist->files.size()-1] = new file;
-						
-						_xmlAttr *attribute;
-						
-						URL = "";
-						size = 0;
-						
-						attribute = curr->properties;
-						while(true)
-						{
-							if(strcmp((char *)attribute->name,"url") == 0)
-							{
-								URL=(char *)attribute->children->content;
-							}
-							else
-							{
-								if(strcmp((char *)attribute->name,"length") == 0)
-								{
-									size=atoi((char *)attribute->children->content);
-								}
-							}
-							// Do any type checking here
-				
-							if(attribute->next == NULL)
-								break;
-							attribute = attribute->next;
-						}
-
-						name = URL.substr(URL.rfind("/",URL.length())+1,URL.length()-URL.rfind("/",URL.length()));
-						// Remove ?... if present...
-						if(name.find("?",0) != string::npos)
-						{
-							name = name.substr(0,name.find("?",0));
-						}
-						// Setting up the file we made earlier...:
-						myfilelist->files[myfilelist->files.size()-1]->filename = name;
-						myfilelist->files[myfilelist->files.size()-1]->URL = URL; // Watch out - filename != name && length != size
-						myfilelist->files[myfilelist->files.size()-1]->length = size;
-
-
+						addtolist(myfilelist, curr);
 						break;
 					}
 					else
@@ -145,9 +102,46 @@ filelist *parse(string feed)
 				curr = curr->parent;
 			}
 		}
-
-		curr = curr->next;
+		if(curr->next == NULL)
+			break;
+		else
+			curr = curr->next;
 	}
+	curr = curr->parent; // Skip out of channel.
+	if(items == 0) // RSS 1.0 compatability mode (FIXME)
+	{
+		cerr << "Oops, no items found inside <channel> - Is this RSS 1.0?" << endl;
+		cerr << "Trying RSS 1.0 compatability mode..." << endl;
+
+		while(true)
+		{
+			if(curr->type == 1) // FIXME - use an enum / define
+			{
+				if(strcmp((char*)curr->name, "item") == 0)
+				{
+					curr = curr->children; // Step inside item
+					{
+						// This next loop means keep going till you get to enclosure.
+						while(curr->type != 1) // It has to be a bit complicated to avoid a segfault:
+						// Non-item nodes have a NULL ->name I think.
+						{
+							curr = curr->next;
+							if((curr->type == 1) && (strcmp((char*)curr->name,"enclosure") != 0))
+								curr = curr->next;
+						}
+						// Curr now == the enclosure:
+						addtolist(myfilelist,curr);
+					}
+					curr = curr->parent; // Step out
+				}
+			}
+			if(curr->next == 0)
+				break;
+			else
+				curr = curr->next;
+		}
+	}
+		
 
 	
 	
@@ -156,3 +150,49 @@ filelist *parse(string feed)
 	return myfilelist;
 }
 
+void addtolist(filelist *myfilelist, xmlNode *enclosure)
+{
+	_xmlAttr *attribute;
+	string name=""; // Is worked out from trimming URL
+	string URL="";
+	unsigned int size=0;
+	
+	attribute = enclosure->properties;
+	while(true)
+	{
+		if(strcmp((char *)attribute->name,"url") == 0)
+		{
+			URL=(char *)attribute->children->content;
+		}
+		else
+		{
+			if(strcmp((char *)attribute->name,"length") == 0)
+			{
+				size=atoi((char *)attribute->children->content);
+			}
+		}
+		// Do any type checking here
+
+		if(attribute->next == NULL)
+			break;
+		attribute = attribute->next;
+	}
+
+
+
+	// Let's add a new element to the vector:
+	myfilelist->files.push_back(NULL);
+	myfilelist->files[myfilelist->files.size()-1] = new file;
+	
+
+	name = URL.substr(URL.rfind("/",URL.length())+1,URL.length()-URL.rfind("/",URL.length()));
+	// Remove ?... if present...
+	if(name.find("?",0) != string::npos)
+	{
+		name = name.substr(0,name.find("?",0));
+	}
+	// Setting up the file we made earlier...:
+	myfilelist->files[myfilelist->files.size()-1]->filename = name;
+	myfilelist->files[myfilelist->files.size()-1]->URL = URL; // Watch out - filename != name && length != size
+	myfilelist->files[myfilelist->files.size()-1]->length = size;
+}

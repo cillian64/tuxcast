@@ -1,3 +1,14 @@
+Revision 78:
+* Updated TODO
+* Changed the channel loop in rss.cpp so after channel curr != NULL.  Now I
+	can enter my RSS 1.0 compatability mode.
+* Moved the things that add the file to the filelist to a separate function.
+	This saved duplication of code in the RSS 1.0 compatability mode.  This
+	new function includes everything needed to add a new item to filelist
+	from an xmlNode pointer to the enclosure.
+* Now tuxcast supports RSS 1.0 (Somewhat, it's a bit hacky).  See TODO.
+--------------------------------------------------------------------------------
+
 Revision 77:
 * Updated control files for 0.2 release
 * Added ebuild for 0.2

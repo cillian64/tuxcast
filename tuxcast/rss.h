@@ -24,6 +24,8 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <libxml/tree.h> // Don't need parser in here, hopefully inclusion
+// guard should stop double-inclusion in rss.cpp buggering up.
 
 using namespace std;
 
@@ -49,4 +51,4 @@ class filelist
 };
 
 filelist *parse(string feed);
-
+void addtolist(filelist *myfilelist, xmlNode *enclosure);
