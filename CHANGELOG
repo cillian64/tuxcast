@@ -1,3 +1,7 @@
+Revision 80:
+* Updated TOTO
+--------------------------------------------------------------------------------
+
 Revision 79:
 * Moved exception checking in tuxcast_functions to a new function, for
 	consistant error messages

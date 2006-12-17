@@ -12,5 +12,4 @@
 * Add GPL to all new files (Including tuxcast->amarok).
 * Change filelist to a typedef, and things that reference it (At the moment it's
 	a class only containing a vector - waste of time + space)
-* Enter RSS 1.0 mode if the root tag is RDF instead of checking for no items
 * Change tag strcmps to strcasecmps, to allow feeds with different case to work.
