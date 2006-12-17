@@ -47,22 +47,9 @@ void check(configuration *myconfig, int feed)
 {
 	filelist *myfilelist;
 	
-	try
-	{
-		myfilelist = parse(myconfig->feeds[feed]->address);
-	}
-	catch(eRSS_CannotParseFeed &e)
-	{
-		cerr << "Couldn't parse feed." << endl;
-		cerr << "Please check the URL is correct, then contact your feed maintainer." << endl;
-		cerr << "Exception caught: ";
-		e.print();
-		cerr << "Aborting this feed." << endl;
+	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->address)))
 		return;
-	}
-	// This NULL check shouldn't be required now -
-	// All errors should throw and be caught above
-	
+
 
 	for(int j=0, size=myfilelist->files.size(); j<size; j++)
 	{
@@ -92,13 +79,8 @@ void up2date(configuration *myconfig, int feed)
 {
 	filelist *myfilelist;
 	
-	myfilelist = parse(myconfig->feeds[feed]->address);
-	if(myfilelist == NULL)
-	{
-		cerr << "*** parse() failed - aborting this feed ***" << endl;
-		cerr << "*** Check the URL is right, then go moan to your feed maintainer :-) ***" << endl;
+	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->address)))
 		return;
-	}
 
 		
 	for(int j=0, size=myfilelist->files.size(); j<size; j++)
@@ -265,5 +247,35 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	}
 
 	curl_easy_cleanup(mycurl);
+}
+
+filelist *parsefeed(string URL) // This parses the feed, with error checking.
+// It returns NULL if any error occured
+{
+	filelist *myfilelist;
+	try
+	{
+		myfilelist = parse(URL);
+	}
+	catch(eRSS_InvalidRootNode &e)
+	{
+		cerr << "This is an XML file, but does not appear to be RSS 1 or RSS 2" << endl;
+		cerr << "Please check you have the correct URL, and that it is an RSS feed, " \
+		 << "and then contact your feed maintainer" << endl;
+		 cerr << "Exception caught:";
+		 e.print();
+		 cerr << "Aborting this feed." << endl;
+		 return NULL;
+	}
+	catch(eRSS_CannotParseFeed &e)
+	{
+		cerr << "Couldn't parse feed." << endl;
+		cerr << "Please check the URL is correct, then contact your feed maintainer." << endl;
+		cerr << "Exception caught: ";
+		e.print();
+		cerr << "Aborting this feed." << endl;
+		return NULL;
+	}
+	return myfilelist;
 }
 

@@ -19,6 +19,8 @@
  * 
  */
 
+#ifndef RSS_H
+#define RSS_H
 
 
 #include <string>
@@ -52,3 +54,5 @@ class filelist
 
 filelist *parse(string feed);
 void addtolist(filelist *myfilelist, xmlNode *enclosure);
+
+#endif

@@ -36,5 +36,11 @@ class eRSS_CannotParseFeed : public eException
 		{ cerr << "Cannot parse the RSS feed" << endl; }
 };
 
+class eRSS_InvalidRootNode : public eRSS_CannotParseFeed
+{
+	public:
+		virtual void print(void)
+		{ cerr << "Unrecognised root node" << endl; }
+};
 
 #endif

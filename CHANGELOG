@@ -1,3 +1,16 @@
+Revision 79:
+* Moved exception checking in tuxcast_functions to a new function, for
+	consistant error messages
+* Added a new exception for an invalid or unrecognised root node
+* Instead of the hacky RSS 1.0 compatability mode, tuxcast checks the root
+	node's name and parses appropriately
+* Removed some unnecessary {}s from some places.
+* Changed rss.cpp functions to use exceptions instead of returning NULL, and
+	changed the callers in tuxcast_functions.cpp to catch exceptions
+* Fixed incorrect inclusion guard in tuxcast_functions.h (Oops. :o)
+* Added inclusion guard to rss.h
+--------------------------------------------------------------------------------
+
 Revision 78:
 * Updated TODO
 * Changed the channel loop in rss.cpp so after channel curr != NULL.  Now I

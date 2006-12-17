@@ -21,10 +21,11 @@
 
 
 
-#ifndef TUXCAST_H
-#define TUXCAST_H
+#ifndef TUXCAST_FUNCTIONS_H
+#define TUXCAST_FUNCTIONS_H
 
 #include <string>
+#include "rss.h"
 
 using namespace std;
 
@@ -38,5 +39,6 @@ void up2date(configuration *myconfig, int feed);
 void checkall(configuration *myconfig);
 void up2dateall(configuration *myconfig);
 void get(string name, string URL, int feed, configuration *myconfig);
+filelist *parsefeed(string URL);
 
 #endif

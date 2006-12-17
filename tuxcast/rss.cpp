@@ -23,6 +23,7 @@
 
 #include "../compile_flags.h"
 #include "rss.h"
+#include "rss_exceptions.h"
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <iostream>
@@ -35,25 +36,30 @@ filelist *parse(string feed)
 	xmlDocPtr doc;
 	xmlNode *curr = NULL;
 	filelist *myfilelist;
+	bool rss2; // true == 2, false == 1 or RDF.
 
 	doc = xmlReadFile(feed.c_str(),NULL,XML_PARSE_RECOVER | XML_PARSE_NOWARNING | XML_PARSE_NOERROR); // These options should help incorrect RSS feeds survive
 	// Not ideal, but easier than convincing feed maintainers to escape stuff, etc...
 	
 	if(doc == NULL)
-	{
-		cerr << "Error reading/parsing RSS file" << endl;
-		return NULL;
-	}
+		throw eRSS_CannotParseFeed();
 	
 	curr = xmlDocGetRootElement(doc);
 	// curr == root node
 	
+	cerr << curr->name << endl;
+	
+	if(strcasecmp((char*)curr->name,"rss") == 0)
+		rss2 = true;
+	else
+		if(strcasecmp((char*)curr->name,"RDF") == 0)
+			rss2 = false;
+		else
+			throw eRSS_InvalidRootNode();
+	
 	curr = curr->children;
 	while(curr->type != 1) // Until we get past all the text
-	{
 		curr = curr->next; // Keep going
-	}
-
 
 	// All that mucking about counting stuff is eliminated, thanks to STL :-)
 
@@ -64,59 +70,45 @@ filelist *parse(string feed)
 	
 	curr = curr->children;
 	while(curr->type != 1) // Until we get past all the text
-	{
 		curr = curr->next; // Keep going
-	}
 
 	// Curr = channel
 
 	curr = curr->children;
-	int items=0;
-	while(true) // Untill we hit the end of channel
+	if(rss2 == true) // RSS 2.0 mode:
 	{
-		if(curr->type == 1) // It seems trying to access the name of a text segfaults...
-		{ // FIXME - enum or define, PLEASE!?
-			if(strcmp("item", (char *)curr->name) == 0)
-			{
-				items++;
-				curr = curr->children;
-				while(1)
+		while(true) // Untill we hit the end of channel
+		{
+			if(curr->type == 1) // It seems trying to access the name of a text segfaults...
+			// FIXME - enum or define, PLEASE!?
+				if(strcmp("item", (char *)curr->name) == 0)
 				{
-					if(strcmp((char *)curr->name,"enclosure") == 0)
-					{
-						addtolist(myfilelist, curr);
-						break;
-					}
-					else
-					{
-						if(curr->next != NULL)
+					curr = curr->children;
+					while(1)
+						if(strcmp((char *)curr->name,"enclosure") == 0)
 						{
-							curr = curr->next;
-						}
-						else
-						{
+							addtolist(myfilelist, curr);
 							break;
 						}
-					}
+						else
+							if(curr->next != NULL)
+								curr = curr->next;
+							else
+								break;
+					curr = curr->parent;
 				}
-				curr = curr->parent;
-			}
+			if(curr->next == NULL)
+				break;
+			else
+				curr = curr->next;
 		}
-		if(curr->next == NULL)
-			break;
-		else
-			curr = curr->next;
 	}
-	curr = curr->parent; // Skip out of channel.
-	if(items == 0) // RSS 1.0 compatability mode (FIXME)
-	{
-		cerr << "Oops, no items found inside <channel> - Is this RSS 1.0?" << endl;
-		cerr << "Trying RSS 1.0 compatability mode..." << endl;
-
+	else
+	{ // RSS 1.0 mode:
+		curr = curr->parent; // Skip out of channel.
 		while(true)
 		{
 			if(curr->type == 1) // FIXME - use an enum / define
-			{
 				if(strcmp((char*)curr->name, "item") == 0)
 				{
 					curr = curr->children; // Step inside item
@@ -134,17 +126,13 @@ filelist *parse(string feed)
 					}
 					curr = curr->parent; // Step out
 				}
-			}
 			if(curr->next == 0)
 				break;
 			else
 				curr = curr->next;
 		}
 	}
-		
 
-	
-	
 	xmlFreeDoc(doc);
 
 	return myfilelist;
