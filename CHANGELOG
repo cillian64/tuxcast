@@ -1,3 +1,7 @@
+Revision 82:
+* Added GPL to amarok and some other files missing it
+--------------------------------------------------------------------------------
+
 Revision 81:
 * Removed debug message from rss.cpp
 --------------------------------------------------------------------------------
