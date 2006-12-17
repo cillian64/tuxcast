@@ -47,8 +47,6 @@ filelist *parse(string feed)
 	curr = xmlDocGetRootElement(doc);
 	// curr == root node
 	
-	cerr << curr->name << endl;
-	
 	if(strcasecmp((char*)curr->name,"rss") == 0)
 		rss2 = true;
 	else
