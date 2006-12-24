@@ -1,3 +1,14 @@
+Revision 89:
+(Special Xalior Edition :P)
+* Updated TOOD.
+* Once configuration::load has thrown the warning about using your home dir,
+	it will save the config with the podcastdir as ~ so the warning will
+	not be thrown in future.
+* podcastdir will not be prepended to folders beginning with /.  This is so
+	you can have a particular podcast go to a different place than the rest
+	without having podcastdir as / and fiddling with lots of absolute paths.
+--------------------------------------------------------------------------------
+
 Revision 88:
 * Added the -g feed -n NAME option to tuxcast-config, so you can retrieve
 	info on just one particular feed, without having to use -G.

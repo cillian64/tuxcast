@@ -108,6 +108,8 @@ void configuration::load()
 	xmlNode *root=NULL;
 	xmlNode *curr=NULL;
 	string path=getenv("HOME");
+	bool queuesave=false; // This is so something in here can queue a save
+	// which will take place once the XML file is closed.
 	path = path + "/.tuxcast/config.xml";
 	try
 	{
@@ -148,9 +150,9 @@ void configuration::load()
 		{
 			if(curr->children == NULL)
 			{
-				cerr << "Please setup a podcast directory" << endl;
-				cerr << "For the moment, putting all podcasts in your home directory!" << endl;
+				cerr << "You have not setup a podcast directory - tuxcast will use your home directory, ~." << endl;
 				this->podcastdir=getenv("HOME");
+				queuesave=true;
 			}
 			else
 				this->podcastdir = (char *)curr->children->content;
@@ -240,6 +242,10 @@ void configuration::load()
 		}
 		curr = curr->next;
 	}
+
+	if(queuesave == true)
+		this->save();
+
 
 }
 

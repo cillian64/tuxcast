@@ -222,8 +222,11 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 		// Do folder'y stuff first
 		path = myconfig->podcastdir;
 		path += "/";
-		path += myconfig->feeds[feed]->folder;
-		
+		// If the podcast's folder is absolute, don't prepend podcastdir
+		if(myconfig->feeds[feed]->folder[0] == '/')
+			path = myconfig->feeds[feed]->folder;
+		else
+			path += myconfig->feeds[feed]->folder;
 		checkfolderexists(path);
 		// If anything goes wrong here, the exception should
 		// abort everything...
