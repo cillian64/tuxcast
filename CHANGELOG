@@ -1,3 +1,11 @@
+Revision 88:
+* Added the -g feed -n NAME option to tuxcast-config, so you can retrieve
+	info on just one particular feed, without having to use -G.
+* Changed the arguments to tuxcast-config.cpp:get() to make the above possible.
+* Added the -v option to tuxcast and tuxcast-config
+* Removed "XML" from the -b usage information in tuxcast
+--------------------------------------------------------------------------------
+
 Revision 87:
 * Added a check to see if the root element is NULL in rss.cpp.  This prevents
 	segfaults when passed an empty file as a feed (libxml gives a valid doc

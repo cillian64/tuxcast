@@ -42,7 +42,7 @@ using namespace std;
 
 
 
-const char options[] = "cuC:U:b";
+const char options[] = "cuC:U:bv";
 
 int main(int argc, char *argv[])
 {
@@ -123,9 +123,16 @@ int main(int argc, char *argv[])
 		case 'b':
 			// Backend mode:
 			cerr << "Backend mode gone for now" << endl;
-			cerr << "See the tuxcast blog, tuxcast.sf.net" << endl;
+			cerr << "See the tuxcast blog, http://tuxcast.sf.net" << endl;
 			break;
 
+		case 'v':
+			cerr << "Tuxcast version 0.2, Copyright (c) 2006 David Turner" << endl;
+			cerr << "Tuxcast comes with ABSOLUTELY NO WARRANTY; for details see COPYING in the source tree." << endl;
+			cerr << "This is free software, and you are welcome to redistribute it under certain conditions; see COPYING in the source tree for more details." << endl;
+			// TODO: Add a way for -v to print out which SVN
+			// revision this is built from.
+			break;
 
 		default:
 			cout << "Usage: tuxcast <option>" << endl;
@@ -134,7 +141,8 @@ int main(int argc, char *argv[])
 			cout << "-u - Download only the latest file from all feeds" << endl;
 			cout << "-C NAME - check the specified feed" << endl;
 			cout << "-U name - download only the latest episode from the specified feed" << endl;
-			cout << "-b - enter the XML backend mode" << endl;
+			cout << "-b - enter the backend mode" << endl;
+			cout << "-v - show version and license information" << endl;
 			cout << endl;
 	}
 

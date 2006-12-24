@@ -9,3 +9,4 @@
 	should follow suite including tuxcast->amarok)
 * Check no exceptions from the filestuff library can slip through
 * Change all libxml parses to be non-verbose (and not spit out errors)
+* Add a proper usage message to tuxcast-config
