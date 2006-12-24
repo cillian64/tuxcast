@@ -167,8 +167,8 @@ void addtolist(filelist *myfilelist, xmlNode *enclosure)
 
 
 	// Let's add a new element to the vector:
-	myfilelist->files.push_back(NULL);
-	myfilelist->files[myfilelist->files.size()-1] = new file;
+	myfilelist->push_back(NULL);
+	(*myfilelist)[myfilelist->size()-1] = new file;
 	
 
 	name = URL.substr(URL.rfind("/",URL.length())+1,URL.length()-URL.rfind("/",URL.length()));
@@ -178,7 +178,7 @@ void addtolist(filelist *myfilelist, xmlNode *enclosure)
 		name = name.substr(0,name.find("?",0));
 	}
 	// Setting up the file we made earlier...:
-	myfilelist->files[myfilelist->files.size()-1]->filename = name;
-	myfilelist->files[myfilelist->files.size()-1]->URL = URL; // Watch out - filename != name && length != size
-	myfilelist->files[myfilelist->files.size()-1]->length = size;
+	(*myfilelist)[myfilelist->size()-1]->filename = name;
+	(*myfilelist)[myfilelist->size()-1]->URL = URL; // Watch out - filename != name && length != size
+	(*myfilelist)[myfilelist->size()-1]->length = size;
 }

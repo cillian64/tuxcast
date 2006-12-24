@@ -51,11 +51,11 @@ void check(configuration *myconfig, int feed)
 		return;
 
 
-	for(int j=0, size=myfilelist->files.size(); j<size; j++)
+	for(int j=0, size=myfilelist->size(); j<size; j++)
 	{
 		try
 		{
-			get(myfilelist->files[j]->filename, myfilelist->files[j]->URL,
+			get((*myfilelist)[j]->filename, (*myfilelist)[j]->URL,
 				feed, myconfig);
 		}
 		catch(eFilestuff_CannotCreateFolder &e)
@@ -83,13 +83,13 @@ void up2date(configuration *myconfig, int feed)
 		return;
 
 		
-	for(int j=0, size=myfilelist->files.size(); j<size; j++)
+	for(int j=0, size=myfilelist->size(); j<size; j++)
 	{
 		if(j==0)
-			get(myfilelist->files[j]->filename, myfilelist->files[j]->URL,
+			get((*myfilelist)[j]->filename, (*myfilelist)[j]->URL,
 					feed, myconfig);
 		else
-			newfile(myfilelist->files[j]->filename);
+			newfile((*myfilelist)[j]->filename);
 		// First file, download it
 		// Other files, just pretend
 	}

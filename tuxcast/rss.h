@@ -39,18 +39,7 @@ class file
 		unsigned long length;
 };
 
-class filelist
-{
-	public:
-
-		// Just opening these up to the public eliminates all that
-		// messing about with accessor functions, etc....
-		vector<file *> files; // Note - it's a vector of FILE POINTERS!!!
-		// This means you'll have to access it like files[123]->...
-		// instead of files[123].xyz
-		
-		// Length is replaced by files.size()
-};
+typedef vector<file *> filelist;
 
 filelist *parse(string feed);
 void addtolist(filelist *myfilelist, xmlNode *enclosure);
