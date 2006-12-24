@@ -1,3 +1,10 @@
+Revision 87:
+* Added a check to see if the root element is NULL in rss.cpp.  This prevents
+	segfaults when passed an empty file as a feed (libxml gives a valid doc
+	for an empty file, but when asked for the root element it chucks out a
+	NULL pointer.  Weird.)
+--------------------------------------------------------------------------------
+
 Revision 86:
 * Added a missing divider to CHANGELOG.  :/
 * Cleaned up INSTALL

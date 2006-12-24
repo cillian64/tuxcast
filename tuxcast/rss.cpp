@@ -46,6 +46,8 @@ filelist *parse(string feed)
 	
 	curr = xmlDocGetRootElement(doc);
 	// curr == root node
+	if(curr == NULL)
+		throw eRSS_CannotParseFeed();
 	
 	if(strcasecmp((char*)curr->name,"rss") == 0)
 		rss2 = true;
