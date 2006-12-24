@@ -77,8 +77,7 @@ filelist *parse(string feed)
 	{
 		while(true) // Untill we hit the end of channel
 		{
-			if(curr->type == 1) // It seems trying to access the name of a text segfaults...
-			// FIXME - enum or define, PLEASE!?
+			if(curr->type == XML_ELEMENT_NODE) // It seems trying to access the name of a text segfaults...
 				if(strcasecmp("item", (char *)curr->name) == 0)
 				{
 					curr = curr->children;
@@ -106,7 +105,7 @@ filelist *parse(string feed)
 		curr = curr->parent; // Skip out of channel.
 		while(true)
 		{
-			if(curr->type == 1) // FIXME - use an enum / define
+			if(curr->type == XML_ELEMENT_NODE)
 				if(strcasecmp((char*)curr->name, "item") == 0)
 				{
 					curr = curr->children; // Step inside item

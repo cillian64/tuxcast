@@ -1,3 +1,7 @@
+Revision 85:
+* Changed 1 to XML_ELEMENT_NODE in rss.cpp
+--------------------------------------------------------------------------------
+
 Revision 84:
 * Changed filelist to a typedef, and changed relevent stuff...
 --------------------------------------------------------------------------------
