@@ -124,9 +124,9 @@ void help(void)
 
 void get(string args)
 {
-	if(strcmp(args.c_str(),"podcastdir") == 0)
+	if(strcasecmp(args.c_str(),"podcastdir") == 0)
 		cout << myconfig.podcastdir << endl;
-	if(strcmp(args.c_str(),"ask") == 0)
+	if(strcasecmp(args.c_str(),"ask") == 0)
 	{
 		if(myconfig.ask == true)
 			cout << "true" << endl;
@@ -168,19 +168,19 @@ void set(string args)
 	string varname=args.substr(0,args.find("=",0));
 	string value=args.substr(args.find("=",0)+1,args.length()-args.find("=",0)-1);
 
-	if(strcmp(varname.c_str(),"podcastdir") == 0)
+	if(strcasecmp(varname.c_str(),"podcastdir") == 0)
 	{
 		myconfig.podcastdir = value;
 	}
-	if(strcmp(varname.c_str(),"ask") == 0)
+	if(strcasecmp(varname.c_str(),"ask") == 0)
 	{
-		if(strcmp(value.c_str(),"true") == 0)
+		if((strcasecmp(value.c_str(),"true") == 0) || (strcasecmp(value.c_str(),"yes") == 0))
 		{
 			myconfig.ask = true;
 		}
 		else
 		{
-			if(strcmp(value.c_str(),"false") == 0)
+			if((strcasecmp(value.c_str(),"false") == 0) || (strcasecmp(value.c_str(),"no") == 0))
 			{
 				myconfig.ask = false;
 			}
@@ -220,7 +220,7 @@ void add(int argc,char *argv[])
 	}
 	while(i<myconfig.feeds.size())
 	{
-		if(strcmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0)
+		if(strcasecmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0)
 		{
 			cerr << "Feed already exists" << endl;
 			return;
@@ -252,7 +252,7 @@ void del(string name)
 	
 	while(true)
 	{
-		if(strcmp(name.c_str(),myconfig.feeds[i]->name.c_str()) == 0)
+		if(strcasecmp(name.c_str(),myconfig.feeds[i]->name.c_str()) == 0)
 			break; // Found the feed to delete, we're good
 
 		if(i<myconfig.feeds.size()-1) // if i is 1 less than numoffeeds, we're
@@ -273,7 +273,7 @@ void del(string name)
 	
 	for(int i=0; i<myconfig.feeds.size(); i++)
 	{
-		if(strcmp(myconfig.feeds[i]->name.c_str(), name.c_str()) == 0)
+		if(strcasecmp(myconfig.feeds[i]->name.c_str(), name.c_str()) == 0)
 		{
 			// We've found the feed - wipe it:
 			myiterator = myconfig.feeds.begin();
@@ -308,7 +308,7 @@ void update(int argc, char *argv[])
 		
 	while(true)
 	{
-		if(strcmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0)
+		if(strcasecmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0)
 		{
 			// Found the feed, update it:
 			switch(myopt)

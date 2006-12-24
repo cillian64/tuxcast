@@ -144,7 +144,7 @@ void configuration::load()
 		// This loops through all the main elements
 		// Once an element is recognised, by an if,
 		// the code "Does The Right Thing" (tm)
-		if(strcmp((char *)curr->name, "podcastdir") == 0)
+		if(strcasecmp((char *)curr->name, "podcastdir") == 0)
 		{
 			if(curr->children == NULL)
 			{
@@ -163,9 +163,9 @@ void configuration::load()
 			}
 
 		}
-		if(strcmp((char *)curr->name, "ask") == 0)
+		if(strcasecmp((char *)curr->name, "ask") == 0)
 		{
-			if(strcmp((char *)curr->children->content,"true") == 0)
+			if(strcasecmp((char *)curr->children->content,"true") == 0)
 				this->ask = true;
 			else
 				this->ask = false;
@@ -173,14 +173,14 @@ void configuration::load()
 		
 	
 		
-		if((strcmp((char *)curr->name, "feeds") == 0) && (curr->children != NULL))
+		if((strcasecmp((char *)curr->name, "feeds") == 0) && (curr->children != NULL))
 			// Check this isn't a fresh config file without any feeds in...
 		{
 			int i=0;
 			curr = curr->children; // step into feeds
 			while(true)
 			{
-				if(strcmp((char *)curr->name, "feed") == 0)
+				if(strcasecmp((char *)curr->name, "feed") == 0)
 				{
 					// We've found a feed.  Let's make a new element in our array:
 					feeds.push_back(NULL);
@@ -189,7 +189,7 @@ void configuration::load()
 					curr = curr->children;
 					while(true)
 					{
-						if((strcmp((char *)curr->name,"name") == 0) || (strcmp((char *)curr->name, "address") == 0))
+						if((strcasecmp((char *)curr->name,"name") == 0) || (strcasecmp((char *)curr->name, "address") == 0))
 						{
 							// if it's either of these 2, the value CANNOT be blank!!
 							if(curr->children == NULL)
@@ -201,11 +201,11 @@ void configuration::load()
 							}
 						}
 
-						if(strcmp((char *)curr->name, "name") == 0)
+						if(strcasecmp((char *)curr->name, "name") == 0)
 							this->feeds[i]->name = (char *)curr->children->content;
-						if(strcmp((char *)curr->name, "address") == 0)
+						if(strcasecmp((char *)curr->name, "address") == 0)
 							this->feeds[i]->address = (char *)curr->children->content;
-						if(strcmp((char *)curr->name, "folder") == 0)
+						if(strcasecmp((char *)curr->name, "folder") == 0)
 						{
 							if(curr->children == NULL)
 								this->feeds[i]->folder = "";

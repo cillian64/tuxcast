@@ -79,11 +79,11 @@ filelist *parse(string feed)
 		{
 			if(curr->type == 1) // It seems trying to access the name of a text segfaults...
 			// FIXME - enum or define, PLEASE!?
-				if(strcmp("item", (char *)curr->name) == 0)
+				if(strcasecmp("item", (char *)curr->name) == 0)
 				{
 					curr = curr->children;
 					while(1)
-						if(strcmp((char *)curr->name,"enclosure") == 0)
+						if(strcasecmp((char *)curr->name,"enclosure") == 0)
 						{
 							addtolist(myfilelist, curr);
 							break;
@@ -107,7 +107,7 @@ filelist *parse(string feed)
 		while(true)
 		{
 			if(curr->type == 1) // FIXME - use an enum / define
-				if(strcmp((char*)curr->name, "item") == 0)
+				if(strcasecmp((char*)curr->name, "item") == 0)
 				{
 					curr = curr->children; // Step inside item
 					{
@@ -116,7 +116,7 @@ filelist *parse(string feed)
 						// Non-item nodes have a NULL ->name I think.
 						{
 							curr = curr->next;
-							if((curr->type == 1) && (strcmp((char*)curr->name,"enclosure") != 0))
+							if((curr->type == 1) && (strcasecmp((char*)curr->name,"enclosure") != 0))
 								curr = curr->next;
 						}
 						// Curr now == the enclosure:
@@ -146,13 +146,13 @@ void addtolist(filelist *myfilelist, xmlNode *enclosure)
 	attribute = enclosure->properties;
 	while(true)
 	{
-		if(strcmp((char *)attribute->name,"url") == 0)
+		if(strcasecmp((char *)attribute->name,"url") == 0)
 		{
 			URL=(char *)attribute->children->content;
 		}
 		else
 		{
-			if(strcmp((char *)attribute->name,"length") == 0)
+			if(strcasecmp((char *)attribute->name,"length") == 0)
 			{
 				size=atoi((char *)attribute->children->content);
 			}

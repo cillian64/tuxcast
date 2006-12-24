@@ -1,3 +1,9 @@
+Revision 83:
+* Changed all relevent strcmp's to strcasecmp's - meaning now feed names,
+	options and similar are case insensitive.  Also, XML parsing is case
+	insensitive (tag names, anyway).
+--------------------------------------------------------------------------------
+
 Revision 82:
 * Added GPL to amarok and some other files missing it
 --------------------------------------------------------------------------------

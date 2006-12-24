@@ -11,4 +11,3 @@
 * Change all libxml parses to be non-verbose (and not spit out errors)
 * Change filelist to a typedef, and things that reference it (At the moment it's
 	a class only containing a vector - waste of time + space)
-* Change tag strcmps to strcasecmps, to allow feeds with different case to work.

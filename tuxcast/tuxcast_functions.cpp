@@ -167,9 +167,9 @@ bool alreadydownloaded(string name)
         curr = root->children;
         while(true) // is this portable...?
         {
-   	if(strcmp((char*)curr->name,"file") == 0)
+   	if(strcasecmp((char*)curr->name,"file") == 0)
    	{
-                 if(strcmp((char *)curr->children->content,name.c_str()) == 0)
+                 if(strcasecmp((char *)curr->children->content,name.c_str()) == 0)
                  {
                  	return true; // Already downloaded
                         break;
@@ -213,7 +213,7 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	else
 		temp = "yes";
 
-	if(strcmp(temp.c_str(),"yes") == 0)
+	if(strcasecmp(temp.c_str(),"yes") == 0)
 	{
 		cout << "Downloading \"";
 		cout << name;

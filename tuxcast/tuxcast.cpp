@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 			}
 			for(int i=0; i<myconfig.feeds.size(); i++)
 			{
-				if(strcmp(optarg,myconfig.feeds[i]->name.c_str()) == 0)
+				if(strcasecmp(optarg,myconfig.feeds[i]->name.c_str()) == 0)
 				{
 					// Found the feed
 					check(&myconfig, i);
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 			}
 			for(int i=0; i<myconfig.feeds.size(); i++)
 			{
-				if(strcmp(optarg,myconfig.feeds[i]->name.c_str()) == 0)
+				if(strcasecmp(optarg,myconfig.feeds[i]->name.c_str()) == 0)
 				{
 					// Found the feed
 					up2date(&myconfig, i);
