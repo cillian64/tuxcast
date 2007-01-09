@@ -6,8 +6,5 @@ main: filestuff.o socket.o
 filestuff.o: filestuff.cpp
 	g++ -c -g filestuff.cpp
 
-socket.o: socket.cpp
-	g++ -c -g socket.cpp
-
 clean:
-	rm -f filestuff.o socket.o
+	rm -f filestuff.o

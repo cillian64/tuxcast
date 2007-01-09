@@ -1,6 +1,6 @@
-main: tuxcast.o rss.o ../config.o ../libraries/filestuff.o ../libraries/socket.o tuxcast_functions.o 
+main: tuxcast.o rss.o ../config.o ../libraries/filestuff.o tuxcast_functions.o 
 #../plugins/amarok-plugin.o
-	g++ -g -o tuxcast tuxcast.o tuxcast_functions.o rss.o ../config/config.o ../libraries/filestuff.o ../libraries/socket.o `xml2-config --libs` `curl-config --libs` # ../plugins/amarok-plugin.o -lsqlite3
+	g++ -g -o tuxcast tuxcast.o tuxcast_functions.o rss.o ../config/config.o ../libraries/filestuff.o `xml2-config --libs` `curl-config --libs` # ../plugins/amarok-plugin.o -lsqlite3
 
 tuxcast.o: tuxcast.cpp
 	g++ -c -g tuxcast.cpp `xml2-config --cflags` `curl-config --cflags`
@@ -17,9 +17,6 @@ rss.o: rss.cpp
 
 ../libraries/filestuff.o: ../libraries/filestuff.cpp
 	make filestuff.o -C ../libraries/
-
-../libraries/socket.o: ../libraries/socket.cpp
-	make socket.o -C ../libraries/
 
 ../plugins/amarok-plugin.o: ../plugins/amarok-plugin.cpp
 	make amarok-plugin.o -C ../plugins/

@@ -1,3 +1,13 @@
+Revision 90:
+* Added -g feeds option
+* Changed tuxcast-config to run help() if invalid or no options are pased
+* Changed output of -g feeds and -G to just add newline separators instead of --
+* Updated TODO.
+* Removed libraries/socket*, removed from tuxcast linking and makefiles, etc.
+* Removed /backend, and from makefiles, linking, etc.  RIP Backend...
+* Updated GPL copyright licensey thingies to include 2007
+--------------------------------------------------------------------------------
+
 Revision 89:
 (Special Xalior Edition :P)
 * Updated TOOD.

@@ -1,5 +1,5 @@
 * Resuming incomplete downloads
-* Clear up xml stuff at the end of functions
+* Clear up xml stuff at the end of functions (try valgrind for mem checking?)
 * Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
 * Where to save the config file, defined in compile_flags.h
 	(this could help portability)
@@ -9,5 +9,7 @@
 	should follow suite including tuxcast->amarok)
 * Check no exceptions from the filestuff library can slip through
 * Change all libxml parses to be non-verbose (and not spit out errors)
-* Add a proper usage message to tuxcast-config
 * Clean up foldery stuff.
+* Create root podcast folder, maybe ask?
+* Move version to a separate file.  I did this once but must've not committed or
+	something...

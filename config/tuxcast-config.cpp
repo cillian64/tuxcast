@@ -1,7 +1,7 @@
 /*
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
- * Copyright (C) 2006 David Turner
+ * Copyright (C) 2006-2007 David Turner
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,9 +97,8 @@ int main(int argc, char *argv[])
 				break;
 		
 			default:
-				cerr << "Error: You must pass either -a, -s, -g, -G, -h or -v" << endl;
-				cerr << "Pass -h for help" << endl;
-		}
+				help();
+			}
 	}
 	catch(eConfig_CannotSaveConfig &e)
 	{
@@ -121,7 +120,8 @@ void help(void)
 	cout << "-a -n NAME -A ADDRESS -f FOLDER: Add a feed with the specified name, address and folder" << endl;
 	cout << "-d NAME: Delete the feed with the specified name" << endl;
 	cout << "-g OPTION: Get the value of option" << endl;
-	cout << "-g feed NAME: Get the settings of a particular feed, FEED" << endl;
+	cout << "-g feed -n NAME: Get the settings of a particular feed, FEED" << endl;
+	cout << "-g feeds: Show all feeds" << endl;
 	cout << "-G: Get the value of all options" << endl;
 	cout << "-h: Display this help message" << endl;
 	cout << "-s OPTION=VALUE: Set OPTION to VALUE" << endl;
@@ -129,6 +129,7 @@ void help(void)
 	cout << endl;
 	cout << "Available options are:" << endl;
 	cout << "podcastdir - where to save all your podcasts" << endl;
+	cout << "ask - whether or not to ask before downloading every episode" << endl;
 
 }
 
@@ -152,7 +153,6 @@ void get(int argc, char **argv)
 	}
 	// DANGER DANGER WILL ROBINSON!!1  MY ARMS ARE FLAILING WILDLY!!!11one
 	// If the thing after -g is shorter than 4 chars we could have a problem
-	// TODO / FIXME - add a length check or something.
 	if(strcasecmp(args.c_str(),"feed") == 0)
 	{
 		if(getopt(argc,argv,options) != 'n')
@@ -178,7 +178,18 @@ void get(int argc, char **argv)
 		cerr << "Invalid feed name, " << name << endl;
 		return;
 	}
+	if(strcasecmp(args.c_str(),"feeds") == 0)
+	{
+		// Display all feeds:
+		for(int i=0; i<myconfig.feeds.size(); i++)
+		{
+			cout << "Name: " << myconfig.feeds[i]->name.c_str() << endl;
+			cout << "Address: " << myconfig.feeds[i]->address.c_str() << endl;
+			cout << "Folder: " << myconfig.feeds[i]->folder.c_str() << endl << endl;
+		}
+		return;
 
+	}
 	// other variables go here...
 	//
 	
@@ -206,8 +217,7 @@ void getall(void)
 	{
 		cout << "Name: " << myconfig.feeds[i]->name << endl;
 		cout << "Address: " << myconfig.feeds[i]->address << endl;
-		cout << "Folder: " << myconfig.feeds[i]->folder << endl;
-		cout << "--" << endl;
+		cout << "Folder: " << myconfig.feeds[i]->folder << endl << endl;
 	}
 
 }
