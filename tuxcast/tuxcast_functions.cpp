@@ -39,9 +39,6 @@
 
 using namespace std;
 
-
-
-		
 // Check a particular feed
 void check(configuration *myconfig, int feed)
 {

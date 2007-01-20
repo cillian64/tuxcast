@@ -36,6 +36,7 @@
 #include "../config/config_exceptions.h"
 #include "rss_exceptions.h"
 #include "tuxcast_functions.h"
+#include "../version.h"
 
 using namespace std;
 
@@ -127,11 +128,7 @@ int main(int argc, char *argv[])
 			break;
 
 		case 'v':
-			cerr << "Tuxcast version 0.2, Copyright (c) 2006 David Turner" << endl;
-			cerr << "Tuxcast comes with ABSOLUTELY NO WARRANTY; for details see COPYING in the source tree." << endl;
-			cerr << "This is free software, and you are welcome to redistribute it under certain conditions; see COPYING in the source tree for more details." << endl;
-			// TODO: Add a way for -v to print out which SVN
-			// revision this is built from.
+			version();
 			break;
 
 		default:

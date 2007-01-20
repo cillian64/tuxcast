@@ -1,3 +1,11 @@
+Revision 91:
+* Moved all -v outputs to version.cpp, so tuxcast and -config can call the
+	same function, and get consistant output.  Also, version.h must be
+	updated with the SVN checkin/out number or release version and type.
+	Is there a way to grab the checkout number for version.h automagically
+	from SVN? Maybe make version, which parses the SVN control files? TODO!
+--------------------------------------------------------------------------------
+
 Revision 90:
 * Added -g feeds option
 * Changed tuxcast-config to run help() if invalid or no options are pased

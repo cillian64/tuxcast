@@ -11,5 +11,3 @@
 * Change all libxml parses to be non-verbose (and not spit out errors)
 * Clean up foldery stuff.
 * Create root podcast folder, maybe ask?
-* Move version to a separate file.  I did this once but must've not committed or
-	something...

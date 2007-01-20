@@ -7,6 +7,9 @@ clean:
 	make -C libraries clean
 	#make -C plugins clean
 
+version.o: version.cpp
+	g++ -c version.cpp
+
 install: main
 	strip -s tuxcast/tuxcast
 	strip -s config/tuxcast-config
