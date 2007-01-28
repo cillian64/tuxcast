@@ -5,8 +5,6 @@
 	(this could help portability)
 * More folder sanity checking
 * Bittorrenting
-* Exceptions (The socket library is already done, other libraries and functions
-	should follow suite including tuxcast->amarok)
 * Check no exceptions from the filestuff library can slip through
 * Change all libxml parses to be non-verbose (and not spit out errors)
 * Clean up foldery stuff.

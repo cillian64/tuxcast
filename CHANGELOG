@@ -1,3 +1,6 @@
+Revision 92:
+* Removed exceptions from TODO - I think everything uses these now.
+
 Revision 91:
 * Moved all -v outputs to version.cpp, so tuxcast and -config can call the
 	same function, and get consistant output.  Also, version.h must be
