@@ -1,0 +1,46 @@
+Basic configuration
+-------------------
+
+All configuration is stored in an XML config file, at ~/.tuxcast/config.xml.  You can create this file manually, but it's much easier and reccommended to create and edit it using the tuxcast-config program.
+
+You should setup your basic options (below) before adding any feeds or trying to use tuxcast.  If you don't do this, things can get messy
+
+If you don't already have a configuration file, tuxcast-config will make one for you as soon as you change an option or add a feed.
+
+Options
+-------
+
+Options are set like this:
+tuxcast-config -s option=value
+Only one option can be set at a time.
+
+Currently, the options are:
+o podcastdir - this can be any absolute directory (must start with /, no ~ allowed).  This is the root of where all podcasts are saved.
+o ask - this can be either "true" or "false".  If true, you will be asked before every file is downloaded, if you want to download it or not.
+
+Feeds
+-----
+
+This is the most important part of configuration.  Feeds can be added, removed, or edited.
+
+To add feeds:
+tuxcast-config -a -n NAME -A ADDRESS -f FOLDER
+Note the options are case sensitive.  NAME and ADDRESS cannot be blank.  However, FOLDER can be blank, if you don't want to put this particular podcast's files in any folder - just use -f "".
+If you want a space in any of these values, make sure to put "s before and after it.
+
+To remove a feed:
+tuxcast-config -d NAME
+This will remove the feed named NAME.
+
+To change a feed's details:
+If you want to change the folder, use:
+tuxcast-config -u -n NAME -f NEWFOLDER
+As before, for a blank folder, use -f ""
+
+To change the feed's address, use:
+tuxcast-config -u -n NAME -A NEWADDRESS
+NEWADDRESS must not be blank.
+
+At the moment, you cannot change a feed's name.
+
+

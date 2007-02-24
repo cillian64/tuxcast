@@ -1,0 +1,11 @@
+* Resuming incomplete downloads
+* Clear up xml stuff at the end of functions (try valgrind for mem checking?)
+* Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
+* Where to save the config file, defined in compile_flags.h
+	(this could help portability)
+* More folder sanity checking
+* Bittorrenting
+* Check no exceptions from the filestuff library can slip through
+* Change all libxml parses to be non-verbose (and not spit out errors)
+* Clean up foldery stuff.
+* Create root podcast folder, maybe ask?
