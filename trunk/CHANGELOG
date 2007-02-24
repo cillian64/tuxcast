@@ -1,5 +1,12 @@
+Revision 95:
+* Finally got the SVN repository sorted - created /trunk, moved everything into
+	it, created /branches.  Thanks (Sarcasm) to SF for moving SVN and not
+	making it more obvious to developers.  *sigh*
+--------------------------------------------------------------------------------
+
 Revision 92:
 * Removed exceptions from TODO - I think everything uses these now.
+--------------------------------------------------------------------------------
 
 Revision 91:
 * Moved all -v outputs to version.cpp, so tuxcast and -config can call the
