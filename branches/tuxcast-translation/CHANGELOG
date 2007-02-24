@@ -1,3 +1,14 @@
+Revision 97:
+* Imported all of my out-of-svn translation-preparation on tuxcast-config.cpp.
+--------------------------------------------------------------------------------
+
+Revision 96:
+* Branched out tuxcast-translation.  From now CHANGELOG will stay separate
+	between branches, just the new revisions for each branch goes in that
+	branch's CHANGELOG.  I might merge CHANGELOGs when I merge back in the
+	branch, I might not.  :/
+--------------------------------------------------------------------------------
+
 Revision 95:
 * Finally got the SVN repository sorted - created /trunk, moved everything into
 	it, created /branches.  Thanks (Sarcasm) to SF for moving SVN and not
