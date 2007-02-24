@@ -1,0 +1,8 @@
+In this directory, run
+make
+then, if you have sudo setup:
+sudo make install
+or if you have a root password:
+su -c "make install"
+
+This will install the main tuxcast program, and the tuxcast-config configuration tool.
