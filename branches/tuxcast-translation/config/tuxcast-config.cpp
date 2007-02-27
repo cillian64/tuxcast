@@ -22,7 +22,6 @@
 
 
 #include "../compile_flags.h"
-// #include <iostream>
 #include "config.h"
 #include <unistd.h>
 #include "config_exceptions.h"
@@ -123,22 +122,6 @@ int main(int argc, char *argv[])
 
 void help(void)
 {
-/*	cout << "tuxcast-config [action]" << endl;
-	cout << "Actions are:" << endl;
-	cout << "-a -n NAME -A ADDRESS -f FOLDER: Add a feed with the specified name, address and folder" << endl;
-	cout << "-d NAME: Delete the feed with the specified name" << endl;
-	cout << "-g OPTION: Get the value of option" << endl;
-	cout << "-g feed -n NAME: Get the settings of a particular feed, FEED" << endl;
-	cout << "-g feeds: Show all feeds" << endl;
-	cout << "-G: Get the value of all options" << endl;
-	cout << "-h: Display this help message" << endl;
-	cout << "-s OPTION=VALUE: Set OPTION to VALUE" << endl;
-	cout << "-u -n NAME [ -A ADDRESS | -f FOLDER ]" << endl;
-	cout << endl;
-	cout << "Available options are:" << endl;
-	cout << "podcastdir - where to save all your podcasts" << endl;
-	cout << "ask - whether or not to ask before downloading every episode" << endl;
-	*/
 	printf(_("Usage: tuxcast-config  [action]\n"));
 	printf(_("Actions are:\n"));
 	printf(_("-a -n NAME -A ADDRESS -f FOLDER: Add a feed with the specified name, address and folder\n"));
@@ -169,10 +152,8 @@ void get(int argc, char **argv)
 	if(strcasecmp(args.c_str(),"ask") == 0)
 	{
 		if(myconfig.ask == true)
-			// cout << "true" << endl;
 			printf(_("true"));
 		else
-			// cout << "false" << endl;
 			printf(_("false"));
 		return;
 	}

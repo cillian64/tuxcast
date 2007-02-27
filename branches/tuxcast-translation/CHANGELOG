@@ -1,3 +1,10 @@
+Revision 98:
+* Removed some commented out couts/cerrs, now that the (f)printfs are working
+* Completed changing all couts to printfs and cerrs to fprintfs
+* Completed wrapping all strings in _()
+
+--------------------------------------------------------------------------------
+
 Revision 97:
 * Imported all of my out-of-svn translation-preparation on tuxcast-config.cpp.
 --------------------------------------------------------------------------------
