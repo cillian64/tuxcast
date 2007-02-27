@@ -34,7 +34,9 @@
 #include <libintl.h>
 #include <locale.h>
 
-#define _(x) (x)
+#define _(x) gettext(x)
+
+using namespace std;
 
 void configuration::save()
 {

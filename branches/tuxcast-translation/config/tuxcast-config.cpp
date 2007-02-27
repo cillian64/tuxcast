@@ -38,9 +38,6 @@ const char options[] = "aA:d:n:hs:g:Gf:uv";
 
 configuration myconfig;
 
-
-// using namespace std;  // still needed?
-
 void help(void);
 void get(int argc, char **argv);
 void getall(void);

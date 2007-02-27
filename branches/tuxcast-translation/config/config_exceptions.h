@@ -29,7 +29,7 @@
 #include <libintl.h>
 #include <locale.h>
 
-using namespace std;
+#define _(x) gettext(x)
 
 class eConfig_NoConfigFile : public eException
 {

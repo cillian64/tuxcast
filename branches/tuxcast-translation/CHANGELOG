@@ -1,3 +1,9 @@
+Revision 101:
+* Removed using namespace std; where not needed, added some places where now
+	needed.
+* Changed all _() defines from () to gettext()
+--------------------------------------------------------------------------------
+
 Revision 100:
 * Fixed previous entry (bump)
 * Added internationalation and locale headers
