@@ -1,0 +1,400 @@
+# Tuxcast 0.2
+# Copyright (C) 2006-2007 David Turner
+# This file is distributed under the same license as the Tuxcast package.
+# David Turner <cillian64@users.sourceforge.net>, 2006-2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Tuxcast 0.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-27 21:36+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../config/tuxcast-config.cpp:37
+msgid "aA:d:n:hs:g:Gf:uv"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:53 ../config/tuxcast-config.cpp:54
+msgid "tuxcast"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:53
+msgid "/usr/share/locale"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:62
+#, c-format
+msgid "Warning, no config file\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:63
+#, c-format
+msgid ""
+"If you're changing an option or adding a feed, a config file will be created "
+"later\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:108
+#, c-format
+msgid "Cannot save config file\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:109 ../config/config.cpp:91
+#: ../config/config.cpp:99
+#, c-format
+msgid "Exception caught: "
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:111
+#, c-format
+msgid "\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:122
+#, c-format
+msgid "Usage: tuxcast-config  [action]\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:123
+#, c-format
+msgid "Actions are:\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:124
+#, c-format
+msgid ""
+"-a -n NAME -A ADDRESS -f FOLDER: Add a feed with the specified name, address "
+"and folder\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:125
+#, c-format
+msgid "-d NAME: Delete the feed with the specified name\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:126
+#, c-format
+msgid "-g OPTION: Get the value of the specified option\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:127
+#, c-format
+msgid "-g feed -n NAME: Get the settings of the specified feed\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:128
+#, c-format
+msgid "-G: Get the value of all options\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:129
+#, c-format
+msgid "-h: Display this help message\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:130
+#, c-format
+msgid "-s OPTION=VALUE: Set OPTION to VALUE\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:131
+#, c-format
+msgid ""
+"-u -n NAME [ -A ADDRESS | -f FOLDER ]: Change the specified feed's name or "
+"address to the specified value\n"
+"\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:132
+#, c-format
+msgid "Available options are:\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:133
+#, c-format
+msgid "podcastdir - where to save all your podcasts\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:134
+#, c-format
+msgid "ask - whether or not to ask before downloading any files\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:143 ../config/tuxcast-config.cpp:231
+#: ../config/config.cpp:56 ../config/config.cpp:155
+msgid "podcastdir"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:145
+#, c-format
+msgid "%s\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:149 ../config/tuxcast-config.cpp:235
+#: ../config/config.cpp:61 ../config/config.cpp:66 ../config/config.cpp:174
+msgid "ask"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:152 ../config/tuxcast-config.cpp:237
+#: ../config/config.cpp:62 ../config/config.cpp:176
+#, c-format
+msgid "true"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:154 ../config/tuxcast-config.cpp:243
+#: ../config/config.cpp:67
+#, c-format
+msgid "false"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:159 ../config/config.cpp:74
+#: ../config/config.cpp:191
+msgid "feed"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:163
+#, c-format
+msgid "You must pass a feed name with -n NAME\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:172
+#, c-format
+msgid "Name: %d\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:173 ../config/tuxcast-config.cpp:190
+#: ../config/tuxcast-config.cpp:220
+#, c-format
+msgid "Address: %s\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:174
+#, c-format
+msgid "Folder: %s"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:181
+#, c-format
+msgid "Invalid feed name, %s\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:184 ../config/config.cpp:71
+#: ../config/config.cpp:184
+msgid "feeds"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:189 ../config/tuxcast-config.cpp:219
+#, c-format
+msgid "Name: %s\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:191 ../config/tuxcast-config.cpp:221
+#, c-format
+msgid "Folder: %s\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:200
+#, c-format
+msgid "Unrecognised option, %s\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:205
+#, c-format
+msgid "podcastdir = %s\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:207
+#, c-format
+msgid "ask = true\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:209
+#, c-format
+msgid "ask = false\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:214
+#, c-format
+msgid "There is 1 feed:\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:216
+#, c-format
+msgid "There are %d feeds:\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:228 ../config/tuxcast-config.cpp:229
+msgid "="
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:237
+msgid "yes"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:243
+msgid "no"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:249
+#, c-format
+msgid ""
+"The \"ask\" variable can only be \"true\" or \"false\" -\n"
+"Assuming true\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:277
+#, c-format
+msgid "No name specified!\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:284
+#, c-format
+msgid "Feed already exists\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:302
+#, c-format
+msgid ""
+"You must pass the name and address of the feed to add (The folder can be "
+"left blank to just put files in podcastdir)\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:329
+#, c-format
+msgid "Feed \"%s\" doesn't exist\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:362
+#, c-format
+msgid "You must pass -n and either -A or -f when updating a feed's info\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:378
+#, c-format
+msgid "Error: Blank address\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:389
+#, c-format
+msgid "You must pass either -A or -f when updating a feed's info\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:403
+#, c-format
+msgid "Error: feed \"%s\" doesn't exist.\n"
+msgstr ""
+
+#: ../config/config.cpp:47
+msgid "1.0"
+msgstr ""
+
+#: ../config/config.cpp:48
+msgid "config"
+msgstr ""
+
+#: ../config/config.cpp:53 ../config/config.cpp:168
+#, c-format
+msgid "Trimming trailing / from podcastdir...\n"
+msgstr ""
+
+#: ../config/config.cpp:75 ../config/config.cpp:200 ../config/config.cpp:210
+msgid "name"
+msgstr ""
+
+#: ../config/config.cpp:76 ../config/config.cpp:200 ../config/config.cpp:212
+msgid "address"
+msgstr ""
+
+#: ../config/config.cpp:77 ../config/config.cpp:214
+msgid "folder"
+msgstr ""
+
+#: ../config/config.cpp:80 ../config/config.cpp:116 ../config/config.cpp:160
+msgid "HOME"
+msgstr ""
+
+#: ../config/config.cpp:81
+msgid "/.tuxcast"
+msgstr ""
+
+#: ../config/config.cpp:86 ../config/config.cpp:104
+msgid "/config.xml"
+msgstr ""
+
+#: ../config/config.cpp:90
+#, c-format
+msgid "Ooops, couldn't save your new config:\n"
+msgstr ""
+
+#: ../config/config.cpp:97
+#, c-format
+msgid "Opps, couldn't save your new config,\n"
+msgstr ""
+
+#: ../config/config.cpp:98
+#, c-format
+msgid "~/.tuxcast/config.xml exists but isn't a file\n"
+msgstr ""
+
+#: ../config/config.cpp:105
+msgid "UTF-8"
+msgstr ""
+
+#: ../config/config.cpp:119
+msgid "/.tuxcast/config.xml"
+msgstr ""
+
+#: ../config/config.cpp:124
+#, c-format
+msgid "No config file found...\n"
+msgstr ""
+
+#: ../config/config.cpp:130
+#, c-format
+msgid "No config file found: Aborting\n"
+msgstr ""
+
+#: ../config/config.cpp:139
+#, c-format
+msgid "Error parsing your config file\n"
+msgstr ""
+
+#: ../config/config.cpp:140
+#, c-format
+msgid "Please delete ~/.tuxcast/config.xml and make a new one\n"
+msgstr ""
+
+#: ../config/config.cpp:159
+#, c-format
+msgid ""
+"You have not setup a podcast directory - tuxcast will use your home "
+"directory, ~.\n"
+msgstr ""
+
+#: ../config/config.cpp:169
+#, c-format
+msgid "If you make a custom config file, please be careful\n"
+msgstr ""
+
+#: ../config/config.cpp:205
+#, c-format
+msgid ""
+"Error: blank name or address in config file, please delete and recreate your "
+"config file using tuxcast-config\n"
+msgstr ""
+
+#: ../config/config_exceptions.h:38
+#, c-format
+msgid "No config file found.  (This isn't always fatal)\n"
+msgstr ""
+
+#: ../config/config_exceptions.h:45
+#, c-format
+msgid "Couldn't save your config, for some reason\n"
+msgstr ""

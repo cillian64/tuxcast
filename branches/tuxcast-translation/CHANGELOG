@@ -1,3 +1,10 @@
+Revision 102:
+* Extracted all _()'ed strings from tuxcast-config into locales/en_GB.pot.  Not
+	quite sure about all the headers, so keep an eye out for goofs.  Also
+	the strings might need a bit of checking, as they haven't actually been
+	looked at together, for, well, ever.
+--------------------------------------------------------------------------------
+
 Revision 101:
 * Removed using namespace std; where not needed, added some places where now
 	needed.
