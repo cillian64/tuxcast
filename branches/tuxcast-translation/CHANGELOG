@@ -1,8 +1,12 @@
-Revision 98:
+Revision 100:
+* Fixed previous entry (bump)
+* Added internationalation and locale headers
+--------------------------------------------------------------------------------
+
+Revision 99:
 * Removed some commented out couts/cerrs, now that the (f)printfs are working
 * Completed changing all couts to printfs and cerrs to fprintfs
 * Completed wrapping all strings in _()
-
 --------------------------------------------------------------------------------
 
 Revision 97:

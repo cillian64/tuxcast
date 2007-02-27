@@ -31,6 +31,8 @@
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
 #include "config_exceptions.h"
+#include <libintl.h>
+#include <locale.h>
 
 #define _(x) (x)
 

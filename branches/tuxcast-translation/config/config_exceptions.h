@@ -26,6 +26,8 @@
 
 #include "../exceptions.h" // For vanilla
 #include <stdio.h>
+#include <libintl.h>
+#include <locale.h>
 
 using namespace std;
 
