@@ -1,3 +1,8 @@
+Revision 103:
+* Renamed (moved) locales to po, as this appears to be the standard name for
+	pot and po files.
+--------------------------------------------------------------------------------
+
 Revision 102:
 * Extracted all _()'ed strings from tuxcast-config into locales/en_GB.pot.  Not
 	quite sure about all the headers, so keep an eye out for goofs.  Also
