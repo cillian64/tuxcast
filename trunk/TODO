@@ -9,3 +9,8 @@
 * Change all libxml parses to be non-verbose (and not spit out errors)
 * Clean up foldery stuff.
 * Create root podcast folder, maybe ask?
+* Either add a spinner or enable libcurl support for one (If it has one)
+* Stop warnings about missing config.xml and files.xml on first runs
+* Stop duplicate named or URL'ed feed (Didn't I already do it?)
+* Stop having both -c and -u
+* Feeds containing an &, as in a GET form, don't play nicely with the XML.
