@@ -1,3 +1,9 @@
+Revision 107:
+* Applied a patch from Roger "oojah" Light, which cleans up the Makefiles,
+	allows portability to BSDs and solaris as well as automating the
+	building and installation of locales.  Thanks Roger :).
+--------------------------------------------------------------------------------
+
 Revision 106:
 * Fixed a number of idiotic typos (Yup, all my fault) in tuxcast-config.cpp.
 	Namely, %d was used instead of %s and a \n was missed.
