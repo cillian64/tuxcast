@@ -1,3 +1,8 @@
+Revision 106:
+* Fixed a number of idiotic typos (Yup, all my fault) in tuxcast-config.cpp.
+	Namely, %d was used instead of %s and a \n was missed.
+--------------------------------------------------------------------------------
+
 Revision 105:
 * Moved en_GB.pot to tuxcast.pot in preparation for Roger Light's patch...
 --------------------------------------------------------------------------------

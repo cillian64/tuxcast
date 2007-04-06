@@ -169,9 +169,9 @@ void get(int argc, char **argv)
 		{
 			if(strcasecmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0) // Found it:
 			{
-				printf(_("Name: %d\n"),myconfig.feeds[i]->name.c_str());
+				printf(_("Name: %s\n"),myconfig.feeds[i]->name.c_str());
 				printf(_("Address: %s\n"),myconfig.feeds[i]->address.c_str());
-				printf(_("Folder: %s"),myconfig.feeds[i]->folder.c_str());
+				printf(_("Folder: %s\n"),myconfig.feeds[i]->folder.c_str());
 				return;
 			}
 			else
