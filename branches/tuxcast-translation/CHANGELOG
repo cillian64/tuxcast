@@ -1,3 +1,7 @@
+Revision 105:
+* Moved en_GB.pot to tuxcast.pot in preparation for Roger Light's patch...
+--------------------------------------------------------------------------------
+
 Revision 103:
 * Renamed (moved) locales to po, as this appears to be the standard name for
 	pot and po files.
