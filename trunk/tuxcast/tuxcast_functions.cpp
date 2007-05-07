@@ -78,7 +78,9 @@ void up2date(configuration *myconfig, int feed)
 {
 	filelist *myfilelist;
 	
-	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->address)))
+	cachefeed(myconfig->feeds[feed]->name,myconfig->feeds[feed]->address);
+
+	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->name)))
 		return;
 
 		
@@ -264,10 +266,6 @@ void cachefeed(string name, string URL)
 		return;
 	}
 	
-	cout << "Caching \"";
-	cout << name;
-	cout << "\"..." << endl;
-
 	// Do folder'y stuff first
 	path = getenv("HOME");
 	path += "/.tuxcast/cache";
