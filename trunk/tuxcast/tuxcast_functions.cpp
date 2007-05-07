@@ -44,9 +44,11 @@ void check(configuration *myconfig, int feed)
 {
 	filelist *myfilelist;
 	
-	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->address)))
+	cachefeed(myconfig->feeds[feed]->name, myconfig->feeds[feed]->address);
+	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->name)))
 		return;
-
+	// TODO: Umm, I really should return an error or warning or something,
+	// shouldn't I...?
 
 	for(int j=0, size=myfilelist->size(); j<size; j++)
 	{
@@ -210,49 +212,99 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	else
 		temp = "yes";
 
-	if(strcasecmp(temp.c_str(),"yes") == 0)
+	if(strcasecmp(temp.c_str(),"yes") != 0)
+		return;
+
+	cout << "Downloading \"";
+	cout << name;
+	cout << "\"..." << endl;
+
+	// Do folder'y stuff first
+	path = myconfig->podcastdir;
+	path += "/";
+	// If the podcast's folder is absolute, don't prepend podcastdir
+	if(myconfig->feeds[feed]->folder[0] == '/')
+		path = myconfig->feeds[feed]->folder;
+	else
+		path += myconfig->feeds[feed]->folder;
+	checkfolderexists(path);
+	// If anything goes wrong here, the exception should
+	// abort everything...
+	
+	path += "/";
+	path += name;
+	
+	outputfile = fopen(path.c_str(), "w");
+	if(outputfile == NULL)
 	{
-		cout << "Downloading \"";
-		cout << name;
-		cout << "\"..." << endl;
+		cerr << "Error opening output file \"";
+		cerr << path << "\"" << endl;
 
-		// Do folder'y stuff first
-		path = myconfig->podcastdir;
-		path += "/";
-		// If the podcast's folder is absolute, don't prepend podcastdir
-		if(myconfig->feeds[feed]->folder[0] == '/')
-			path = myconfig->feeds[feed]->folder;
-		else
-			path += myconfig->feeds[feed]->folder;
-		checkfolderexists(path);
-		// If anything goes wrong here, the exception should
-		// abort everything...
-		
-		path += "/";
-		path += name;
-		
-		outputfile = fopen(path.c_str(), "w");
-		if(outputfile == NULL)
-		{
-			cerr << "Error opening output file \"";
-			cerr << path << "\"" << endl;
-
-		}
-		curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
-		curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
-		curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
-		curl_easy_perform(mycurl);
-		fclose(outputfile);
-		newfile(name);
 	}
+	curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
+	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
+	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
+	curl_easy_perform(mycurl);
+	fclose(outputfile);
+	newfile(name);
+	
 
 	curl_easy_cleanup(mycurl);
 }
 
-filelist *parsefeed(string URL) // This parses the feed, with error checking.
+void cachefeed(string name, string URL)
+{ // Yeh, like, I didn't just copy/paste get() and change a couple of bits :P
+	CURL *mycurl;
+	FILE *outputfile=NULL;
+	string path;
+	mycurl = curl_easy_init();
+	if(mycurl == NULL)
+	{
+		cerr << "Error initializing libcurl" << endl;
+		return;
+	}
+	
+	cout << "Caching \"";
+	cout << name;
+	cout << "\"..." << endl;
+
+	// Do folder'y stuff first
+	path = getenv("HOME");
+	path += "/.tuxcast/cache";
+	// If the podcast's folder is absolute, don't prepend podcastdir
+	checkfolderexists(path);
+	// If anything goes wrong here, the exception should
+	// abort everything...
+	
+	path += "/";
+	path += name;
+	
+	outputfile = fopen(path.c_str(), "w");
+	if(outputfile == NULL)
+	{
+		cerr << "Error opening output file \"";
+		cerr << path << "\"" << endl;
+
+	}
+	curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
+	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
+	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
+	curl_easy_perform(mycurl);
+	fclose(outputfile);
+	newfile(name);
+	
+
+
+	curl_easy_cleanup(mycurl);
+}
+
+filelist *parsefeed(string name) // This parses the feed, with error checking.
 // It returns NULL if any error occured
 {
 	filelist *myfilelist;
+	string URL=getenv("HOME");
+	URL+="/.tuxcast/cache/";
+	URL+=name;
 	try
 	{
 		myfilelist = parse(URL);

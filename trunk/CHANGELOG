@@ -1,3 +1,15 @@
+Revision 108:
+* Changed config.cpp to create ~/.tuxcast/cache is it doesn't already exist, 
+	when saving config
+* Reshuffled the method of checking ask, to remove a massive indent
+* Added the cachefeed function to tuxcast_functions.cpp.  It makes a local cache
+	of the feed, named after the name the user gives the feed, as URL
+	filenames probably aren't unique (Ok, an overwrite wouldn't really
+	matter now I think about it, but meh.)
+* Changed parsefeed to take a string of the feed's name - it uses this to locate
+	it in the cache dir.  It no longer needs or wants to know the feed URL.
+--------------------------------------------------------------------------------
+
 Revision 104:
 * Some TODO updates
 --------------------------------------------------------------------------------
