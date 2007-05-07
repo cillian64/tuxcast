@@ -1,3 +1,7 @@
+Revision 109:
+* Recommitting as 108 appears to be a big dodgy
+--------------------------------------------------------------------------------
+
 Revision 108:
 * Changed config.cpp to create ~/.tuxcast/cache is it doesn't already exist, 
 	when saving config
