@@ -27,6 +27,7 @@
 #include "../config/config.h"
 #include <curl/curl.h>
 #include <cstdio> // Needed to open a file in the classic way, so libcurl can write to it
+#include <stdio.h>
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
@@ -36,6 +37,11 @@
 #include "../config/config_exceptions.h"
 #include "rss_exceptions.h"
 #include "tuxcast_functions.h"
+
+#include <libintl.h>
+#include <locale.h>
+
+#define _(x) gettext(x)
 
 using namespace std;
 
@@ -57,12 +63,12 @@ void check(configuration *myconfig, int feed)
 		}
 		catch(eFilestuff_CannotCreateFolder &e)
 		{
-			cerr << "Oops, couldn't create folder for feed \"" << myconfig->feeds[feed]->name << "\"" << endl;
-			cerr << "Exception caught: ";
+			fprintf(stderr,_("Oops, couldn't create folder for feed \"%s\"\n"),myconfig->feeds[feed]->name.c_str());
+			fprintf(stderr,_("Exception caught: ")); // Yes, no \n.
 			e.print();
 			return; // Skip this feed:
 			// If we can't create the folder, no point in trying to
-			// get any other files
+			// get any other files from this feed
 		}
 	}
 
@@ -101,7 +107,7 @@ void checkall(configuration *myconfig)
 {
 	for(int i=0; i<myconfig->feeds.size(); i++)
 	{
-		cout << "Checking feed \"" << myconfig->feeds[i]->name << "\"" << endl;
+		printf(_("Checking feed \"%s\"\n"),myconfig->feeds[i]->name.c_str());
 		check(myconfig, i);
 	}
 }
@@ -112,7 +118,7 @@ void up2dateall(configuration *myconfig)
 	// God knows why we had a filelist pointer here
 	for(int i=0; i<myconfig->feeds.size(); i++)
 	{
-		cout << "up2date'ing feed \"" << myconfig->feeds[i]->name << "\"..." << endl;
+		printf(_("up2date'ing feed \"%s\"\n"),myconfig->feeds[i]->name.c_str());
 		up2date(myconfig,i);
 	}
 	
@@ -192,7 +198,7 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	mycurl = curl_easy_init();
 	if(mycurl == NULL)
 	{
-		cerr << "Error initializing libcurl" << endl;
+		fprintf(stderr,_("Error initializing libcurl\n"));
 		return;
 	}
 	
@@ -202,19 +208,15 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	
 	if(myconfig->ask == true)
 	{
-		cout << "Download ";
-		cout << name;
-		cout << "?: (yes/no)" << endl;
-		cin >> temp;
+		printf(_("Download %s? (yes/no)\n"));
+		cin >> temp; // TODO: Replace this with scanf?
 	}
 	else
 		temp = "yes";
 
 	if(strcasecmp(temp.c_str(),"yes") == 0)
 	{
-		cout << "Downloading \"";
-		cout << name;
-		cout << "\"..." << endl;
+		printf(_("Downloading %s..."),name.c_str());
 
 		// Do folder'y stuff first
 		path = myconfig->podcastdir;
@@ -234,9 +236,8 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 		outputfile = fopen(path.c_str(), "w");
 		if(outputfile == NULL)
 		{
-			cerr << "Error opening output file \"";
-			cerr << path << "\"" << endl;
-
+			fprintf(stderr,_("Error opening output file \"%s\"\n"),path.c_str());
+			return; // Abort download
 		}
 		curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
 		curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
@@ -259,21 +260,21 @@ filelist *parsefeed(string URL) // This parses the feed, with error checking.
 	}
 	catch(eRSS_InvalidRootNode &e)
 	{
-		cerr << "This is an XML file, but does not appear to be RSS 1 or RSS 2" << endl;
-		cerr << "Please check you have the correct URL, and that it is an RSS feed, " \
-		 << "and then contact your feed maintainer" << endl;
-		 cerr << "Exception caught:";
+		 fprintf(stderr,_("This is an XML file, but does not appear to be RSS 1 (RDF) or RSS 2\n"));
+		 fprintf(stderr,_("Please check you have the correct URL and that it is an RSS feed, and then contact your feed maintainer\n"));
+		 fprintf(stderr,_("Exception caught:")); // No \n, I know
 		 e.print();
-		 cerr << "Aborting this feed." << endl;
+		 fprintf(stderr,_("Aborting this feed.\n"));
 		 return NULL;
 	}
 	catch(eRSS_CannotParseFeed &e)
 	{
-		cerr << "Couldn't parse feed." << endl;
-		cerr << "Please check the URL is correct, then contact your feed maintainer." << endl;
-		cerr << "Exception caught: ";
+		fprintf(stderr,_("Couldn't parse the feed.\n"));
+		fprintf(stderr,_("Please check the URL is correct, then contact your feed maintainer.\n"));
+		fprintf(stderr,_("Exception caught: ")); // No \n
 		e.print();
-		cerr << "Aborting this feed." << endl;
+		fprintf(stderr,_("Aborting this feed.\n"));
+
 		return NULL;
 	}
 	return myfilelist;

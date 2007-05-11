@@ -1,3 +1,13 @@
+Revision 111:
+* Started readying /tuxcast for translation - changed couts/cerrs to printfs/
+	fprintfs.
+* Marked strings with _()s
+* Added defines of _() and other gettext init stuff.
+* Fixed the help output of tuxcast for other stuff than -c or -u
+* Removed -b from help output, as it's pretty useless.  TODO: Completely prune
+	all backend code
+--------------------------------------------------------------------------------
+
 Revision 107:
 * Applied a patch from Roger "oojah" Light, which cleans up the Makefiles,
 	allows portability to BSDs and solaris as well as automating the

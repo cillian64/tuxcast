@@ -52,7 +52,8 @@ int main(int argc, char *argv[])
 	setlocale(LC_ALL,"");
 	bindtextdomain("tuxcast","/usr/share/locale");
 	textdomain("tuxcast");
-	
+	// TODO: Shouldn't that be tuxcast-config for the text domain?
+
 	try
 	{
 		myconfig.load();
