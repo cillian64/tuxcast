@@ -1,3 +1,7 @@
+Revision 116:
+* Removed newfile() from cachefeed
+--------------------------------------------------------------------------------
+
 Revision 114:
 * Brought through an important update from the trunk.  Hopefully soon
 	-translation will be entirely merged back into the trunk
