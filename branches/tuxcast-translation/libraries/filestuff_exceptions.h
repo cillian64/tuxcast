@@ -25,8 +25,14 @@
 #define FILESTUFF_EXCEPTIONS_H
 
 #include "../exceptions.h"
-#include <iostream>
 #include "../compile_flags.h"
+
+#include <libintl.h>
+#include <locale.h>
+
+#include <stdio.h>
+
+#define _(x) gettext(x)
 
 using namespace std;
 
@@ -34,14 +40,14 @@ class eFilestuff_CannotInit : public eException
 {
 	public:
 		virtual void print(void)
-		{ cerr << "Couldn't init (Are you trying to use boost...?" << endl; }
+		{ fprintf(stderr, _("Couldn't initialize the filestuff library, are you trying to use boost? It's not supported!\n")); }
 };
 
 class eFilestuff_CannotCreateFolder : public eException
 {
 	public:
 		virtual void print(void)
-		{ cerr << "Couldn't create folder." << endl; }
+		{ fprintf(stderr,_("Couldn't create folder.\n")); }
 };
 
 class eFilestuff_IsAFile : public eFilestuff_CannotCreateFolder // This is just a special case of not being able to create the folder
@@ -50,7 +56,7 @@ class eFilestuff_IsAFile : public eFilestuff_CannotCreateFolder // This is just 
 		eFilestuff_IsAFile(string name)
 		{ this->name = name; }
 		virtual void print(void)
-		{ cerr << "Couldn't create folder \"" << name << "\".  It already exists but isn't of type, directory.  Please delete it and try again" << endl; }
+		{ fprintf(stderr, _("Couldn't create folder \"%s\".  It already exists but isn't a directory.  Please delete it and try again.\n"), name.c_str()); }
 	private:
 		string name; // Printing the name here is more important than
 		// other places - the user needs to know which file to delete
@@ -61,7 +67,7 @@ class eFilestuff_NoBoost : public eException
 {
 	public:
 		virtual void print(void)
-		{ cerr << "Sorry, boost isn't implemented yet.  Please recompile with POSIX enabled in compile_flags.h, or contact your package maintainer" << endl; }
+		{ fprintf(stderr, _("Sorry, boost isn't implemented yet.  Please recompile with POSIX enabled in compile_flags.h, or contact your package maintainer\n")); }
 };
 #endif
 
@@ -70,7 +76,7 @@ class eFilestuff_NoBoost : public eException
 {
 	public:
 		virtual void print(void)
-		{ cerr << "Sorry, BSD isn't implemented yet.  Please recompile with POSIX enabled in compile_flags.h, or contact your package maintainer" << endl; }
+		{ fprintf(stderr, _("Sorry, BSD isn't implemented yet.  Please recompile with POSIX enabled in compile_falgs.h, or contact your package maintainer\n")); }
 };
 #endif
 
@@ -80,7 +86,7 @@ class eFilestuff_NotAFile : public eException
 		eFilestuff_NotAFile(string name)
 		{ this->name = name; }
 		virtual void print(void)
-		{ cerr << "\"" << name << "\" exists, but isn't a file.  Please delete it and try again" << endl; }
+		{ fprintf(stderr, _("\"%s\" exists, but isn't a file.  Please delete it and try again.\n"), name.c_str()); }
 	private:
 		string name;
 };

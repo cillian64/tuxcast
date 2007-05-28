@@ -1,3 +1,9 @@
+Revision 112:
+* Converted filestuff's output to gettext.
+* Removed socket.o from libs/Makefile - it didn't cause any problems with normal
+	compiling, but broke when making "main" in libs.
+--------------------------------------------------------------------------------
+
 Revision 111:
 * Started readying /tuxcast for translation - changed couts/cerrs to printfs/
 	fprintfs.
