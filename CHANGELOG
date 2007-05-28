@@ -1,3 +1,7 @@
+Revision 115:
+* Removed newfile() from cachefeed - this was clogging files.xml with junk
+--------------------------------------------------------------------------------
+
 Revision 111:
 * Bump, I forgot to update version.h in the last 20 revisions
 --------------------------------------------------------------------------------
