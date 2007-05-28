@@ -43,6 +43,7 @@ void configuration::save()
 	xmlDocPtr doc = NULL;
 	xmlNodePtr root_node = NULL, node = NULL,node2=NULL;
 	string path;
+	string cachepath;
 	
 	doc = xmlNewDoc((xmlChar *)"1.0");
 	root_node = xmlNewNode(NULL, (xmlChar *)"config");
@@ -79,10 +80,12 @@ void configuration::save()
 
 	path = getenv("HOME");
 	path = path + "/.tuxcast";
+	cachepath=path+"/cache";
 	try
 	{
 		checkfolderexists(path); // If an exception is thrown, the stack should
 	// Be unrolled all the way back to the beginning, where it'll display and quit.
+		checkfolderexists(cachepath);
 		checkfileexists(path+"/config.xml");
 	}
 	catch(eFilestuff_CannotCreateFolder &e)

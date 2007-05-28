@@ -39,6 +39,7 @@ void up2date(configuration *myconfig, int feed);
 void checkall(configuration *myconfig);
 void up2dateall(configuration *myconfig);
 void get(string name, string URL, int feed, configuration *myconfig);
-filelist *parsefeed(string URL);
+void cachefeed(string name, string URL);
+filelist *parsefeed(string name);
 
 #endif

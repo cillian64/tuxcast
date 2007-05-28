@@ -50,9 +50,11 @@ void check(configuration *myconfig, int feed)
 {
 	filelist *myfilelist;
 	
-	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->address)))
+	cachefeed(myconfig->feeds[feed]->name, myconfig->feeds[feed]->address);
+	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->name)))
 		return;
-
+	// TODO: Umm, I really should return an error or warning or something,
+	// shouldn't I...?
 
 	for(int j=0, size=myfilelist->size(); j<size; j++)
 	{
@@ -82,7 +84,9 @@ void up2date(configuration *myconfig, int feed)
 {
 	filelist *myfilelist;
 	
-	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->address)))
+	cachefeed(myconfig->feeds[feed]->name,myconfig->feeds[feed]->address);
+
+	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->name)))
 		return;
 
 		
@@ -214,46 +218,89 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	else
 		temp = "yes";
 
-	if(strcasecmp(temp.c_str(),"yes") == 0)
-	{
-		printf(_("Downloading %s..."),name.c_str());
+	if(strcasecmp(temp.c_str(),"yes") != 0)
+		return;
 
-		// Do folder'y stuff first
-		path = myconfig->podcastdir;
-		path += "/";
-		// If the podcast's folder is absolute, don't prepend podcastdir
-		if(myconfig->feeds[feed]->folder[0] == '/')
-			path = myconfig->feeds[feed]->folder;
-		else
-			path += myconfig->feeds[feed]->folder;
-		checkfolderexists(path);
-		// If anything goes wrong here, the exception should
-		// abort everything...
-		
-		path += "/";
-		path += name;
-		
-		outputfile = fopen(path.c_str(), "w");
-		if(outputfile == NULL)
-		{
-			fprintf(stderr,_("Error opening output file \"%s\"\n"),path.c_str());
-			return; // Abort download
-		}
-		curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
-		curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
-		curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
-		curl_easy_perform(mycurl);
-		fclose(outputfile);
-		newfile(name);
+	printf(_("Downloading \"%s\"..."),name.c_str());
+
+	// Do folder'y stuff first
+	path = myconfig->podcastdir;
+	path += "/";
+	// If the podcast's folder is absolute, don't prepend podcastdir
+	if(myconfig->feeds[feed]->folder[0] == '/')
+		path = myconfig->feeds[feed]->folder;
+	else
+		path += myconfig->feeds[feed]->folder;
+	checkfolderexists(path);
+	// If anything goes wrong here, the exception should
+	// abort everything...
+	
+	path += "/";
+	path += name;
+	
+	outputfile = fopen(path.c_str(), "w");
+	if(outputfile == NULL)
+	{
+		fprintf(stderr,_("Error opening output file \"%s\"\n"),path.c_str());
+		return; // Abort download
 	}
+	curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
+	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
+	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
+	curl_easy_perform(mycurl);
+	fclose(outputfile);
+	newfile(name);
 
 	curl_easy_cleanup(mycurl);
 }
 
-filelist *parsefeed(string URL) // This parses the feed, with error checking.
+void cachefeed(string name, string URL)
+{ // Yel, like, I didn't just copy/paste get() and change a couple of bits :P
+	CURL *mycurl;
+	FILE *outputfile=NULL;
+	string path;
+	mycurl = curl_easy_init();
+	if(mycurl == NULL)
+	{
+		fprintf(stderr, _("Error initializing libcurl\n"));
+		return;
+	}
+
+	// Do folder'y stuff first
+	path = getenv("HOME");
+	path+= "/.tuxcast/cache";
+	// If the postcast's folder is absolute, don't prepend a podcastdir
+	checkfolderexists(path);
+	// If anything goes wrong here, the exception should
+	// abort everything...
+	
+	path += "/";
+	path += name;
+
+	outputfile = fopen(path.c_str(), "w");
+	if(outputfile == NULL)
+	{
+		fprintf(stderr,_("Error opening output file \"%s\".\n"),
+			path.c_str());
+		return;
+	}
+	curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
+	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
+	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
+	curl_easy_perform(mycurl);
+	fclose(outputfile);
+	newfile(name);
+
+	curl_easy_cleanup(mycurl);
+}
+	
+filelist *parsefeed(string name) // This parses the feed, with error checking.
 // It returns NULL if any error occured
 {
 	filelist *myfilelist;
+	string URL=getenv("HOME");
+	URL+="/.tuxcast/cache/";
+	URL+=name;
 	try
 	{
 		myfilelist = parse(URL);

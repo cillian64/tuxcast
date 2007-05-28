@@ -1,3 +1,8 @@
+Revision 114:
+* Brought through an important update from the trunk.  Hopefully soon
+	-translation will be entirely merged back into the trunk
+--------------------------------------------------------------------------------
+
 Revision 112:
 * Converted filestuff's output to gettext.
 * Removed socket.o from libs/Makefile - it didn't cause any problems with normal
