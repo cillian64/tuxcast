@@ -289,10 +289,7 @@ void cachefeed(string name, string URL)
 	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
 	curl_easy_perform(mycurl);
 	fclose(outputfile);
-	newfile(name);
 	
-
-
 	curl_easy_cleanup(mycurl);
 }
 
