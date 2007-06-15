@@ -3,14 +3,13 @@ Getting the right libraries, etc.
 
 You will need
 o libxml2
-o boost-filesystem
 o libcurl
 
 You can get these on debian or ubuntu with the following command:
-apt-get install libboost-filesystem-dev libcurl3-dev libxml2-dev
+apt-get install libcurl3-dev libxml2-dev
 
 To get the libraries on Gentoo:
-emerge -av curl boost libxml2
+emerge -av curl libxml2
 
 Installing from SVN
 -------------------
@@ -33,9 +32,9 @@ Installing from a release
 
 Extract the release tarball with:
 tar xvf tuxcast-*.tgz
-Or change tuxcast-*.tgz with your release's filename
+Or change tuxcast-*.tgz to your release's filename
 Compile with:
-cd tuxcast
+cd tuxcast-*
 make
 make install
 

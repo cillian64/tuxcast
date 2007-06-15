@@ -29,7 +29,7 @@
 #include "../libraries/filestuff_exceptions.h"
 #include "../version.h"
 
-const char options[] = "aA:d:n:hs:g:Gf:uv";
+const char options[] = "aA:d:n:N:hs:g:Gf:uv";
 
 configuration myconfig;
 
@@ -121,7 +121,7 @@ void help(void)
 	cout << "-G: Get the value of all options" << endl;
 	cout << "-h: Display this help message" << endl;
 	cout << "-s OPTION=VALUE: Set OPTION to VALUE" << endl;
-	cout << "-u -n NAME [ -A ADDRESS | -f FOLDER ]" << endl;
+	cout << "-u -n NAME [ -A ADDRESS | -f FOLDER | -N NEWNAME ]: Change a property of a feed" << endl;
 	cout << endl;
 	cout << "Available options are:" << endl;
 	cout << "podcastdir - where to save all your podcasts" << endl;
@@ -283,8 +283,26 @@ void add(int argc,char *argv[])
 		else
 			i++;
 	}
-		
 	
+	// Check the URL isn't a duplicate:
+	// Sanity check:
+	if(strcmp(address.c_str(),"") == 0)
+	{
+		cerr << "No URL specified!" << endl;
+		return;
+	}
+	i=0;
+	while(i<myconfig.feeds.size())
+	{
+			if(strcasecmp(myconfig.feeds[i]->address.c_str(),address.c_str()) == 0)
+			{
+				cerr << "A feed with the same URL already exists" << endl;
+				return;
+			}
+			else
+				i++;
+	}	
+	// TODO: Stick those two above together for neatness.
 	if((strcmp(name.c_str(),"") != 0) && (strcmp(address.c_str(),"") != 0)) // No sanity check for folder here:
 		// folder can be blank - it means just put the podcast in podcastdir
 	{
@@ -355,7 +373,7 @@ void update(int argc, char *argv[])
 	myopt = getopt(argc,argv,options);
 	if(myopt != 'n')
 	{
-		cerr << "You must pass -n and either -A or -f, when updating a feed's info" << endl;
+		cerr << "You must pass -n and either -A, -f or -N when updating a feed's info" << endl;
 		return;
 	}
 	name = optarg;
@@ -374,6 +392,14 @@ void update(int argc, char *argv[])
 						cerr << "Error: Blank address" << endl;
 						return;
 					}
+					for(int j=0; j<myconfig.feeds.size(); j++)
+					{
+						if(strcmp(myconfig.feeds[j]->address.c_str(), optarg) == 0)
+						{
+							cerr << "Error: Another feed already exists with this address" << endl;
+							return;
+						}
+					}
 					
 					myconfig.feeds[i]->address = optarg;
 					break;
@@ -381,8 +407,28 @@ void update(int argc, char *argv[])
 				case 'f':
 					myconfig.feeds[i]->folder = optarg;
 					break;
+					
+				case 'N':
+					if(strcmp(optarg,"") == 0)
+					{
+						cerr << "Error: Blank name" << endl;
+						return;
+					}
+					
+					for(int j=0; j<myconfig.feeds.size(); j++)
+					{
+						if(strcmp(myconfig.feeds[j]->name.c_str(), optarg) == 0)
+						{
+							cerr << "Error: Another feed already exists with this name" << endl;
+							return;
+						}
+					}
+					
+					myconfig.feeds[i]->name=optarg;
+					break;
+					
 				default:
-					cerr << "You must pass either -A or -f, when updating a feed's info" << endl;
+					cerr << "You must pass either -A, -f or -N when updating a feed's info" << endl;
 					return;
 			}
 			break;

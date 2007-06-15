@@ -19,3 +19,12 @@ tuxcast -u
 
 To update a particular feed:
 tuxcast -U NAME
+
+Other bits
+----------
+
+To find the current version and source of your build of tuxcast:
+tuxcast -v
+
+For more help using tuxcast:
+tuxcast -h

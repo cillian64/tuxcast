@@ -13,6 +13,10 @@ Options
 Options are set like this:
 tuxcast-config -s option=value
 Only one option can be set at a time.
+You can retrieve the value of one option at a time like this:
+tuxcast-config -g option
+Alternately you can get a list of the values of all options and a list of feeds with:
+tuxcast-config -G
 
 Currently, the options are:
 o podcastdir - this can be any absolute directory (must start with /, no ~ allowed).  This is the root of where all podcasts are saved.
@@ -41,6 +45,11 @@ To change the feed's address, use:
 tuxcast-config -u -n NAME -A NEWADDRESS
 NEWADDRESS must not be blank.
 
-At the moment, you cannot change a feed's name.
+To change a feed's name use:
+tuxcast-config -u -n CURRENTNAME -N NEWNAME
+Of course, neither CURRENTNAME nor NEWNAME can be blank.
 
-
+In order to retrieve the information about a particular feed you can use:
+tuxcast-config -g feed -n NAME
+Or, just use to show all feeds:
+tuxcast-config -G
