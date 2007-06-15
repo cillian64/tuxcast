@@ -64,8 +64,18 @@ int main(int argc, char *argv[])
 	// caught here, and we abort.
 	// b) checkfileexists will return false
 
+	// Remember, we can only take one option.
+	// We store the first option, then check - if there's another, we bork out and moan.
 	
-	switch(getopt(argc,argv,options))
+	char opt1=getopt(argc,argv,options);
+	string optarg1=optarg;
+	if(getopt(argc,argv,options) != -1)
+	{
+		cerr << "Error, more than one option was passed.  You must only pass one option." << endl;
+		return -1;
+	}
+	
+	switch(opt1)
 	{
 		case 'c':
 			cout << "Checking all feeds" << endl;
@@ -77,16 +87,16 @@ int main(int argc, char *argv[])
 			break;
 
 		case 'C':
-			cout << "Checking feed, \"" << optarg << "\"" << endl;
+			cout << "Checking feed, \"" << optarg1.c_str() << "\"" << endl;
 			// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
-			if(strcmp(optarg,"") == 0)
+			if(strcmp(optarg1.c_str(),"") == 0)
 			{
 				cerr << "You must pass a non-blank feed name" << endl;
 				return -1;
 			}
 			for(int i=0; i<myconfig.feeds.size(); i++)
 			{
-				if(strcasecmp(optarg,myconfig.feeds[i]->name.c_str()) == 0)
+				if(strcasecmp(optarg1.c_str(),myconfig.feeds[i]->name.c_str()) == 0)
 				{
 					// Found the feed
 					check(&myconfig, i);
@@ -95,20 +105,20 @@ int main(int argc, char *argv[])
 			}
 			// If we got all through the feeds, and it wasn't found (and we returned),
 			// then the feed doesn't exist:
-			cerr << "Unknown feed, \"" << optarg << "\"" << endl;
+			cerr << "Unknown feed, \"" << optarg1.c_str() << "\"" << endl;
 			return -1;
 			break; // Bah
 		case 'U':
-			cout << "Getting up2date on feed, \"" << optarg << "\"" << endl;
+			cout << "Getting up2date on feed, \"" << optarg1.c_str() << "\"" << endl;
 			// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
-			if(strcmp(optarg,"") == 0)
+			if(strcmp(optarg1.c_str(),"") == 0)
 			{
 				cerr << "You must pass a non-blank feed name" << endl;
 				return -1;
 			}
 			for(int i=0; i<myconfig.feeds.size(); i++)
 			{
-				if(strcasecmp(optarg,myconfig.feeds[i]->name.c_str()) == 0)
+				if(strcasecmp(optarg1.c_str(),myconfig.feeds[i]->name.c_str()) == 0)
 				{
 					// Found the feed
 					up2date(&myconfig, i);
@@ -117,7 +127,7 @@ int main(int argc, char *argv[])
 			}
 			// If we got all through the feeds, and it wasn't found (and we returned),
 			// then the feed doesn't exist:
-			cerr << "Unknown feed, \"" << optarg << "\"" << endl;
+			cerr << "Unknown feed, \"" << optarg1.c_str() << "\"" << endl;
 			return -1;
 			break; // Bah
 

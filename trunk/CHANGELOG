@@ -1,3 +1,20 @@
+Revision 117:
+(I know it's a big commit, there was a power cut and I was bored...)
+* Added files needed to use eclipse as the IDE (ie configuration) and modded the
+	makefile slightly.
+* Tuxcast now only accepts one option at a time.  This confused some users as it
+	would previously accept multiple options but only execute the first.
+* Changed tuxcast-config to check for feeds with duplicate URLs before adding.
+* Changed TODO to reflect the above.
+* Changed get() in tuxcast to create podcastdir if it doesn't already exist.
+	Also changed cachefeed to create ~/.tuxcast - logically this shouldn't be
+	needed But It Seemed Like a Good Idea at the Time (TM).
+* Updated the documentation files
+* Made it possible to change a feed's name using tuxcast-config -u -n ... -N ...
+* Updated tuxcast-config to check for duplicates when changing a feed's name or
+	address.
+--------------------------------------------------------------------------------
+
 Revision 115:
 * Removed newfile() from cachefeed - this was clogging files.xml with junk
 --------------------------------------------------------------------------------

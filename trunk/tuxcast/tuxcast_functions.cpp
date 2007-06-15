@@ -223,6 +223,7 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 
 	// Do folder'y stuff first
 	path = myconfig->podcastdir;
+	checkfolderexists(path);
 	path += "/";
 	// If the podcast's folder is absolute, don't prepend podcastdir
 	if(myconfig->feeds[feed]->folder[0] == '/')
@@ -268,7 +269,9 @@ void cachefeed(string name, string URL)
 	
 	// Do folder'y stuff first
 	path = getenv("HOME");
-	path += "/.tuxcast/cache";
+	path += "/.tuxcast";
+	checkfolderexists(path);
+	path += "/cache";
 	// If the podcast's folder is absolute, don't prepend podcastdir
 	checkfolderexists(path);
 	// If anything goes wrong here, the exception should

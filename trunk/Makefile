@@ -2,6 +2,8 @@ main:
 	make -C tuxcast
 	#make -C plugins
 
+all: main
+
 clean:
 	make -C tuxcast clean
 	make -C libraries clean

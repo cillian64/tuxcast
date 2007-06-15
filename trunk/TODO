@@ -1,4 +1,4 @@
-* Resuming incomplete downloads
+* Resuming incomplete downloads (I think it already does this, ust need to confirm)
 * Clear up xml stuff at the end of functions (try valgrind for mem checking?)
 * Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
 * Where to save the config file, defined in compile_flags.h
@@ -8,9 +8,7 @@
 * Check no exceptions from the filestuff library can slip through
 * Change all libxml parses to be non-verbose (and not spit out errors)
 * Clean up foldery stuff.
-* Create root podcast folder, maybe ask?
 * Either add a spinner or enable libcurl support for one (If it has one)
 * Stop warnings about missing config.xml and files.xml on first runs
-* Stop duplicate named or URL'ed feed (Didn't I already do it?)
-* Stop having both -c and -u
-* Feeds containing an &, as in a GET form, don't play nicely with the XML.
+* Feeds containing an &, as in a GET form, don't play nicely with the XML. (Can't really do anything
+	about this as this makes the XML invalid so libxml is right to abort...)
