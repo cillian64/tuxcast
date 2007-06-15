@@ -68,7 +68,12 @@ int main(int argc, char *argv[])
 	// We store the first option, then check - if there's another, we bork out and moan.
 	
 	char opt1=getopt(argc,argv,options);
-	string optarg1=optarg;
+	string optarg1;
+	if(optarg != NULL)
+		optarg1=optarg;
+	else
+		optarg1="";
+
 	if(getopt(argc,argv,options) != -1)
 	{
 		cerr << "Error, more than one option was passed.  You must only pass one option." << endl;

@@ -1,3 +1,7 @@
+Revision 119:
+* Fixed a pretty stupid segfault.
+--------------------------------------------------------------------------------
+
 Revision 118:
 * Added the rudiments of the new progress bar system.  It's a mess at the moment
 	so it's disabled in favour of the default curl one.  You can enable it
