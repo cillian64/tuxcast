@@ -1,3 +1,9 @@
+Revision 118:
+* Added the rudiments of the new progress bar system.  It's a mess at the moment
+	so it's disabled in favour of the default curl one.  You can enable it
+	in compile_flags.h
+--------------------------------------------------------------------------------
+
 Revision 117:
 (I know it's a big commit, there was a power cut and I was bored...)
 * Added files needed to use eclipse as the IDE (ie configuration) and modded the

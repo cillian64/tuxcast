@@ -19,7 +19,7 @@
  * 
  */
 
-
+// #define CUSTOM_PROGRESS_BAR
 
 // These flags are used in deciding which path name_check to use
 // And where to save the config file:
