@@ -1,3 +1,7 @@
+Revision 120:
+* Fixed the -v revision counter, it was stuck at 91 for some reason...
+--------------------------------------------------------------------------------
+
 Revision 119:
 * Fixed a pretty stupid segfault.
 --------------------------------------------------------------------------------
