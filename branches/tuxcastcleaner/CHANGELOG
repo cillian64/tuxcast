@@ -1,0 +1,4 @@
+Revision 122:
+Added the genxml function to generate a new trimmed down files.xml (Though
+for the moment it writes to files.xml.new to avoid hosing your real tuxcast
+metadata if something goes wrong.

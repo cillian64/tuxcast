@@ -6,6 +6,8 @@
 
 using namespace std;
 
+void genxml(vector<string*> *downloads);
+
 int main()
 {
 	configuration *myconfig = new configuration;
@@ -55,7 +57,23 @@ int main()
 		delete files;
 	}
 	cout << "Got a total of " << downloads->size() << " files." << endl;
+	cout << "Generating XML..." << endl;
+	genxml(downloads);
 
 
 	return 0;
+}
+
+void genxml(vector<string*> *downloads)
+{
+	xmlDoc *doc;
+	xmlNode *root, *curr;
+	string path=getenv("HOME");
+	path+="/.tuxcast/files.xml.new";
+	doc = xmlNewDoc((xmlChar *)"1.0");
+	root = xmlNewNode(NULL,(xmlChar *)"filelist");
+	xmlDocSetRootElement(doc,root);
+	for(unsigned int i=0; i<downloads->size(); i++)
+		xmlNewChild(root,NULL,(xmlChar *)"file", (xmlChar *)((*downloads)[i])->c_str());
+	xmlSaveFormatFileEnc(path.c_str(), doc, "UTF-8", 1);
 }
