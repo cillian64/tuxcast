@@ -7,22 +7,20 @@
 using namespace std;
 
 void genxml(vector<string*> *downloads);
+unsigned long count(string filename);
 
 int main()
 {
 	configuration *myconfig = new configuration;
 	vector<string*> *downloads;
 
-	cout << "Hello, world!" << endl;
-	cout << "Loading up configuration, default location..." << endl;
 	myconfig->load();
-	cout << "Initializing filename list..." << endl;
 	downloads = new vector<string*>;
 	cout << "Beginning iteration through feeds..." << endl;
 	for(unsigned int i=0; i<myconfig->feeds.size(); i++)
 	{
 		filelist *files;
-		cout << "Checking feed " << i << ", named " << myconfig->feeds[i]->name << "." << endl;
+		cout << "Checking feed \"" << myconfig->feeds[i]->name << "\"." << endl;
 		try
 		{
 			string path=getenv("HOME");
@@ -41,27 +39,56 @@ int main()
 			cerr << "WTF?!" << endl;
 			continue;
 		}
-		cout << "Got " << files->size() << " files." << endl;
-		cout << "Exporting..." << endl;
 		for(unsigned int j=0; j<files->size(); j++)
 		{
 			string *newfile = new string;
 			*newfile = (*files)[j]->filename;
 			downloads->push_back(newfile);
-			cout << "Exported \"" << (*files)[j]->filename << "\"." << endl;
 		}
-		cout << "Exported " << files->size() << " files." << endl;
-		cout << "Clearing up..." << endl;
 		for(unsigned int j=0; j<files->size(); j++)
 			delete (*files)[j];
 		delete files;
 	}
-	cout << "Got a total of " << downloads->size() << " files." << endl;
 	cout << "Generating XML..." << endl;
 	genxml(downloads);
 
+	// Read the old XML file:
+	cout << "Old files.xml contains " << count("files.xml") << " elements" << endl;
+	cout << "New files.xml.new contains " << count("files.xml.new") << " elements" << endl;
+
 
 	return 0;
+}
+
+unsigned long count(string filename)
+{
+	xmlDoc *doc;
+	xmlNode *root, *curr;
+	unsigned long counter=0;
+	string path=getenv("HOME");
+	path+="/.tuxcast/";
+	path+=filename;
+	curr=NULL;
+	doc = xmlReadFile(path.c_str(), NULL, XML_PARSE_RECOVER);
+	if(doc == NULL)
+		return 0;
+	
+	root = xmlDocGetRootElement(doc);
+	if(root == NULL)
+		return 0;
+	
+	if(strcasecmp((char*)root->name,"filelist") != 0)
+		return 0;
+	curr = root->children;
+	while(true)
+	{
+		if(strcasecmp((char *)curr->name,"file") == 0)
+			counter++;
+		if(curr->next != NULL)
+			curr = curr->next;
+		else
+			return counter;
+	}
 }
 
 void genxml(vector<string*> *downloads)
