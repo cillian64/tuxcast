@@ -8,7 +8,6 @@
 * Check no exceptions from the filestuff library can slip through
 * Change all libxml parses to be non-verbose (and not spit out errors)
 * Clean up foldery stuff.
-* Either add a spinner or enable libcurl support for one (If it has one)
 * Stop warnings about missing config.xml and files.xml on first runs
 * Feeds containing an &, as in a GET form, don't play nicely with the XML. (Can't really do anything
 	about this as this makes the XML invalid so libxml is right to abort...)
