@@ -1,3 +1,7 @@
+Revision 125:
+* Removed status bar code - it required too much unportable messy stuff.
+--------------------------------------------------------------------------------
+
 Revision 124:
 * Updated TODO.
 --------------------------------------------------------------------------------

@@ -41,7 +41,4 @@ void up2dateall(configuration *myconfig);
 void get(string name, string URL, int feed, configuration *myconfig);
 void cachefeed(string name, string URL);
 filelist *parsefeed(string name);
-#ifdef CUSTOM_PROGRESS_BAR
-int showprogressbar(void *clientp, double dltotal, double tlnow, double ultotal, double ulnow);
-#endif
 #endif
