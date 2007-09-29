@@ -248,9 +248,6 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
 	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
 	curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,0);
-	#ifdef CUSTOM_PROGRESS_BAR
-	curl_easy_setopt(mycurl,CURLOPT_PROGRESSFUNCTION,showprogressbar);
-	#endif
 	curl_easy_perform(mycurl);
 	fclose(outputfile);
 	newfile(name);
@@ -332,31 +329,4 @@ filelist *parsefeed(string name) // This parses the feed, with error checking.
 	}
 	return myfilelist;
 }
-#ifdef CUSTOM_PROGRESS_BAR
-int showprogressbar(void *clientp, double dltotal, double dlnow, double ultotal, double ulnow)
-{
-	#define BAR 0
-	#define GOAT 1
-	#define SPINNER 2
-	#define PERCENTAGE 3
 
-	unsigned short bartype=BAR;
-	char *temp=getenv("COLUMNS");
-	printf("Boo: %s\n",temp);
-	unsigned int columns=atoi(temp);
-	unsigned int percentage=(float)dlnow/dltotal*100;
-	//printf("Meep\n");
-	switch(bartype)
-	{
-		case PERCENTAGE:
-			printf("\r");
-			for(unsigned int i=0; i<columns; i++)
-				printf(" ");
-			printf("\rPercentage: %d%%",percentage);
-			break;
-	}
-
-
-	return 0; // Else curl with bork out
-}
-#endif
