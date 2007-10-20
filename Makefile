@@ -7,6 +7,7 @@ all: main
 clean:
 	make -C tuxcast clean
 	make -C libraries clean
+	rm -f version.o
 	#make -C plugins clean
 
 version.o: version.cpp
