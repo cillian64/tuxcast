@@ -36,6 +36,7 @@
 #include "../config/config_exceptions.h"
 #include "rss_exceptions.h"
 #include "tuxcast_functions.h"
+#include "cleaner.h"
 #include "../version.h"
 
 using namespace std;
@@ -43,7 +44,7 @@ using namespace std;
 
 
 
-const char options[] = "cuC:U:bv";
+const char options[] = "cuC:U:fv";
 
 int main(int argc, char *argv[])
 {
@@ -136,10 +137,9 @@ int main(int argc, char *argv[])
 			return -1;
 			break; // Bah
 
-		case 'b':
-			// Backend mode:
-			cerr << "Backend mode gone for now" << endl;
-			cerr << "See the tuxcast blog, http://tuxcast.sf.net" << endl;
+		case 'f':
+			cout << "Cleaning out files.xml..." << endl;
+			clean();
 			break;
 
 		case 'v':
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
 			cout << "-u - Download only the latest file from all feeds" << endl;
 			cout << "-C NAME - check the specified feed" << endl;
 			cout << "-U name - download only the latest episode from the specified feed" << endl;
-			cout << "-b - enter the backend mode" << endl;
+			cout << "-f - clean out old podcasts from files.xml" << endl;
 			cout << "-v - show version and license information" << endl;
 			cout << endl;
 	}
