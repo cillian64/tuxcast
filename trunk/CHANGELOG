@@ -1,3 +1,8 @@
+Revision 130:
+* Fixed a bug where the revision info from -v wasn't updating (make clean wasn't
+	removing version.o)
+--------------------------------------------------------------------------------
+
 Revision 129:
 * Bumped version.h (Forgot to last commit)
 --------------------------------------------------------------------------------
