@@ -1,18 +1,22 @@
-main: config.o tuxcast-config.o ../libraries/filestuff.o ../version.o
-	g++ -g -o tuxcast-config tuxcast-config.o config.o ../libraries/filestuff.o ../version.o `xml2-config --libs`
+include ../config.mk
+
+main: tuxcast-config
+
+tuxcast-config : config.o tuxcast-config.o ../libraries/filestuff.o ../version.o
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBXML2_LIBS)
 
 clean:
 	rm -f *.o
 	rm -f tuxcast-config
 
 config.o: config.cpp
-	g++ -g -c config.cpp `xml2-config --cflags`
+	$(CXX) $(CXXFLAGS) -c $^ $(LIBXML2_CFLAGS)
 
 tuxcast-config.o: tuxcast-config.cpp
-	g++ -g -c tuxcast-config.cpp
+	$(CXX) $(CXXFLAGS) -c $^
 
 ../libraries/filestuff.o: ../libraries/filestuff.cpp
-	make filestuff.o -C ../libraries/
+	$(MAKE) filestuff.o -C ../libraries/
 
 ../version.o: ../version.cpp
-	make version.o -C ..
+	$(MAKE) version.o -C ..
