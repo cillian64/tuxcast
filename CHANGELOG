@@ -1,3 +1,7 @@
+Revision 133:
+* Merged revisions 96 through 112 into trunk from -translation (The big one.)
+--------------------------------------------------------------------------------
+
 Revision 132:
 * Removed socket.o from libraries/Makefile (Merge from -translation)
 --------------------------------------------------------------------------------

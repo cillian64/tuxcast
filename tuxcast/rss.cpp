@@ -19,7 +19,7 @@
  * 
  */
 
-
+#define _(x) gettext(x)
 
 #include "../compile_flags.h"
 #include "rss.h"
@@ -29,7 +29,11 @@
 #include <iostream>
 #include <string>
 
+#include <libintl.h>
+#include <locale.h>
+
 using namespace std;
+
 
 filelist *parse(string feed)
 {
@@ -37,6 +41,7 @@ filelist *parse(string feed)
 	xmlNode *curr = NULL;
 	filelist *myfilelist;
 	bool rss2; // true == 2, false == 1 or RDF.
+
 
 	doc = xmlReadFile(feed.c_str(),NULL,XML_PARSE_RECOVER | XML_PARSE_NOWARNING | XML_PARSE_NOERROR); // These options should help incorrect RSS feeds survive
 	// Not ideal, but easier than convincing feed maintainers to escape stuff, etc...
