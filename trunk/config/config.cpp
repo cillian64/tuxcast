@@ -25,12 +25,18 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include "config.h"
-#include <iostream>
+#include <stdio.h>
 #include <sstream>
 #include <stdlib.h>
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
 #include "config_exceptions.h"
+#include <libintl.h>
+#include <locale.h>
+
+#define _(x) gettext(x)
+
+using namespace std;
 
 void configuration::save()
 {
@@ -45,7 +51,7 @@ void configuration::save()
 
 	if(podcastdir[podcastdir.length()-1] == '/')
 	{
-		cerr << "Trimming trailing / from podcastdir..." << endl;
+		fprintf(stderr,_("Trimming trailing / from podcastdir...\n"));
 		podcastdir.erase(podcastdir.length()-1,1);
 	}
 	xmlNewChild(root_node, NULL, (xmlChar *)"podcastdir",
@@ -84,16 +90,16 @@ void configuration::save()
 	}
 	catch(eFilestuff_CannotCreateFolder &e)
 	{
-		cerr << "Oops, couldn't save your new config:" << endl;
-		cerr << "Exception caught: ";
+		fprintf(stderr,_("Ooops, couldn't save your new config:\n"));
+		fprintf(stderr,_("Exception caught: "));
 		e.print();
 		throw eConfig_CannotSaveConfig();
 	}
 	catch(eFilestuff_NotAFile &e)
 	{
-		cerr << "Oops, couldn't save your new config," << endl;
-		cerr << "~/.tuxcast/config.xml exists but isn't a file" << endl;
-		cerr << "Exception caught: ";
+		fprintf(stderr,_("Opps, couldn't save your new config,\n"));
+		fprintf(stderr,_("~/.tuxcast/config.xml exists but isn't a file\n"));
+		fprintf(stderr,_("Exception caught: "));
 		e.print();
 		throw eConfig_CannotSaveConfig();
 	}
@@ -118,13 +124,13 @@ void configuration::load()
 	{
 		if(checkfileexists(path) == false)
 		{
-			cerr << "No config file found..." << endl;
+			fprintf(stderr,_("No config file found...\n"));
 			throw eConfig_NoConfigFile();
 		}
 	}
 	catch(eFilestuff_NotAFile &e)
 	{
-		cerr << "No config file: Aborting" << endl;
+		fprintf(stderr,_("No config file found: Aborting\n"));
 		throw eConfig_NoConfigFile();
 	}
 	// The caller should catch eNoConfigFile
@@ -133,8 +139,8 @@ void configuration::load()
 	doc = xmlReadFile(path.c_str(), NULL, 0);
 	if(doc == NULL)
 	{
-		cerr << "Error parsing your config file" << endl;
-		cerr << "Please delete ~/.tuxcast/config.xml and make a new one" << endl;
+		fprintf(stderr,_("Error parsing your config file\n"));
+		fprintf(stderr,_("Please delete ~/.tuxcast/config.xml and make a new one\n"));
 		throw eConfig_NoConfigFile(); // Yeh, I know this isn't really
 		// the right thing to call, but it works just fine
 		// Nothing should need to know the difference between
@@ -153,7 +159,7 @@ void configuration::load()
 		{
 			if(curr->children == NULL)
 			{
-				cerr << "You have not setup a podcast directory - tuxcast will use your home directory, ~." << endl;
+				fprintf(stderr,_("You have not setup a podcast directory - tuxcast will use your home directory, ~.\n"));
 				this->podcastdir=getenv("HOME");
 				queuesave=true;
 			}
@@ -162,8 +168,8 @@ void configuration::load()
 
 			if(podcastdir[podcastdir.length()-1] == '/')
 			{
-				cerr << "Trimming trailing / from podcastdir..." << endl;
-				cerr << "If you make a custom config file, please be careful" << endl;
+				fprintf(stderr,_("Trimming trailing / from podcastdir...\n"));
+				fprintf(stderr,_("If you make a custom config file, please be careful\n"));
 				podcastdir.erase(podcastdir.length()-1,1);
 			}
 
@@ -199,9 +205,7 @@ void configuration::load()
 							// if it's either of these 2, the value CANNOT be blank!!
 							if(curr->children == NULL)
 							{
-								cerr << "Error: blank name or address in config file, ";
-								cerr << "Please delete and recreate your config file";
-								cerr << " using tuxcast-config" << endl;
+								fprintf(stderr,_("Error: blank name or address in config file, please delete and recreate your config file using tuxcast-config\n"));
 								return;
 							}
 						}

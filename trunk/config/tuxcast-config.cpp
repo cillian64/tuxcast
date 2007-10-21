@@ -22,19 +22,20 @@
 
 
 #include "../compile_flags.h"
-#include <iostream>
 #include "config.h"
 #include <unistd.h>
 #include "config_exceptions.h"
 #include "../libraries/filestuff_exceptions.h"
 #include "../version.h"
+#include <libintl.h>
+#include <locale.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 const char options[] = "aA:d:n:N:hs:g:Gf:uv";
+#define _(x) gettext(x)
 
 configuration myconfig;
-
-
-using namespace std;
 
 void help(void);
 void get(int argc, char **argv);
@@ -46,14 +47,20 @@ void update(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
 {
+	// TODO: Insert internationalisation setup shizzle here:
+	setlocale(LC_ALL,"");
+	bindtextdomain("tuxcast","/usr/share/locale");
+	textdomain("tuxcast");
+	// TODO: Shouldn't that be tuxcast-config for the text domain?
+
 	try
 	{
 		myconfig.load();
 	}
 	catch(eConfig_NoConfigFile &e)
 	{
-		cerr << "Warning, No config file" << endl;
-		cerr << "If you're changing an option or adding a feed, a config file will be created later" << endl;
+		fprintf(stderr,_("Warning, no config file\n"));
+		fprintf(stderr,_("If you're changing an option or adding a feed, a config file will be created later\n"));
 	}
 	
 	try
@@ -98,9 +105,10 @@ int main(int argc, char *argv[])
 	}
 	catch(eConfig_CannotSaveConfig &e)
 	{
-		cerr << "Cannot save config file" << endl;
-		cerr << "Exception caught: ";
+		fprintf(stderr,_("Cannot save config file\n"));
+		fprintf(stderr,_("Exception caught: "));
 		e.print();
+		fprintf(stderr,"\n");
 		return -1;
 	}
 	// No point in catching that exception separatly in every action
@@ -111,22 +119,20 @@ int main(int argc, char *argv[])
 
 void help(void)
 {
-	cout << "tuxcast-config [action]" << endl;
-	cout << "Actions are:" << endl;
-	cout << "-a -n NAME -A ADDRESS -f FOLDER: Add a feed with the specified name, address and folder" << endl;
-	cout << "-d NAME: Delete the feed with the specified name" << endl;
-	cout << "-g OPTION: Get the value of option" << endl;
-	cout << "-g feed -n NAME: Get the settings of a particular feed, FEED" << endl;
-	cout << "-g feeds: Show all feeds" << endl;
-	cout << "-G: Get the value of all options" << endl;
-	cout << "-h: Display this help message" << endl;
-	cout << "-s OPTION=VALUE: Set OPTION to VALUE" << endl;
-	cout << "-u -n NAME [ -A ADDRESS | -f FOLDER | -N NEWNAME ]: Change a property of a feed" << endl;
-	cout << endl;
-	cout << "Available options are:" << endl;
-	cout << "podcastdir - where to save all your podcasts" << endl;
-	cout << "ask - whether or not to ask before downloading every episode" << endl;
 
+	printf(_("Usage: tuxcast-config  [action]\n"));
+	printf(_("Actions are:\n"));
+	printf(_("-a -n NAME -A ADDRESS -f FOLDER: Add a feed with the specified name, address and folder\n"));
+	printf(_("-d NAME: Delete the feed with the specified name\n"));
+	printf(_("-g OPTION: Get the value of the specified option\n"));
+	printf(_("-g feed -n NAME: Get the settings of the specified feed\n"));
+	printf(_("-G: Get the value of all options\n"));
+	printf(_("-h: Display this help message\n"));
+	printf(_("-s OPTION=VALUE: Set OPTION to VALUE\n"));
+	printf(_("-u -n NAME [ -A ADDRESS | -f FOLDER | -N NEWNAME ]: Change a property of a feed\n\n"));
+	printf(_("Available options are:\n"));
+	printf(_("podcastdir - where to save all your podcasts\n"));
+	printf(_("ask - whether or not to ask before downloading any files\n"));
 }
 
 void get(int argc, char **argv)
@@ -136,15 +142,16 @@ void get(int argc, char **argv)
 
 	if(strcasecmp(args.c_str(),"podcastdir") == 0)
 	{
-		cout << myconfig.podcastdir << endl;
+		printf("%s\n",myconfig.podcastdir.c_str()); // No translation
+		// required for just a format string, I spose.
 		return;
 	}
 	if(strcasecmp(args.c_str(),"ask") == 0)
 	{
 		if(myconfig.ask == true)
-			cout << "true" << endl;
+			printf(_("true"));
 		else
-			cout << "false" << endl;
+			printf(_("false"));
 		return;
 	}
 	// DANGER DANGER WILL ROBINSON!!1  MY ARMS ARE FLAILING WILDLY!!!11one
@@ -153,7 +160,7 @@ void get(int argc, char **argv)
 	{
 		if(getopt(argc,argv,options) != 'n')
 		{
-			cerr << "You must pass a feed name with -n NAME" << endl;
+			fprintf(stderr,_("You must pass a feed name with -n NAME\n"));
 			return;
 		}
 		string name = optarg;
@@ -162,16 +169,16 @@ void get(int argc, char **argv)
 		{
 			if(strcasecmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0) // Found it:
 			{
-				cout << "Name: " << myconfig.feeds[i]->name.c_str() << endl;
-				cout << "Address: " << myconfig.feeds[i]->address.c_str() << endl;
-				cout << "Folder: " << myconfig.feeds[i]->folder.c_str() << endl;
+				printf(_("Name: %s\n"),myconfig.feeds[i]->name.c_str());
+				printf(_("Address: %s\n"),myconfig.feeds[i]->address.c_str());
+				printf(_("Folder: %s\n"),myconfig.feeds[i]->folder.c_str());
 				return;
 			}
 			else
 				continue; // RRRAAAWWWRRRR.  :P
 		}
 		// If we get here the feed name is bollocks:
-		cerr << "Invalid feed name, " << name << endl;
+		fprintf(stderr,_("Invalid feed name, %s\n"),name.c_str());
 		return;
 	}
 	if(strcasecmp(args.c_str(),"feeds") == 0)
@@ -179,41 +186,39 @@ void get(int argc, char **argv)
 		// Display all feeds:
 		for(int i=0; i<myconfig.feeds.size(); i++)
 		{
-			cout << "Name: " << myconfig.feeds[i]->name.c_str() << endl;
-			cout << "Address: " << myconfig.feeds[i]->address.c_str() << endl;
-			cout << "Folder: " << myconfig.feeds[i]->folder.c_str() << endl << endl;
+			printf(_("Name: %s\n"),myconfig.feeds[i]->name.c_str());
+			printf(_("Address: %s\n"),myconfig.feeds[i]->address.c_str());
+			printf(_("Folder: %s\n"),myconfig.feeds[i]->folder.c_str());
 		}
 		return;
 
 	}
 	// other variables go here...
-	//
 	
 	// If we are still here and haven't returned, somebody messed up.
-	cerr << "Unrecognised option, " << args << endl;
+	// Probably the user ;)
+	fprintf(stderr,_("Unrecognised option, %s\n"),args.c_str());
 }
 
 void getall(void)
 {
-	cout << "podcastdir = " << myconfig.podcastdir << endl;
+	printf(_("podcastdir = %s\n"),myconfig.podcastdir.c_str());
 	if(myconfig.ask == true)
-	{
-		cout << "ask = true" << endl;
-	}
+		printf(_("ask = true\n"));
 	else
-		cout << "ask = false" << endl;
+		printf(_("ask = false\n"));
 	
 	// ...
 	// Let's show some feeds:
 	if(myconfig.feeds.size() == 1)
-		cout << "There is 1 feed:" << endl;
+		printf(_("There is 1 feed:\n"));
 	else // Yay for bulky code for the sake of good grammar :-)
-		cout << "There are " << myconfig.feeds.size() << " feeds:" << endl;
+		printf(_("There are %d feeds:\n"),myconfig.feeds.size());
 	for(int i=0; i<myconfig.feeds.size(); i++)
 	{
-		cout << "Name: " << myconfig.feeds[i]->name << endl;
-		cout << "Address: " << myconfig.feeds[i]->address << endl;
-		cout << "Folder: " << myconfig.feeds[i]->folder << endl << endl;
+		printf(_("Name: %s\n"),myconfig.feeds[i]->name.c_str());
+		printf(_("Address: %s\n"),myconfig.feeds[i]->address.c_str());
+		printf(_("Folder: %s\n"),myconfig.feeds[i]->folder.c_str());
 	}
 
 }
@@ -241,8 +246,7 @@ void set(string args)
 			}
 			else
 			{
-				cerr << "The \"ask\" variable can only be \"true\" or \"false\"" << endl;
-				cerr << "Assuming true" << endl;
+				fprintf(stderr,_("The \"ask\" variable can only be \"true\" or \"false\" -\nAssuming true\n"));
 				myconfig.ask = true;
 			}
 		}
@@ -270,14 +274,14 @@ void add(int argc,char *argv[])
 	// Let's check the feed isn't already there:
 	if(strcmp(name.c_str(),"") == 0)
 	{
-		cerr << "No name specified!!" << endl;
+		fprintf(stderr,_("No name specified!\n"));
 		return;
 	}
 	while(i<myconfig.feeds.size())
 	{
 		if(strcasecmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0)
 		{
-			cerr << "Feed already exists" << endl;
+			fprintf(stderr,_("Feed already exists\n"));
 			return;
 		}
 		else
@@ -313,7 +317,7 @@ void add(int argc,char *argv[])
 		myconfig.feeds[myconfig.feeds.size()-1]->folder = folder;
 	}
 	else
-		cerr << "You must pass both the name and address of the feed to add" << endl;
+		fprintf(stderr,_("You must pass the name and address of the feed to add (The folder can be left blank to just put files in podcastdir)\n"));
 	
 	myconfig.save();
 }
@@ -340,7 +344,7 @@ void del(string name)
 		// If we get here, we're at the end of the array (we /should/ have
 		// either broken or continued if the feed exists anywhere
 		
-		cerr << "Feed \"" << name << "\" doesn't exist" << endl;
+		fprintf(stderr,_("Feed \"%s\" doesn't exist\n"),name.c_str());
 		return;
 	}
 	
@@ -373,7 +377,7 @@ void update(int argc, char *argv[])
 	myopt = getopt(argc,argv,options);
 	if(myopt != 'n')
 	{
-		cerr << "You must pass -n and either -A, -f or -N when updating a feed's info" << endl;
+		fprintf(stderr,_("You must pass -n and either -A, -f or -N when updating a feed's info\n"));
 		return;
 	}
 	name = optarg;
@@ -389,14 +393,14 @@ void update(int argc, char *argv[])
 				case 'A':
 					if(strcmp(optarg,"") == 0)
 					{
-						cerr << "Error: Blank address" << endl;
+						fprintf(stderr,_("Error: Blank address\n"));
 						return;
 					}
 					for(int j=0; j<myconfig.feeds.size(); j++)
 					{
 						if(strcmp(myconfig.feeds[j]->address.c_str(), optarg) == 0)
 						{
-							cerr << "Error: Another feed already exists with this address" << endl;
+							fprintf(stderr,_("Error: Another feed already exists with this address\n"));
 							return;
 						}
 					}
@@ -411,7 +415,7 @@ void update(int argc, char *argv[])
 				case 'N':
 					if(strcmp(optarg,"") == 0)
 					{
-						cerr << "Error: Blank name" << endl;
+						fprintf(stderr,_("Error: Blank name\n"));
 						return;
 					}
 					
@@ -419,7 +423,7 @@ void update(int argc, char *argv[])
 					{
 						if(strcmp(myconfig.feeds[j]->name.c_str(), optarg) == 0)
 						{
-							cerr << "Error: Another feed already exists with this name" << endl;
+							fprintf(stderr,_("Error: Another feed already exists with this name\n"));
 							return;
 						}
 					}
@@ -428,7 +432,7 @@ void update(int argc, char *argv[])
 					break;
 					
 				default:
-					cerr << "You must pass either -A, -f or -N when updating a feed's info" << endl;
+					fprintf(stderr,_("You must pass either -A, -f or -N when updating a feed's info\n"));
 					return;
 			}
 			break;
@@ -442,7 +446,7 @@ void update(int argc, char *argv[])
 		// This means i is 1 less than numoffeeds
 		// We still haven't found the feed
 		// This means the feed aint there
-		cerr << "Error: feed \"" << name << "\" doesn't exist." << endl;
+		fprintf(stderr,_("Error: feed \"%s\" doesn't exist.\n"),name.c_str());
 		return;
 	}
 	myconfig.save();
