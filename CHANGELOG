@@ -1,3 +1,7 @@
+Revision 135:
+* Added gettext support in version.cpp
+--------------------------------------------------------------------------------
+
 Revision 133:
 * Merged revisions 96 through 112 into trunk from -translation (The big one.)
 --------------------------------------------------------------------------------
