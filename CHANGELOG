@@ -1,3 +1,7 @@
+Revision 132:
+* Removed socket.o from libraries/Makefile (Merge from -translation)
+--------------------------------------------------------------------------------
+
 Revision 131:
 * Started merging in -translation branch.  In this rev: merged oojah's makefile
 	modification wizardry (Thanks again to him)
