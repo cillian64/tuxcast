@@ -1,27 +1,32 @@
+include config.mk
+
 main:
-	make -C tuxcast
-	#make -C plugins
+	$(MAKE) -C tuxcast
+	#$(MAKE) -C plugins
+	#$(MAKE) -C po
 
 all: main
 
 clean:
-	make -C tuxcast clean
-	make -C libraries clean
+	$(MAKE) -C tuxcast clean
+	$(MAKE) -C libraries clean
+	#$(MAKE) -C plugins clean
+	#$(MAKE) -C po clean
 	rm -f version.o
-	#make -C plugins clean
 
 version.o: version.cpp
-	g++ -c version.cpp
+	$(CXX) $(CXXFLAGS) -c version.cpp
 
 install: main
-	strip -s tuxcast/tuxcast
-	strip -s config/tuxcast-config
-	install -m 755 tuxcast/tuxcast /usr/bin/tuxcast
-	install -m 755 config/tuxcast-config /usr/bin/tuxcast-config
-	#install -m 755 plugins/tuxcast-amarok /usr/bin/tuxcast-amarok
+	$(STRIP) -s tuxcast/tuxcast
+	$(STRIP) -s config/tuxcast-config
+	$(INSTALL) -D -m 755 tuxcast/tuxcast $(DESTDIR)$(PREFIX)/bin/tuxcast
+	$(INSTALL) -D -m 755 config/tuxcast-config $(DESTDIR)$(PREFIX)/bin/tuxcast-config
+	#$(INSTALL) -m 755 plugins/tuxcast-amarok $(DESTDIR)$(PREFIX)/bin/tuxcast-amarok
+	#$(MAKE) -C po install
 	
 
 uninstall:
-	rm -f /usr/bin/tuxcast /usr/bin/tuxcast-config #/usr/bin/tuxcast-amarok
+	rm -f $(DESTDIR)$(PREFIX)/bin/tuxcast $(DESTDIR)$(PREFIX)/bin/tuxcast-config #$(DESTDIR)$(PREFIX)/bin/tuxcast-amarok
 
 

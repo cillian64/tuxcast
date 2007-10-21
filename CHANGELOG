@@ -1,3 +1,8 @@
+Revision 131:
+* Started merging in -translation branch.  In this rev: merged oojah's makefile
+	modification wizardry (Thanks again to him)
+--------------------------------------------------------------------------------
+
 Revision 130:
 * Fixed a bug where the revision info from -v wasn't updating (make clean wasn't
 	removing version.o)
