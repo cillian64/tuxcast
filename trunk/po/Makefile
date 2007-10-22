@@ -13,7 +13,7 @@ messages : tuxcast.pot $(POFILES)
 	@for j in $(POFILES); do \
 		echo "process $$j"; \
 		$(MSGMERGE) $$j tuxcast.pot > .$$j 2>/dev/null; \
-		mv .$$j $$j; \
+		mv -f .$$j $$j; \
 	done
 
 mo : $(POFILES)
