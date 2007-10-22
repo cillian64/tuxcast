@@ -31,15 +31,14 @@
 
 using namespace std;
 
-class file
+struct file
 {
-	public:
-		string filename;
-		string URL;
-		unsigned long length;
+	string filename;
+	string URL;
+	unsigned long length;
 };
 
-typedef vector<file *> filelist;
+typedef vector<struct file *> filelist;
 
 filelist *parse(string feed);
 void addtolist(filelist *myfilelist, xmlNode *enclosure);
