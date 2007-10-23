@@ -221,10 +221,6 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	if(strcasecmp(temp.c_str(),"yes") != 0)
 		return;
 
-	cout << "Downloading \"";
-	cout << name;
-	cout << "\"..." << endl;
-
 	// Do folder'y stuff first
 	path = myconfig->podcastdir;
 	checkfolderexists(path);
@@ -250,7 +246,7 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	}
 	
 
-	printf(_("Downloading %s..."),name.c_str());
+	printf(_("Downloading %s...\n"),name.c_str());
 	
 	curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
 	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);

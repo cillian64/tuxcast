@@ -1,3 +1,7 @@
+Revision 138:
+* Fixed some output code in get() (Duplicate cout left in)
+--------------------------------------------------------------------------------
+
 Revision 137:
 * Fixed an issue in po/Makefile which caused the build to stop and ask for
 	confirmation about replacing a po file.
