@@ -4,7 +4,12 @@
 #include "rss.h"
 #include "../config/config.h"
 
+#include <libintl.h>
+#include <locale.h>
+
 using namespace std;
+
+#define _(x) gettext(x)
 
 void genxml(vector<string*> *downloads);
 unsigned long count(string filesdotxml);
@@ -19,7 +24,7 @@ void clean()
 	for(unsigned int i=0; i<myconfig->feeds.size(); i++)
 	{
 		filelist *files;
-		cout << "Checking feed \"" << myconfig->feeds[i]->name << "\"." << endl;
+		printf(_("Checking (cached) feed %s."), myconfig->feeds[i]->name.c_str());
 		try
 		{
 			string path=getenv("HOME");
@@ -30,15 +35,15 @@ void clean()
 		}
 		catch( ... )
 		{
-			cerr << "Whoops, could not parse RSS feed" << endl;
-			cerr << "Continuing to next feed" << endl;
+			fprintf(stderr, _("Whoops, could not parse RSS feed\n"));
+			fprintf(stderr, _("Continuing to next feed\n"));
 			continue;
 		}
 		if(files == NULL)
 		{
-			cerr << "Could not parse RSS feed (No exception caught...?)" << endl;
-			cerr << "This shouldn't happen" << endl;
-			cerr << "Continuing to next feed" << endl;
+			fprintf(stderr,_("Could not parse RSS feed (No exception caught)\n"));
+			fprintf(stderr,_("(This should not happen)\n"));
+			fprintf(stderr,_("Continuing to next feed\n"));
 			continue;
 		}
 		for(unsigned int j=0; j<files->size(); j++)
@@ -51,13 +56,14 @@ void clean()
 			delete (*files)[j];
 		delete files;
 	}
-	cout << "Generating XML..." << endl;
+	printf(_("Generating XML...\n"));
 	genxml(downloads);
 
 	// Read the old XML file:
-	cout << "Old files.xml contains " << count("files.xml") << " elements" << endl;
-	cout << "New files.xml.new contains " << count("files.xml.new") << " elements" << endl;
-	cout << "(I won't replace your files.xml as this feature is still immature.  If you're feeling brave, replace ~/.tuxcast/files.xml with ~/.tuxcast/files.xml.new)" << endl;;
+	printf(_("Old files.xml contains %d elements\n"), count("files.xml"));
+	printf(_("New files.xml.new contains %d elements\n"), count("files.xml.new"));
+	printf(_("(I won't replace your files.xml as this feature is still immature.\n"));
+	printf(_("If you're feeling brave, replace ~/.tuxcast/files.xml with ~/.tuxcast/files.xml.new)\n"));
 
 }
 

@@ -8,13 +8,65 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-21 11:57+0100\n"
+"POT-Creation-Date: 2007-10-23 23:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../tuxcast/cleaner.cpp:27
+#, c-format
+msgid "Checking (cached) feed %s."
+msgstr ""
+
+#: ../tuxcast/cleaner.cpp:38
+#, c-format
+msgid "Whoops, could not parse RSS feed\n"
+msgstr ""
+
+#: ../tuxcast/cleaner.cpp:39 ../tuxcast/cleaner.cpp:46
+#, c-format
+msgid "Continuing to next feed\n"
+msgstr ""
+
+#: ../tuxcast/cleaner.cpp:44
+#, c-format
+msgid "Could not parse RSS feed (No exception caught)\n"
+msgstr ""
+
+#: ../tuxcast/cleaner.cpp:45
+#, c-format
+msgid "(This should not happen)\n"
+msgstr ""
+
+#: ../tuxcast/cleaner.cpp:59
+#, c-format
+msgid "Generating XML...\n"
+msgstr ""
+
+#: ../tuxcast/cleaner.cpp:63
+#, c-format
+msgid "Old files.xml contains %d elements\n"
+msgstr ""
+
+#: ../tuxcast/cleaner.cpp:64
+#, c-format
+msgid "New files.xml.new contains %d elements\n"
+msgstr ""
+
+#: ../tuxcast/cleaner.cpp:65
+#, c-format
+msgid "(I won't replace your files.xml as this feature is still immature.\n"
+msgstr ""
+
+#: ../tuxcast/cleaner.cpp:66
+#, c-format
+msgid ""
+"If you're feeling brave, replace ~/.tuxcast/files.xml with ~/.tuxcast/files."
+"xml.new)\n"
+msgstr ""
 
 #: ../tuxcast/tuxcast.cpp:69
 #, c-format
@@ -101,7 +153,7 @@ msgstr ""
 msgid "Oops, couldn't create folder for feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:69 ../tuxcast/tuxcast_functions.cpp:331
+#: ../tuxcast/tuxcast_functions.cpp:69 ../tuxcast/tuxcast_functions.cpp:327
 #: ../config/config.cpp:94 ../config/config.cpp:102
 #: ../config/tuxcast-config.cpp:109
 #, c-format
@@ -128,44 +180,44 @@ msgstr ""
 msgid "Download %s? (yes/no)\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:247
+#: ../tuxcast/tuxcast_functions.cpp:243
 #, c-format
 msgid "Error opening output file \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:253
+#: ../tuxcast/tuxcast_functions.cpp:249
 #, c-format
-msgid "Downloading %s..."
+msgid "Downloading %s...\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:320
+#: ../tuxcast/tuxcast_functions.cpp:316
 #, c-format
 msgid "This is an XML file, but does not appear to be RSS 1 (RDF) or RSS 2\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:321
+#: ../tuxcast/tuxcast_functions.cpp:317
 #, c-format
 msgid ""
 "Please check you have the correct URL and that it is an RSS feed, and then "
 "contact your feed maintainer\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:322
+#: ../tuxcast/tuxcast_functions.cpp:318
 #, c-format
 msgid "Exception caught:"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:324 ../tuxcast/tuxcast_functions.cpp:333
+#: ../tuxcast/tuxcast_functions.cpp:320 ../tuxcast/tuxcast_functions.cpp:329
 #, c-format
 msgid "Aborting this feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:329
+#: ../tuxcast/tuxcast_functions.cpp:325
 #, c-format
 msgid "Couldn't parse the feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:330
+#: ../tuxcast/tuxcast_functions.cpp:326
 #, c-format
 msgid "Please check the URL is correct, then contact your feed maintainer.\n"
 msgstr ""
