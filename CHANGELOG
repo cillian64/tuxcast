@@ -1,3 +1,9 @@
+Revision 139:
+* Clarified output of cleaner
+* Prepared cleaner's text for gettext translation
+* Updated TODO
+--------------------------------------------------------------------------------
+
 Revision 138:
 * Fixed some output code in get() (Duplicate cout left in)
 --------------------------------------------------------------------------------

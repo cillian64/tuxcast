@@ -11,3 +11,5 @@
 * Stop warnings about missing config.xml and files.xml on first runs
 * Feeds containing an &, as in a GET form, don't play nicely with the XML. (Can't really do anything
 	about this as this makes the XML invalid so libxml is right to abort...)
+* Allow some options, for instance -v, to run without a configuration file being
+	created
