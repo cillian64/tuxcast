@@ -24,7 +24,7 @@ void clean()
 	for(unsigned int i=0; i<myconfig->feeds.size(); i++)
 	{
 		filelist *files;
-		printf(_("Checking (cached) feed %s."), myconfig->feeds[i]->name.c_str());
+		printf(_("Checking (cached) feed %s.\n"), myconfig->feeds[i]->name.c_str());
 		try
 		{
 			string path=getenv("HOME");
