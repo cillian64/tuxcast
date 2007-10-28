@@ -39,7 +39,7 @@ class configuration
 		bool ask; // Though a string is stored in config
 			// it's converted to a bool on load/save
 		vector<feed *> feeds; // A vector of feed pointers
-		
+		vector<string *> permitted_mimes;
 		void save();
 		void load();
 };

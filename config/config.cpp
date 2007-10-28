@@ -78,6 +78,11 @@ void configuration::save()
 		xmlNewChild(node2,NULL,(xmlChar *)"folder",(xmlChar *)this->feeds[i]->folder.c_str());
 	}
 
+	node=xmlNewChild(root_node,NULL, (xmlChar *)"permittedmimetypes", NULL);
+	for(int i=0; i<this->permitted_mimes.size(); i++)
+		node2=xmlNewChild(node,NULL,(xmlChar *)"mimetype",(xmlChar*)this->permitted_mimes[i]->c_str());
+
+
 	path = getenv("HOME");
 	path = path + "/.tuxcast";
 	cachepath = path + "/cache";
@@ -181,7 +186,34 @@ void configuration::load()
 			else
 				this->ask = false;
 		}
-		
+
+		if(strcasecmp((char *)curr->name, "permittedmimetypes") == 0)
+		{
+			if(curr->children != NULL)
+			{ 
+				curr = curr->children;
+				while(curr->next != NULL)
+				{
+					while((curr->next != NULL) && (curr->type != XML_ELEMENT_NODE))
+						curr=curr->next;
+					if(curr->children == NULL)
+					{
+						fprintf(stderr,_("Warning, empty mime type in config file\n"));
+						if(curr->next != NULL)
+							curr = curr->next;
+						// If ->next is NULL, while will bail anyway.
+						continue;
+					}
+					string *mystr=new string;
+					*mystr=(char*)curr->children->content;
+					this->permitted_mimes.push_back(mystr);
+					curr = curr->next;
+				}
+				curr = curr->parent; 
+			}
+			else
+				printf(_("Empty MIME type list?\n"));
+		}
 	
 		
 		if((strcasecmp((char *)curr->name, "feeds") == 0) && (curr->children != NULL))
