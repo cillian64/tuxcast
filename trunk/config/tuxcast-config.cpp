@@ -32,7 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const char options[] = "aA:d:n:N:hs:g:Gf:uv";
+const char options[] = "aA:d:n:N:hs:g:Gf:umv";
 #define _(x) gettext(x)
 
 configuration myconfig;
@@ -44,6 +44,7 @@ void set(string args);
 void add(int argc,char *argc[]);
 void del(string name);
 void update(int argc, char *argv[]);
+void listmimes(void);
 
 int main(int argc, char *argv[])
 {
@@ -91,6 +92,10 @@ int main(int argc, char *argv[])
 				update(argc,argv);
 				break;
 
+			case 'm':
+				listmimes();
+				break;
+
 			case 'h':
 				help();	
 				break;
@@ -117,6 +122,16 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
+void listmimes(void)
+{
+	printf(_("Permitted MIME types:\n"));
+	for(int i=0; i<myconfig.permitted_mimes.size(); i++)
+	{
+		printf("%s\n",myconfig.permitted_mimes[i]->c_str()); // Don't
+		// add %s to the po file...
+	}
+}
+
 void help(void)
 {
 
@@ -128,7 +143,8 @@ void help(void)
 	printf(_("-g feed -n NAME: Get the settings of the specified feed\n"));
 	printf(_("-G: Get the value of all options\n"));
 	printf(_("-h: Display this help message\n"));
-	printf(_("-s OPTION=VALUE: Set OPTION to VALUE\n"));
+	printf(_("-s: OPTION=VALUE: Set OPTION to VALUE\n"));
+	printf(_("-m: List permitted MIME types\n"));
 	printf(_("-u -n NAME [ -A ADDRESS | -f FOLDER | -N NEWNAME ]: Change a property of a feed\n\n"));
 	printf(_("Available options are:\n"));
 	printf(_("podcastdir - where to save all your podcasts\n"));
@@ -207,7 +223,7 @@ void getall(void)
 		printf(_("ask = true\n"));
 	else
 		printf(_("ask = false\n"));
-	
+	listmimes();
 	// ...
 	// Let's show some feeds:
 	if(myconfig.feeds.size() == 1)

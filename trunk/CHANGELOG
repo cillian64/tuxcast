@@ -1,3 +1,7 @@
+Revision 141:
+* Added the beginnings of the MIME type filter to the config system
+--------------------------------------------------------------------------------
+
 Revision 140:
 * Added a missing newline in cleaner.cpp
 --------------------------------------------------------------------------------
