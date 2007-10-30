@@ -1,0 +1,46 @@
+.\" Process this file with
+.\" groff -man -Tascii foo.1
+.\"
+.TH tuxcast 1 "MAY 2006" 0.1 "tuxcast 0.2"
+.SH NAME
+tuxcast \- The Linux Podcast Client
+.SH SYNOPSIS
+.B tuxcast 
+[\fIOPTION\fR]
+.SH DESCRIPTION
+Tuxcast is a minimal, portable podcatcher written in C++, with 
+an interactive command line interface. 
+
+Its configuration is performed by the included
+.B tuxcast-config 
+utility which must be
+run to configure feeds and generate tuxcast's configuration
+file and make it functional.
+
+
+.SH OPTIONS
+.TP 
+\fB\-c\fR
+Check all configured feeds
+.TP 
+\fB\-C name\fR
+Check only the specified configured feed
+.TP 
+\fB\-u\fR
+Download only the latest episode from all configured feeds
+.TP 
+\fB\-U name\fR
+Download only the latest episode from the specified configured feed 
+.TP 
+\fB\-b\fR
+Enter backend mode
+.TP 
+\fB\-v\fR
+Show version and licensing information
+
+.SH BUGS
+* Running tuxcast --help or tuxcast -h will be ignored until you have a valid configuration file.
+.SH AUTHOR
+cypher_ of Linux User Group Radio (#lugradio) on the freenode network.
+.SH "SEE ALSO"
+.BR tuxcast-config(1),

@@ -1,0 +1,36 @@
+.\" Process this file with
+.\" groff -man -Tascii foo.1
+.\"
+.TH tuxcast 1 "MAY 2006" 0.1 "tuxcast 0.1"
+.SH NAME
+tuxcast-config \- tuxcast configuration utility
+.SH SYNOPSIS
+.B tuxcast-config [option] name
+.SH DESCRIPTION
+A configuration utility for Tuxcast. It must be run before the
+main tuxcast program can be run. It generates the required XML
+configuration files to define feeds and destination directories.
+
+Its configuration is performed by the included
+.B tuxcast-config 
+utility which must be
+run to configure feeds and generate tuxcast's configuration
+file and make it functional.
+
+
+.SH OPTIONS
+.IP -c
+Check all configured feeds
+.IP -C name
+Check only the specified configured feed
+.IP -u
+Download only the latest episode from all configured feeds
+.IP -U name
+Download only the latest episode from the specified configured feed 
+
+.SH BUGS
+If Cillian or Nlindblad knew of any the are already squished :D.
+.SH AUTHOR
+cypher_ of Linux User Group Radio (#lugradio) on the freenode network.
+.SH "SEE ALSO"
+.BR tuxcast-config (1),
