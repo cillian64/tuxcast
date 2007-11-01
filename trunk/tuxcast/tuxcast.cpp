@@ -47,7 +47,7 @@ using namespace std;
 #include <locale.h>
 
 
-const char options[] = "cuC:U:fv";
+const char options[] = "cuC:U:fvh";
 #define _(x) gettext(x)
 
 
@@ -60,21 +60,7 @@ int main(int argc, char *argv[])
 	bindtextdomain("tuxcast","/usr/share/locale");
 	textdomain("tuxcast");
 	
-	try
-	{
-		myconfig.load();
-	}
-	catch(eConfig_NoConfigFile &e)
-	{
-		fprintf(stderr,_("Cannot load config file - please create one\n"));
-		return -1; // No need to print the exception
-		// We know exactly what this one means
-	}
-	// If theres no config file, then
-	// a) checkfileexists will throw an exception, which will be
-	// caught here, and we abort.
-	// b) checkfileexists will return false
-
+	
 	// Remember, we can only take one option.
 	// We store the first option, then check - if there's another, we bork out and moan.
 	
@@ -90,6 +76,25 @@ int main(int argc, char *argv[])
 		cerr << "Error, more than one option was passed.  You must only pass one option." << endl;
 		return -1;
 	}
+
+	if(!((opt1 == 'h') || (opt1 == 'v'))) // Load config if option isn't h or v
+	{
+		try
+		{
+			myconfig.load();
+		}
+		catch(eConfig_NoConfigFile &e)
+		{
+			fprintf(stderr,_("Cannot load config file - please create one\n"));
+			return -1; // No need to print the exception
+			// We know exactly what this one means
+		}
+		// If theres no config file, then
+		// a) checkfileexists will throw an exception, which will be
+		// caught here, and we abort.
+		// b) checkfileexists will return false
+	}
+
 	
 	switch(opt1)
 	{
@@ -160,7 +165,7 @@ int main(int argc, char *argv[])
 			// Fallthrough:
 
 		default:
-			printf(_("Usage: tuxcast <option\n"));
+			printf(_("Usage: tuxcast <option>\n"));
 			printf(_("where <option> is one of the below:\n"));
 			printf(_("-c - Check all feeds\n"));
 			printf(_("-u - Download only the latest file from all feeds\n"));

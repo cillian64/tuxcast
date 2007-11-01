@@ -1,3 +1,10 @@
+Revision 143:
+* Some small updates to the manpages
+* Allowed some options of tuxcast to run without a config file, like -v and -h
+* Added the -h option back to tuxcast - looks like I accidently removed it
+* Fixed some text in the help message
+--------------------------------------------------------------------------------
+
 Revision 142:
 * Imported cypher_'s manpages - thanks :)
 --------------------------------------------------------------------------------
