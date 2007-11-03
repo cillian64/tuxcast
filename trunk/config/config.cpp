@@ -211,8 +211,6 @@ void configuration::load()
 				}
 				curr = curr->parent; 
 			}
-			else
-				printf(_("Empty MIME type list?\n"));
 		}
 	
 		
