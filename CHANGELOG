@@ -1,3 +1,8 @@
+Revision 146:
+* Applied a patch from Greatred to fix pluralisation of strings using gettext
+	and to use ?: for tidying some bits of code.  Thanks :)
+--------------------------------------------------------------------------------
+
 Revision 145:
 * Fixed a bunch of messy optiony errors in tuxcast.cpp caused by the merge going
 	evilish. (i.e. s/optarg/optarg1/g)

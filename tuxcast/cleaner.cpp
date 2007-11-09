@@ -60,8 +60,12 @@ void clean()
 	genxml(downloads);
 
 	// Read the old XML file:
-	printf(_("Old files.xml contains %d elements\n"), count("files.xml"));
-	printf(_("New files.xml.new contains %d elements\n"), count("files.xml.new"));
+	unsigned long numold = count("files.xml");
+	printf(ngettext("Old files.xml contains %d element\n", "Old files.xml contains %d elements\n",
+				numold), numold);
+	unsigned long numnew = count("files.xml.new");
+	printf(ngettext("New files.xml.new contains %d element\n", "New files.xml.new contains %d elements\n",
+				numnew), numnew);
 	printf(_("(I won't replace your files.xml as this feature is still immature.\n"));
 	printf(_("If you're feeling brave, replace ~/.tuxcast/files.xml with ~/.tuxcast/files.xml.new)\n"));
 

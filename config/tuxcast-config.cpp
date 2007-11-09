@@ -219,17 +219,12 @@ void get(int argc, char **argv)
 void getall(void)
 {
 	printf(_("podcastdir = %s\n"),myconfig.podcastdir.c_str());
-	if(myconfig.ask == true)
-		printf(_("ask = true\n"));
-	else
-		printf(_("ask = false\n"));
+	printf(_("ask = %s\n"), (myconfig.ask?"true":"false"));
 	listmimes();
 	// ...
 	// Let's show some feeds:
-	if(myconfig.feeds.size() == 1)
-		printf(_("There is 1 feed:\n"));
-	else // Yay for bulky code for the sake of good grammar :-)
-		printf(_("There are %d feeds:\n"),myconfig.feeds.size());
+	printf(ngettext("There is 1 feed:\n", "There are %d feeds:\n",
+				myconfig.feeds.size()),myconfig.feeds.size());
 	for(int i=0; i<myconfig.feeds.size(); i++)
 	{
 		printf(_("Name: %s\n"),myconfig.feeds[i]->name.c_str());
