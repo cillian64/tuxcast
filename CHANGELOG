@@ -1,3 +1,8 @@
+Revision 145:
+* Fixed a bunch of messy optiony errors in tuxcast.cpp caused by the merge going
+	evilish. (i.e. s/optarg/optarg1/g)
+--------------------------------------------------------------------------------
+
 Revision 144:
 * Removed an annoying and questionably useful warning message from the config
 	loader

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tuxcast 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-01 22:07+0000\n"
+"POT-Creation-Date: 2007-11-09 20:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,12 +279,7 @@ msgstr ""
 msgid "Warning, empty mime type in config file\n"
 msgstr ""
 
-#: ../config/config.cpp:215
-#, c-format
-msgid "Empty MIME type list?\n"
-msgstr ""
-
-#: ../config/config.cpp:240
+#: ../config/config.cpp:238
 #, c-format
 msgid ""
 "Error: blank name or address in config file, please delete and recreate your "
