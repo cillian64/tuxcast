@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 			// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
 			if(strcmp(optarg1.c_str(),"") == 0)
 			{
-				fprintf(stderr,_("You must pass a non-blank feed name\n"),optarg);
+				fprintf(stderr,_("You must pass a non-blank feed name\n"));
 				return -1;
 			}
 			for(int i=0; i<myconfig.feeds.size(); i++)
@@ -126,11 +126,11 @@ int main(int argc, char *argv[])
 			}
 			// If we got all through the feeds, and it wasn't found (and we returned),
 			// then the feed doesn't exist:
-			fprintf(stderr,_("Unknown feed, \"%s\"\n"),optarg);
+			fprintf(stderr,_("Unknown feed, \"%s\"\n"),optarg1.c_str());
 			return -1;
 			break; // Bah
 		case 'U':
-			printf(_("Getting up2date on feed \"%s\"\n"),optarg);
+			printf(_("Getting up2date on feed \"%s\"\n"),optarg1.c_str());
 			// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
 			if(strcmp(optarg1.c_str(),"") == 0)
 			{
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 			}
 			// If we got all through the feeds, and it wasn't found (and we returned),
 			// then the feed doesn't exist:
-			fprintf(stderr,_("Unknown feed, \"%s\"\n"),optarg);
+			fprintf(stderr,_("Unknown feed, \"%s\"\n"),optarg1.c_str());
 			return -1;
 			break; // Bah
 
