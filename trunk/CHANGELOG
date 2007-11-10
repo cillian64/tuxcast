@@ -1,3 +1,8 @@
+Revision 147:
+* Applied a second patch from Greated to make gettext string updating a *lot*
+	neater - thanks again :).
+--------------------------------------------------------------------------------
+
 Revision 146:
 * Applied a patch from Greatred to fix pluralisation of strings using gettext
 	and to use ?: for tidying some bits of code.  Thanks :)
