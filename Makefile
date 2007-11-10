@@ -14,6 +14,9 @@ clean:
 	$(MAKE) -C po clean
 	rm -f version.o
 
+updatetrans:
+	$(MAKE) -C po
+
 version.o: version.cpp
 	$(CXX) $(CXXFLAGS) -c version.cpp
 
