@@ -1,3 +1,9 @@
+Revision 148:
+* Applied yet another patch from Greated - this one changes a bunch of stuff
+	all over the place.  It's all internal code changes, there shouldn't
+	be any noticable different on the outside.  Thanks again.
+--------------------------------------------------------------------------------
+
 Revision 147:
 * Applied a second patch from Greated to make gettext string updating a *lot*
 	neater - thanks again :).

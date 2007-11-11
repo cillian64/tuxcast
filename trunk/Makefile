@@ -1,5 +1,7 @@
 include config.mk
 
+.PHONY: main all clean updatetrans install uninstall
+
 main:
 	$(MAKE) -C tuxcast
 	#$(MAKE) -C plugins

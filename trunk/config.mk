@@ -6,7 +6,9 @@
 ifeq ($(OSTYPE),solaris)
 
 CXX=g++
-CXXFLAGS=-g -O2
+OPTIM?=-O2
+DEBUG?=-g
+CXXFLAGS=$(DEBUG) $(OPTIM)
 INSTALL=ginstall
 LDFLAGS=-lintl
 MAKE=gmake
@@ -25,7 +27,9 @@ LIBCURL_LIBS:=$(shell curl-config --libs)
 else
 
 CXX=g++
-CXXFLAGS=-g -O2
+OPTIM?=-O2
+DEBUG?=-g
+CXXFLAGS=$(DEBUG) $(OPTIM)
 INSTALL=install
 LDFLAGS=
 MAKE=make

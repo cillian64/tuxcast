@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
+#include "../libraries/common.h"
 #include "config_exceptions.h"
 #include <libintl.h>
 #include <locale.h>
@@ -70,17 +71,19 @@ void configuration::save()
 				
 
 	node=xmlNewChild(root_node,NULL, (xmlChar *)"feeds",NULL);
-	for(int i=0; i<this->feeds.size(); i++)
+	FOREACH(feedlist::const_iterator, feeds, feed)
 	{
 		node2=xmlNewChild(node,NULL,(xmlChar *)"feed",NULL);
-		xmlNewChild(node2,NULL,(xmlChar *)"name",(xmlChar *)this->feeds[i]->name.c_str());
-		xmlNewChild(node2,NULL,(xmlChar *)"address",(xmlChar *)this->feeds[i]->address.c_str());
-		xmlNewChild(node2,NULL,(xmlChar *)"folder",(xmlChar *)this->feeds[i]->folder.c_str());
+		xmlNewChild(node2,NULL,(xmlChar *)"name",(xmlChar *)feed->name.c_str());
+		xmlNewChild(node2,NULL,(xmlChar *)"address",(xmlChar *)feed->address.c_str());
+		xmlNewChild(node2,NULL,(xmlChar *)"folder",(xmlChar *)feed->folder.c_str());
 	}
 
 	node=xmlNewChild(root_node,NULL, (xmlChar *)"permittedmimetypes", NULL);
-	for(int i=0; i<this->permitted_mimes.size(); i++)
-		node2=xmlNewChild(node,NULL,(xmlChar *)"mimetype",(xmlChar*)this->permitted_mimes[i]->c_str());
+	FOREACH(mimelist::const_iterator, permitted_mimes, mime)
+	{
+		node2=xmlNewChild(node,NULL,(xmlChar *)"mimetype",(xmlChar*)mime->c_str());
+	}
 
 
 	path = getenv("HOME");
@@ -154,9 +157,10 @@ void configuration::load()
 		
 	
 	root = xmlDocGetRootElement(doc);
-	curr = root->children;
-	while(true)
+	FOREACH_XMLCHILD(root, curr)
 	{
+		if (curr->type != XML_ELEMENT_NODE)
+			continue;
 		// This loops through all the main elements
 		// Once an element is recognised, by an if,
 		// the code "Does The Right Thing" (tm)
@@ -179,105 +183,78 @@ void configuration::load()
 			}
 
 		}
-		if(strcasecmp((char *)curr->name, "ask") == 0)
+		else if(strcasecmp((char *)curr->name, "ask") == 0)
 		{
 			if(strcasecmp((char *)curr->children->content,"true") == 0)
 				this->ask = true;
 			else
 				this->ask = false;
 		}
-
-		if(strcasecmp((char *)curr->name, "permittedmimetypes") == 0)
+		else if(strcasecmp((char *)curr->name, "permittedmimetypes") == 0)
 		{
-			if(curr->children != NULL)
-			{ 
-				curr = curr->children;
-				while(curr->next != NULL)
+			FOREACH_XMLCHILD(curr, mimenode)
+			{
+				// We're only interested in elements
+				if (mimenode->type != XML_ELEMENT_NODE)
+					continue;
+				if(mimenode->children == NULL)
 				{
-					while((curr->next != NULL) && (curr->type != XML_ELEMENT_NODE))
-						curr=curr->next;
-					if(curr->children == NULL)
-					{
-						fprintf(stderr,_("Warning, empty mime type in config file\n"));
-						if(curr->next != NULL)
-							curr = curr->next;
-						// If ->next is NULL, while will bail anyway.
-						continue;
-					}
-					string *mystr=new string;
-					*mystr=(char*)curr->children->content;
-					this->permitted_mimes.push_back(mystr);
-					curr = curr->next;
+					fprintf(stderr,_("Warning, empty mime type in config file\n"));
+					continue;
 				}
-				curr = curr->parent; 
+				if(mimenode->children->type != XML_TEXT_NODE)
+				{
+					fprintf(stderr,_("Warning, mime mode with non-textual content in config file\n"));
+					continue;
+				}
+				this->permitted_mimes.push_back((char *)mimenode->children->content);
 			}
 		}
-	
-		
-		if((strcasecmp((char *)curr->name, "feeds") == 0) && (curr->children != NULL))
-			// Check this isn't a fresh config file without any feeds in...
+		else if((strcasecmp((char *)curr->name, "feeds") == 0))
 		{
-			int i=0;
-			curr = curr->children; // step into feeds
-			while(true)
+			// step into feeds
+			FOREACH_XMLCHILD(curr, feednode)
 			{
-				if(strcasecmp((char *)curr->name, "feed") == 0)
+				if(feednode->type != XML_ELEMENT_NODE)
+					continue;
+				if (strcasecmp((char *)feednode->name, "feed") == 0)
 				{
-					// We've found a feed.  Let's make a new element in our array:
-					feeds.push_back(NULL);
-					// Let's make a new feed in the pointer in the vector:
-					feeds[feeds.size()-1] = new feed;
-					curr = curr->children;
-					while(true)
+					// We've found a feed.
+					feed new_feed;
+					FOREACH_XMLCHILD(feednode, partnode)
 					{
-						if((strcasecmp((char *)curr->name,"name") == 0) || (strcasecmp((char *)curr->name, "address") == 0))
+						if(partnode->type != XML_ELEMENT_NODE)
+							continue;
+						if((strcasecmp((char *)partnode->name,"name") == 0) || (strcasecmp((char *)partnode->name, "address") == 0))
 						{
 							// if it's either of these 2, the value CANNOT be blank!!
-							if(curr->children == NULL)
+							if(partnode->children == NULL)
 							{
 								fprintf(stderr,_("Error: blank name or address in config file, please delete and recreate your config file using tuxcast-config\n"));
 								return;
 							}
 						}
 
-						if(strcasecmp((char *)curr->name, "name") == 0)
-							this->feeds[i]->name = (char *)curr->children->content;
-						if(strcasecmp((char *)curr->name, "address") == 0)
-							this->feeds[i]->address = (char *)curr->children->content;
-						if(strcasecmp((char *)curr->name, "folder") == 0)
+						if(strcasecmp((char *)partnode->name, "name") == 0)
+							new_feed.name = (char *)partnode->children->content;
+						else if(strcasecmp((char *)partnode->name, "address") == 0)
+							new_feed.address = (char *)partnode->children->content;
+						else if(strcasecmp((char *)partnode->name, "folder") == 0)
 						{
-							if(curr->children == NULL)
-								this->feeds[i]->folder = "";
+							if(partnode->children == NULL)
+								new_feed.folder = "";
 							else
-								this->feeds[i]->folder = (char *)curr->children->content;
-							// Previously, if the folder was "", curr->children would be NULL,
-							// so curr->children->content threw a segfault
+								new_feed.folder = (char *)partnode->children->content;
+							// Previously, if the folder was "", partnode->children would be NULL,
+							// so feednode->children->content threw a segfault
 							// Since a blank folder is perfectly valid, we must be nice about it
 						}
-				
-
-						if(curr->next != NULL)
-							curr = curr->next;
-						else
-							break;
 					}
-					i++;
-					curr = curr->parent;
-					
-				}
-				if(curr->next == NULL)
-					break;
-				else
-					curr = curr->next;
-			}
-			curr = curr->parent;
-		}
 
-		if(curr->next == NULL)
-		{
-			break;
+					feeds.push_back(new_feed);
+				}
+			}
 		}
-		curr = curr->next;
 	}
 
 	if(queuesave == true)
@@ -286,3 +263,9 @@ void configuration::load()
 
 }
 
+void feed::displayConfig(void) const
+{
+	printf(_("Name: %s\n"),name.c_str());
+	printf(_("Address: %s\n"),address.c_str());
+	printf(_("Folder: %s\n"),folder.c_str());
+}

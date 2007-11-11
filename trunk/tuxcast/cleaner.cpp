@@ -11,25 +11,25 @@ using namespace std;
 
 #define _(x) gettext(x)
 
-void genxml(vector<string*> *downloads);
+void genxml(const vector<string> &downloads);
 unsigned long count(string filesdotxml);
 
 void clean()
 {
-	configuration *myconfig = new configuration;
-	vector<string*> *downloads;
+	configuration myconfig;
+	vector<string> downloads;
 
-	myconfig->load();
-	downloads = new vector<string*>;
-	for(unsigned int i=0; i<myconfig->feeds.size(); i++)
+	myconfig.load();
+	// Go over each feed in the configuration, finding each file to download
+	for(configuration::feedlist::iterator feed = myconfig.feeds.begin(); feed != myconfig.feeds.end(); ++feed)
 	{
-		filelist *files;
-		printf(_("Checking (cached) feed %s.\n"), myconfig->feeds[i]->name.c_str());
+		auto_ptr<filelist> files;
+		printf(_("Checking (cached) feed %s.\n"), feed->name.c_str());
 		try
 		{
 			string path=getenv("HOME");
 			path+="/.tuxcast/cache/";
-			path+=myconfig->feeds[i]->name;
+			path+=feed->name;
 
 			files = parse(path);
 		}
@@ -39,22 +39,17 @@ void clean()
 			fprintf(stderr, _("Continuing to next feed\n"));
 			continue;
 		}
-		if(files == NULL)
+		if(files.get() == NULL)
 		{
 			fprintf(stderr,_("Could not parse RSS feed (No exception caught)\n"));
 			fprintf(stderr,_("(This should not happen)\n"));
 			fprintf(stderr,_("Continuing to next feed\n"));
 			continue;
 		}
-		for(unsigned int j=0; j<files->size(); j++)
+		for (filelist::iterator file = files->begin(); file != files->end(); ++file)
 		{
-			string *newfile = new string;
-			*newfile = (*files)[j]->filename;
-			downloads->push_back(newfile);
-		} // TODO: Can these for loops be merged?
-		for(unsigned int j=0; j<files->size(); j++)
-			delete (*files)[j];
-		delete files;
+			downloads.push_back(file->filename);
+		}
 	}
 	printf(_("Generating XML...\n"));
 	genxml(downloads);
@@ -102,7 +97,7 @@ unsigned long count(string filesdotxml)
 	}
 }
 
-void genxml(vector<string*> *downloads)
+void genxml(const vector<string> &downloads)
 {
 	xmlDoc *doc;
 	xmlNode *root, *curr;
@@ -111,7 +106,11 @@ void genxml(vector<string*> *downloads)
 	doc = xmlNewDoc((xmlChar *)"1.0");
 	root = xmlNewNode(NULL,(xmlChar *)"filelist");
 	xmlDocSetRootElement(doc,root);
-	for(unsigned int i=0; i<downloads->size(); i++)
-		xmlNewChild(root,NULL,(xmlChar *)"file", (xmlChar *)((*downloads)[i])->c_str());
+	for(vector<string>::const_iterator download = downloads.begin();
+			download != downloads.end();
+			++download)
+	{
+		xmlNewChild(root,NULL,(xmlChar *)"file", (xmlChar *)download->c_str());
+	}
 	xmlSaveFormatFileEnc(path.c_str(), doc, "UTF-8", 1);
 }

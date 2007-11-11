@@ -26,6 +26,7 @@
 #include <unistd.h>
 #include "config_exceptions.h"
 #include "../libraries/filestuff_exceptions.h"
+#include "../libraries/common.h"
 #include "../version.h"
 #include <libintl.h>
 #include <locale.h>
@@ -125,9 +126,9 @@ int main(int argc, char *argv[])
 void listmimes(void)
 {
 	printf(_("Permitted MIME types:\n"));
-	for(int i=0; i<myconfig.permitted_mimes.size(); i++)
+	FOREACH(configuration::mimelist::iterator, myconfig.permitted_mimes, mime)
 	{
-		printf("%s\n",myconfig.permitted_mimes[i]->c_str()); // Don't
+		printf("%s\n",mime->c_str()); // Don't
 		// add %s to the po file...
 	}
 }
@@ -181,13 +182,11 @@ void get(int argc, char **argv)
 		}
 		string name = optarg;
 		// Locate which feed they are talking about:
-		for(int i=0; i<myconfig.feeds.size(); i++)
+		FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 		{
-			if(strcasecmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0) // Found it:
+			if(strcasecmp(feed->name.c_str(),name.c_str()) == 0) // Found it:
 			{
-				printf(_("Name: %s\n"),myconfig.feeds[i]->name.c_str());
-				printf(_("Address: %s\n"),myconfig.feeds[i]->address.c_str());
-				printf(_("Folder: %s\n"),myconfig.feeds[i]->folder.c_str());
+				feed->displayConfig();
 				return;
 			}
 			else
@@ -200,11 +199,9 @@ void get(int argc, char **argv)
 	if(strcasecmp(args.c_str(),"feeds") == 0)
 	{
 		// Display all feeds:
-		for(int i=0; i<myconfig.feeds.size(); i++)
+		FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 		{
-			printf(_("Name: %s\n"),myconfig.feeds[i]->name.c_str());
-			printf(_("Address: %s\n"),myconfig.feeds[i]->address.c_str());
-			printf(_("Folder: %s\n"),myconfig.feeds[i]->folder.c_str());
+			feed->displayConfig();
 		}
 		return;
 
@@ -225,11 +222,9 @@ void getall(void)
 	// Let's show some feeds:
 	printf(ngettext("There is 1 feed:\n", "There are %d feeds:\n",
 				myconfig.feeds.size()),myconfig.feeds.size());
-	for(int i=0; i<myconfig.feeds.size(); i++)
+	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
-		printf(_("Name: %s\n"),myconfig.feeds[i]->name.c_str());
-		printf(_("Address: %s\n"),myconfig.feeds[i]->address.c_str());
-		printf(_("Folder: %s\n"),myconfig.feeds[i]->folder.c_str());
+		feed->displayConfig();
 	}
 
 }
@@ -269,7 +264,7 @@ void set(string args)
 
 void add(int argc,char *argv[])
 {
-	int myopt=0, i=0;
+	int myopt=0;
 	string name, address, folder;
 
 	while((myopt = getopt(argc,argv,options)) != -1)
@@ -282,103 +277,56 @@ void add(int argc,char *argv[])
 			folder = optarg;
 	}
 
-	// Let's check the feed isn't already there:
-	if(strcmp(name.c_str(),"") == 0)
+	if(name.empty())
 	{
 		fprintf(stderr,_("No name specified!\n"));
 		return;
 	}
-	while(i<myconfig.feeds.size())
+	if(address.empty())
 	{
-		if(strcasecmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0)
+		fprintf(stderr, _("No URL specified!\n"));
+		return;
+	}
+	// folder can be blank - it means just put the podcast in podcastdir
+
+	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
+	{
+		// Let's check the feed isn't already there:
+		if(strcasecmp(feed->name.c_str(),name.c_str()) == 0)
 		{
 			fprintf(stderr,_("Feed already exists\n"));
 			return;
 		}
-		else
-			i++;
+		// Check the URL isn't a duplicate:
+		if(strcasecmp(feed->address.c_str(),address.c_str()) == 0)
+		{
+			fprintf(stderr, _("A feed with the same URL already exists\n"));
+			return;
+		}
 	}
-	
-	// Check the URL isn't a duplicate:
-	// Sanity check:
-	if(strcmp(address.c_str(),"") == 0)
-	{
-		cerr << "No URL specified!" << endl;
-		return;
-	}
-	i=0;
-	while(i<myconfig.feeds.size())
-	{
-			if(strcasecmp(myconfig.feeds[i]->address.c_str(),address.c_str()) == 0)
-			{
-				cerr << "A feed with the same URL already exists" << endl;
-				return;
-			}
-			else
-				i++;
-	}	
-	// TODO: Stick those two above together for neatness.
-	if((strcmp(name.c_str(),"") != 0) && (strcmp(address.c_str(),"") != 0)) // No sanity check for folder here:
-		// folder can be blank - it means just put the podcast in podcastdir
-	{
-		myconfig.feeds.push_back(NULL);
-		myconfig.feeds[myconfig.feeds.size()-1] = new feed;
-		myconfig.feeds[myconfig.feeds.size()-1]->name = name;
-		myconfig.feeds[myconfig.feeds.size()-1]->address = address;
-		myconfig.feeds[myconfig.feeds.size()-1]->folder = folder;
-	}
-	else
-		fprintf(stderr,_("You must pass the name and address of the feed to add (The folder can be left blank to just put files in podcastdir)\n"));
+
+	myconfig.feeds.push_back(feed(name, address, folder));
 	
 	myconfig.save();
 }
 
 void del(string name)
 {
-	int i=0,j=0;
-	vector<feed *>::iterator myiterator;
-	
-	while(true)
+	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
-		if(strcasecmp(name.c_str(),myconfig.feeds[i]->name.c_str()) == 0)
-			break; // Found the feed to delete, we're good
-
-		if(i<myconfig.feeds.size()-1) // if i is 1 less than numoffeeds, we're
-			// at the end of the array, so we don't want to loop again:
-			// if we're at the end of the array and didn't just break,
-			// the feed doesn't exist
-		{
-			i++;
-			continue;
-		}
-
-		// If we get here, we're at the end of the array (we /should/ have
-		// either broken or continued if the feed exists anywhere
-		
-		fprintf(stderr,_("Feed \"%s\" doesn't exist\n"),name.c_str());
-		return;
-	}
-	
-	for(int i=0; i<myconfig.feeds.size(); i++)
-	{
-		if(strcasecmp(myconfig.feeds[i]->name.c_str(), name.c_str()) == 0)
+		if(strcasecmp(name.c_str(),feed->name.c_str()) == 0)
 		{
 			// We've found the feed - wipe it:
-			myiterator = myconfig.feeds.begin();
-			myiterator += i;
-			myconfig.feeds.erase(myiterator,myiterator+1);
-			// Stupid STL functions not taking subscripts
-			// >:-(
+			myconfig.feeds.erase(feed);
+			myconfig.save();
+			return;
 		}
 	}
-	// Yup, that really is all - yay for STL vectors
-	
-	myconfig.save();
+	fprintf(stderr,_("Feed \"%s\" doesn't exist\n"),name.c_str());
 }
 	
 void update(int argc, char *argv[])
 {
-	int i=0;
 	char myopt;
 	string name;
 	// The -u option was already sucked up
@@ -394,9 +342,9 @@ void update(int argc, char *argv[])
 	name = optarg;
 	myopt = getopt(argc,argv,options);
 		
-	while(true)
+	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
-		if(strcasecmp(myconfig.feeds[i]->name.c_str(),name.c_str()) == 0)
+		if(strcasecmp(feed->name.c_str(),name.c_str()) == 0)
 		{
 			// Found the feed, update it:
 			switch(myopt)
@@ -407,20 +355,20 @@ void update(int argc, char *argv[])
 						fprintf(stderr,_("Error: Blank address\n"));
 						return;
 					}
-					for(int j=0; j<myconfig.feeds.size(); j++)
+					FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed_finder)
 					{
-						if(strcmp(myconfig.feeds[j]->address.c_str(), optarg) == 0)
+						if(strcmp(feed_finder->address.c_str(), optarg) == 0)
 						{
 							fprintf(stderr,_("Error: Another feed already exists with this address\n"));
 							return;
 						}
 					}
 					
-					myconfig.feeds[i]->address = optarg;
+					feed->address = optarg;
 					break;
 
 				case 'f':
-					myconfig.feeds[i]->folder = optarg;
+					feed->folder = optarg;
 					break;
 					
 				case 'N':
@@ -430,35 +378,28 @@ void update(int argc, char *argv[])
 						return;
 					}
 					
-					for(int j=0; j<myconfig.feeds.size(); j++)
+					FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed_finder)
 					{
-						if(strcmp(myconfig.feeds[j]->name.c_str(), optarg) == 0)
+						if(strcmp(feed_finder->name.c_str(), optarg) == 0)
 						{
 							fprintf(stderr,_("Error: Another feed already exists with this name\n"));
 							return;
 						}
 					}
 					
-					myconfig.feeds[i]->name=optarg;
+					feed->name=optarg;
 					break;
 					
 				default:
 					fprintf(stderr,_("You must pass either -A, -f or -N when updating a feed's info\n"));
 					return;
 			}
-			break;
-		}
 
-		if(i<myconfig.feeds.size()-1)
-		{
-			i++;
-			continue;
+			// We've found the feed and updated it
+			myconfig.save();
+			return;
 		}
-		// This means i is 1 less than numoffeeds
-		// We still haven't found the feed
-		// This means the feed aint there
-		fprintf(stderr,_("Error: feed \"%s\" doesn't exist.\n"),name.c_str());
-		return;
 	}
-	myconfig.save();
+fprintf(stderr,_("Error: feed \"%s\" doesn't exist.\n"),name.c_str());
+return;
 }

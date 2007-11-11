@@ -34,12 +34,14 @@ class feed;
 class configuration
 {
 	public:
+		typedef vector<feed> feedlist;
+		typedef vector<string> mimelist;
 	
 		string podcastdir;
 		bool ask; // Though a string is stored in config
 			// it's converted to a bool on load/save
-		vector<feed *> feeds; // A vector of feed pointers
-		vector<string *> permitted_mimes;
+		feedlist feeds; // A vector of feed pointers
+		mimelist permitted_mimes;
 		void save();
 		void load();
 };
@@ -50,6 +52,17 @@ class feed
 		string name;
 		string address;
 		string folder;
+
+		feed(void)
+		{
+		}
+
+		feed(const string &name, const string &address, const string &folder)
+			: name(name), address(address), folder(folder)
+		{
+		}
+	
+		void displayConfig(void) const;
 };
 
 #endif
