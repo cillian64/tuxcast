@@ -34,6 +34,7 @@
 #include "tuxcast.h"
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
+#include "../libraries/common.h"
 #include "../config/config_exceptions.h"
 #include "rss_exceptions.h"
 #include "tuxcast_functions.h"
@@ -46,26 +47,26 @@
 using namespace std;
 
 // Check a particular feed
-void check(configuration *myconfig, int feed)
+void check(configuration &myconfig, feed &feed)
 {
-	filelist *myfilelist;
-	
-	cachefeed(myconfig->feeds[feed]->name, myconfig->feeds[feed]->address);
-	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->name)))
+	cachefeed(feed.name, feed.address);
+
+	auto_ptr<filelist> myfilelist = parsefeed(feed.name);
+	if(!myfilelist.get())
 		return;
 	// TODO: Umm, I really should return an error or warning or something,
 	// shouldn't I...?
 
-	for(int j=0, size=myfilelist->size(); j<size; j++)
+	FOREACH(filelist::iterator, *myfilelist, file)
 	{
 		try
 		{
-			get((*myfilelist)[j]->filename, (*myfilelist)[j]->URL,
+			get(file->filename, file->URL,
 				feed, myconfig);
 		}
 		catch(eFilestuff_CannotCreateFolder &e)
 		{
-			fprintf(stderr,_("Oops, couldn't create folder for feed \"%s\"\n"),myconfig->feeds[feed]->name.c_str());
+			fprintf(stderr,_("Oops, couldn't create folder for feed \"%s\"\n"),feed.name.c_str());
 			fprintf(stderr,_("Exception caught: ")); // Yes, no \n.
 			e.print();
 			return; // Skip this feed:
@@ -80,23 +81,22 @@ void check(configuration *myconfig, int feed)
 
 // Downloads the latest episode on a particular feed
 // Adds other episodes to files.xml without downloading
-void up2date(configuration *myconfig, int feed)
+void up2date(configuration &myconfig, feed &feed)
 {
-	filelist *myfilelist;
-	
-	cachefeed(myconfig->feeds[feed]->name,myconfig->feeds[feed]->address);
+	cachefeed(feed.name, feed.address);
 
-	if(!(myfilelist = parsefeed(myconfig->feeds[feed]->name)))
+	auto_ptr<filelist> myfilelist = parsefeed(feed.name);
+	if(!myfilelist.get())
 		return;
 
 		
-	for(int j=0, size=myfilelist->size(); j<size; j++)
+	FOREACH(filelist::iterator, *myfilelist, file)
 	{
-		if(j==0)
-			get((*myfilelist)[j]->filename, (*myfilelist)[j]->URL,
+		if(file == myfilelist->begin())
+			get(file->filename, file->URL,
 					feed, myconfig);
 		else
-			newfile((*myfilelist)[j]->filename);
+			newfile(file->filename);
 		// First file, download it
 		// Other files, just pretend
 	}
@@ -107,23 +107,24 @@ void up2date(configuration *myconfig, int feed)
 
 
 // This loops through all feeds and passes them to check()
-void checkall(configuration *myconfig)
+void checkall(configuration &myconfig)
 {
-	for(int i=0; i<myconfig->feeds.size(); i++)
+	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
-		printf(_("Checking feed \"%s\"\n"),myconfig->feeds[i]->name.c_str());
-		check(myconfig, i);
+		printf(_("Checking feed \"%s\"\n"),feed->name.c_str());
+		
+		check(myconfig, *feed);
 	}
 }
 
 // This loops through all feeds and passes them to up2date()
-void up2dateall(configuration *myconfig)
+void up2dateall(configuration &myconfig)
 {
 	// God knows why we had a filelist pointer here
-	for(int i=0; i<myconfig->feeds.size(); i++)
+	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
-		printf(_("up2date'ing feed \"%s\"\n"),myconfig->feeds[i]->name.c_str());
-		up2date(myconfig,i);
+		printf(_("up2date'ing feed \"%s\"\n"),feed->name.c_str());
+		up2date(myconfig,*feed);
 	}
 	
 }
@@ -193,12 +194,11 @@ bool alreadydownloaded(string name)
 }
 
 // Download an episode
-void get(string name, string URL, int feed,  configuration *myconfig)
+void get(const string &name, const string &URL, feed &feed, configuration &myconfig)
 {
 	string temp;
 	FILE *outputfile=NULL;
 	CURL *mycurl;
-	string path;
 	mycurl = curl_easy_init();
 	if(mycurl == NULL)
 	{
@@ -210,7 +210,7 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 		// Already downloaded
 		return;
 	
-	if(myconfig->ask == true)
+	if(myconfig.ask == true)
 	{
 		printf(_("Download %s? (yes/no)\n"));
 		cin >> temp; // TODO: Replace this with scanf?
@@ -221,15 +221,19 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	if(strcasecmp(temp.c_str(),"yes") != 0)
 		return;
 
-	// Do folder'y stuff first
-	path = myconfig->podcastdir;
-	checkfolderexists(path);
-	path += "/";
+	// Work out path to download file
+	string path;
 	// If the podcast's folder is absolute, don't prepend podcastdir
-	if(myconfig->feeds[feed]->folder[0] == '/')
-		path = myconfig->feeds[feed]->folder;
+	if(feed.folder[0] == '/')
+	{
+		path = feed.folder;
+	}
 	else
-		path += myconfig->feeds[feed]->folder;
+	{
+		path = myconfig.podcastdir;
+		path += "/";
+		path += feed.folder;
+	}
 	checkfolderexists(path);
 	// If anything goes wrong here, the exception should
 	// abort everything...
@@ -259,7 +263,7 @@ void get(string name, string URL, int feed,  configuration *myconfig)
 	curl_easy_cleanup(mycurl);
 }
 
-void cachefeed(string name, string URL)
+void cachefeed(const string &name, const string &URL)
 { // Yeh, like, I didn't just copy/paste get() and change a couple of bits :P
 	CURL *mycurl;
 	FILE *outputfile=NULL;
@@ -289,7 +293,7 @@ void cachefeed(string name, string URL)
 	{
 		cerr << "Error opening output file \"";
 		cerr << path << "\"" << endl;
-
+		return;
 	}
 	curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
 	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
@@ -300,10 +304,10 @@ void cachefeed(string name, string URL)
 	curl_easy_cleanup(mycurl);
 }
 
-filelist *parsefeed(string name) // This parses the feed, with error checking.
+auto_ptr<filelist> parsefeed(string name) // This parses the feed, with error checking.
 // It returns NULL if any error occured
 {
-	filelist *myfilelist;
+	auto_ptr<filelist> myfilelist;
 	string URL=getenv("HOME");
 	URL+="/.tuxcast/cache/";
 	URL+=name;
@@ -318,7 +322,6 @@ filelist *parsefeed(string name) // This parses the feed, with error checking.
 		 fprintf(stderr,_("Exception caught:")); // No \n, I know
 		 e.print();
 		 fprintf(stderr,_("Aborting this feed.\n"));
-		 return NULL;
 	}
 	catch(eRSS_CannotParseFeed &e)
 	{
@@ -327,9 +330,8 @@ filelist *parsefeed(string name) // This parses the feed, with error checking.
 		fprintf(stderr,_("Exception caught: ")); // No \n
 		e.print();
 		fprintf(stderr,_("Aborting this feed.\n"));
-
-		return NULL;
 	}
+	// myfilelist will be non-NULL if and only if parse(URL) ran okay
 	return myfilelist;
 }
 

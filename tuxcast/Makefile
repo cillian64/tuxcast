@@ -1,21 +1,25 @@
 include ../config.mk
 
+TUXCAST_SOURCES=\
+	tuxcast.cpp \
+	rss.cpp \
+	cleaner.cpp \
+	../config/config.cpp \
+	../libraries/filestuff.cpp \
+	tuxcast_functions.cpp \
+	../version.cpp
+TUXCAST_OBJS=\
+	$(TUXCAST_SOURCES:.cpp=.o)
+
+.PHONY: main clean
+
 main: tuxcast
 
-tuxcast : tuxcast.o rss.o cleaner.o  ../config/config.o ../libraries/filestuff.o tuxcast_functions.o ../version.o 
+tuxcast: $(TUXCAST_OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBXML2_LIBS) $(LIBCURL_LIBS)
 
-tuxcast.o: tuxcast.cpp
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $^ $(LIBXML2_CFLAGS) $(LIBCURL_CFLAGS)
-
-tuxcast_functions.o: tuxcast_functions.cpp
-	$(CXX) $(CXXFLAGS) -c $^ $(LIBXML2_CFLAGS) $(LIBCURL_CFLAGS)
-
-rss.o: rss.cpp
-	$(CXX) $(CXXFLAGS) -c $^ $(LIBXML2_CFLAGS)
-
-cleaner.o: cleaner.cpp
-	$(CXX) $(CXXCLAGS) -c $^ $(LIBXML2_CFLAGS)
 
 ../config/config.o:	
 	$(MAKE) -f ../config/Makefile -C ../config

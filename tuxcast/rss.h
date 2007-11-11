@@ -26,6 +26,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <memory>
 #include <libxml/tree.h> // Don't need parser in here, hopefully inclusion
 // guard should stop double-inclusion in rss.cpp buggering up.
 
@@ -38,9 +39,8 @@ struct file
 	unsigned long length;
 };
 
-typedef vector<struct file *> filelist;
+typedef vector<struct file> filelist;
 
-filelist *parse(string feed);
-void addtolist(filelist *myfilelist, xmlNode *enclosure);
+auto_ptr<filelist> parse(string feed);
 
 #endif

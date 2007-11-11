@@ -34,12 +34,12 @@
 
 using namespace std;
 
+static void addtolist(filelist &myfilelist, xmlNode *enclosure);
 
-filelist *parse(string feed)
+auto_ptr<filelist> parse(string feed)
 {
 	xmlDocPtr doc;
 	xmlNode *curr = NULL;
-	filelist *myfilelist;
 	bool rss2; // true == 2, false == 1 or RDF.
 
 
@@ -68,7 +68,7 @@ filelist *parse(string feed)
 
 	// All that mucking about counting stuff is eliminated, thanks to STL :-)
 
-	myfilelist = new filelist();
+	auto_ptr<filelist> myfilelist(new filelist());
 
 	curr = xmlDocGetRootElement(doc);
 	// curr == root node
@@ -91,7 +91,7 @@ filelist *parse(string feed)
 					while(1)
 						if(strcasecmp((char *)curr->name,"enclosure") == 0)
 						{
-							addtolist(myfilelist, curr);
+							addtolist(*myfilelist, curr);
 							break;
 						}
 						else
@@ -126,7 +126,7 @@ filelist *parse(string feed)
 								curr = curr->next;
 						}
 						// Curr now == the enclosure:
-						addtolist(myfilelist,curr);
+						addtolist(*myfilelist,curr);
 					}
 					curr = curr->parent; // Step out
 				}
@@ -142,49 +142,39 @@ filelist *parse(string feed)
 	return myfilelist;
 }
 
-void addtolist(filelist *myfilelist, xmlNode *enclosure)
+static void addtolist(filelist &myfilelist, xmlNode *enclosure)
 {
-	_xmlAttr *attribute;
 	string name=""; // Is worked out from trimming URL
 	string URL="";
 	unsigned int size=0;
 	
-	attribute = enclosure->properties;
-	while(true)
+	for (_xmlAttr *attribute = enclosure->properties;
+			attribute != NULL; attribute = attribute->next)
 	{
 		if(strcasecmp((char *)attribute->name,"url") == 0)
 		{
 			URL=(char *)attribute->children->content;
 		}
-		else
+		else if(strcasecmp((char *)attribute->name,"length") == 0)
 		{
-			if(strcasecmp((char *)attribute->name,"length") == 0)
-			{
-				size=atoi((char *)attribute->children->content);
-			}
+			size=atoi((char *)attribute->children->content);
 		}
 		// Do any type checking here
-
-		if(attribute->next == NULL)
-			break;
-		attribute = attribute->next;
 	}
 
-
-
-	// Let's add a new element to the vector:
-	myfilelist->push_back(NULL);
-	(*myfilelist)[myfilelist->size()-1] = new file;
-	
+	file new_file;
 
 	name = URL.substr(URL.rfind("/",URL.length())+1,URL.length()-URL.rfind("/",URL.length()));
 	// Remove ?... if present...
+	// XXX: if the URL contains: ".../?..." then name = "". That would be a bad thing for a filename
 	if(name.find("?",0) != string::npos)
 	{
 		name = name.substr(0,name.find("?",0));
 	}
 	// Setting up the file we made earlier...:
-	(*myfilelist)[myfilelist->size()-1]->filename = name;
-	(*myfilelist)[myfilelist->size()-1]->URL = URL; // Watch out - filename != name && length != size
-	(*myfilelist)[myfilelist->size()-1]->length = size;
+	new_file.filename = name;
+	new_file.URL = URL; // Watch out - filename != name && length != size
+	new_file.length = size;
+
+	myfilelist.push_back(new_file);
 }

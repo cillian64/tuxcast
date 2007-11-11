@@ -31,9 +31,10 @@
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
-#include "tuxcast.h"
+#include "tuxcast_functions.h"
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
+#include "../libraries/common.h"
 #include "../config/config_exceptions.h"
 #include "rss_exceptions.h"
 #include "tuxcast_functions.h"
@@ -100,11 +101,11 @@ int main(int argc, char *argv[])
 	{
 		case 'c':
 			printf(_("Checking all feeds\n"));
-			checkall(&myconfig);
+			checkall(myconfig);
 			break;
 		case 'u':
 			printf(_("Getting up to date on all feeds\n"));
-			up2dateall(&myconfig);
+			up2dateall(myconfig);
 			break;
 
 		case 'C':
@@ -115,12 +116,12 @@ int main(int argc, char *argv[])
 				fprintf(stderr,_("You must pass a non-blank feed name\n"));
 				return -1;
 			}
-			for(int i=0; i<myconfig.feeds.size(); i++)
+			FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 			{
-				if(strcasecmp(optarg1.c_str(),myconfig.feeds[i]->name.c_str()) == 0)
+				if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0)
 				{
 					// Found the feed
-					check(&myconfig, i);
+					check(myconfig, *feed);
 					return 0;
 				}
 			}
@@ -137,12 +138,12 @@ int main(int argc, char *argv[])
 				fprintf(stderr,_("You must pass a non-blank feed name\n"));
 				return -1;
 			}
-			for(int i=0; i<myconfig.feeds.size(); i++)
+			FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 			{
-				if(strcasecmp(optarg1.c_str(),myconfig.feeds[i]->name.c_str()) == 0)
+				if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0)
 				{
 					// Found the feed
-					up2date(&myconfig, i);
+					up2date(myconfig, *feed);
 					return 0;
 				}
 			}
