@@ -3,6 +3,8 @@
 #include <vector>
 #include "rss.h"
 #include "../config/config.h"
+#include <libxml/tree.h>
+#include <libxml/parser.h>
 
 #include <libintl.h>
 #include <locale.h>
