@@ -1,3 +1,7 @@
+Revision 150:
+* Added libxml includes to cleaner.cpp - somehow these disappeared :S
+--------------------------------------------------------------------------------
+
 Revision 149:
 * Applied a patch from greatred to add in atom parsing and generally clean up
 	RSS and RDF parsing
