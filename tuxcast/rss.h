@@ -24,19 +24,35 @@
 
 
 #include <string>
-#include <iostream>
 #include <vector>
 #include <memory>
-#include <libxml/tree.h> // Don't need parser in here, hopefully inclusion
-// guard should stop double-inclusion in rss.cpp buggering up.
+
+#include <sys/types.h>
 
 using namespace std;
+
+extern const string NS_ATOM;
+extern const string NS_RDF;
 
 struct file
 {
 	string filename;
 	string URL;
-	unsigned long length;
+	off_t length;
+
+	file(void)
+		: filename()
+		, URL()
+		, length(0)
+	{
+	}
+
+	file(const string &filename, const string &URL, off_t length)
+		: filename(filename)
+		, URL(URL)
+		, length(length)
+	{
+	}
 };
 
 typedef vector<struct file> filelist;

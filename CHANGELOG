@@ -1,3 +1,8 @@
+Revision 149:
+* Applied a patch from greatred to add in atom parsing and generally clean up
+	RSS and RDF parsing
+--------------------------------------------------------------------------------
+
 Revision 148:
 * Applied yet another patch from Greated - this one changes a bunch of stuff
 	all over the place.  It's all internal code changes, there shouldn't
