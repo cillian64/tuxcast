@@ -16,6 +16,9 @@
  * @param var The variable name for the iterator.
  */
 #define FOREACH_XMLCHILD(parent, var) \
-	for (xmlNode *var = parent->children; var != NULL; var = var->next)
+	for (xmlNode *var = (parent)->children; var != NULL; var = var->next)
+
+#define FOREACH_XMLATTR(parent, var) \
+	for (xmlAttr *var = (parent)->properties; var != NULL; var = var->next)
 
 #endif
