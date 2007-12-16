@@ -1,3 +1,7 @@
+Revision 151:
+* Added options to tuxcast-config to add and remove permitted MIME types
+--------------------------------------------------------------------------------
+
 Revision 150:
 * Added libxml includes to cleaner.cpp - somehow these disappeared :S
 --------------------------------------------------------------------------------
