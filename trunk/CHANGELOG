@@ -1,3 +1,7 @@
+Revision 152:
+* Finished off MIME type filtering (I.e. implemented the tuxcast bit).
+--------------------------------------------------------------------------------
+
 Revision 151:
 * Added options to tuxcast-config to add and remove permitted MIME types
 --------------------------------------------------------------------------------
