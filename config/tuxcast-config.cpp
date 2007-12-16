@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const char options[] = "aA:d:n:N:hs:g:Gf:umv";
+const char options[] = "aA:d:n:N:hs:g:Gf:umvt:r:";
 #define _(x) gettext(x)
 
 configuration myconfig;
@@ -41,11 +41,13 @@ configuration myconfig;
 void help(void);
 void get(int argc, char **argv);
 void getall(void);
-void set(string args);
+void set();
 void add(int argc,char *argc[]);
-void del(string name);
+void del();
 void update(int argc, char *argv[]);
 void listmimes(void);
+void addmime();
+void removemime();
 
 int main(int argc, char *argv[])
 {
@@ -74,7 +76,7 @@ int main(int argc, char *argv[])
 				break;
 			
 			case 'd':
-				del(optarg);
+				del();
 				break;
 			
 			case 'g':
@@ -87,7 +89,7 @@ int main(int argc, char *argv[])
 				break;
 
 			case 's':
-				set(optarg);
+				set();
 				break;
 			case 'u':
 				update(argc,argv);
@@ -97,13 +99,21 @@ int main(int argc, char *argv[])
 				listmimes();
 				break;
 
-			case 'h':
-				help();	
+			case 't':
+				addmime(); // Nothing is passed as the function
+				// can access optarg...
+				break;
+
+			case 'r':
+				removemime(); // "
 				break;
 
 			case 'v':
 				version();
 				break;
+
+			case 'h':
+				// Fallthrough
 		
 			default:
 				help();
@@ -133,6 +143,50 @@ void listmimes(void)
 	}
 }
 
+void addmime(void)
+{
+	if(optarg == NULL)
+	{
+		fprintf(stderr,_("Optarg is NULL... this shouldn't happen.\n"));
+		return; // TODO: exception?
+	}
+	FOREACH(configuration::mimelist::iterator, myconfig.permitted_mimes, mime)
+	{
+		if(strcasecmp(mime->c_str(),optarg) == 0)
+		{
+			fprintf(stderr,_("\"%s\" is already permitted\n"),optarg);
+			return;
+		}
+	}
+
+	myconfig.permitted_mimes.push_back(optarg);
+	printf(_("\"%s\" added to list of permitted MIME types\n"),optarg);
+	
+	myconfig.save();
+}
+
+void removemime(void)
+{
+	if(optarg == NULL)
+	{
+		fprintf(stderr,_("Optarg is NULL... this shouldn't happen.\n"));
+		return; // "
+	}
+	
+	FOREACH(configuration::mimelist::iterator, myconfig.permitted_mimes, mime)
+	{
+		if(strcasecmp(mime->c_str(),optarg) == 0)
+		{
+			printf(_("\"%s\" is no longer permitted\n"),optarg);
+			myconfig.permitted_mimes.erase(mime);
+			myconfig.save();
+			return;
+		}
+	}
+	printf(_("\"%s\" was not found in the list of permitted MIME types\n"),optarg);
+
+}
+
 void help(void)
 {
 
@@ -146,6 +200,8 @@ void help(void)
 	printf(_("-h: Display this help message\n"));
 	printf(_("-s: OPTION=VALUE: Set OPTION to VALUE\n"));
 	printf(_("-m: List permitted MIME types\n"));
+	printf(_("-t TYPE: Allow a new mime type\n"));
+	printf(_("-r TYPE: Reject a mime type\n"));
 	printf(_("-u -n NAME [ -A ADDRESS | -f FOLDER | -N NEWNAME ]: Change a property of a feed\n\n"));
 	printf(_("Available options are:\n"));
 	printf(_("podcastdir - where to save all your podcasts\n"));
@@ -229,8 +285,9 @@ void getall(void)
 
 }
 
-void set(string args)
+void set()
 {
+	string args = optarg;
 	string varname=args.substr(0,args.find("=",0));
 	string value=args.substr(args.find("=",0)+1,args.length()-args.find("=",0)-1);
 
@@ -310,11 +367,11 @@ void add(int argc,char *argv[])
 	myconfig.save();
 }
 
-void del(string name)
+void del()
 {
 	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
-		if(strcasecmp(name.c_str(),feed->name.c_str()) == 0)
+		if(strcasecmp(optarg,feed->name.c_str()) == 0)
 		{
 			// We've found the feed - wipe it:
 			myconfig.feeds.erase(feed);
@@ -322,7 +379,7 @@ void del(string name)
 			return;
 		}
 	}
-	fprintf(stderr,_("Feed \"%s\" doesn't exist\n"),name.c_str());
+	fprintf(stderr,_("Feed \"%s\" doesn't exist\n"),optarg);
 }
 	
 void update(int argc, char *argv[])

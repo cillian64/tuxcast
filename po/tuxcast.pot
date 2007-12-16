@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-09 21:57+0000\n"
+"POT-Creation-Date: 2007-12-16 11:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,150 +17,150 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../tuxcast/cleaner.cpp:27
+#: ../tuxcast/cleaner.cpp:29
 #, c-format
 msgid "Checking (cached) feed %s.\n"
 msgstr ""
 
-#: ../tuxcast/cleaner.cpp:38
+#: ../tuxcast/cleaner.cpp:40
 #, c-format
 msgid "Whoops, could not parse RSS feed\n"
 msgstr ""
 
-#: ../tuxcast/cleaner.cpp:39 ../tuxcast/cleaner.cpp:46
+#: ../tuxcast/cleaner.cpp:41 ../tuxcast/cleaner.cpp:48
 #, c-format
 msgid "Continuing to next feed\n"
 msgstr ""
 
-#: ../tuxcast/cleaner.cpp:44
+#: ../tuxcast/cleaner.cpp:46
 #, c-format
 msgid "Could not parse RSS feed (No exception caught)\n"
 msgstr ""
 
-#: ../tuxcast/cleaner.cpp:45
+#: ../tuxcast/cleaner.cpp:47
 #, c-format
 msgid "(This should not happen)\n"
 msgstr ""
 
-#: ../tuxcast/cleaner.cpp:59
+#: ../tuxcast/cleaner.cpp:56
 #, c-format
 msgid "Generating XML...\n"
 msgstr ""
 
-#: ../tuxcast/cleaner.cpp:64
+#: ../tuxcast/cleaner.cpp:61
 #, c-format
 msgid "Old files.xml contains %d element\n"
 msgid_plural "Old files.xml contains %d elements\n"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../tuxcast/cleaner.cpp:67
+#: ../tuxcast/cleaner.cpp:64
 #, c-format
 msgid "New files.xml.new contains %d element\n"
 msgid_plural "New files.xml.new contains %d elements\n"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../tuxcast/cleaner.cpp:69
+#: ../tuxcast/cleaner.cpp:66
 #, c-format
 msgid "(I won't replace your files.xml as this feature is still immature.\n"
 msgstr ""
 
-#: ../tuxcast/cleaner.cpp:70
+#: ../tuxcast/cleaner.cpp:67
 #, c-format
 msgid ""
 "If you're feeling brave, replace ~/.tuxcast/files.xml with ~/.tuxcast/files."
 "xml.new)\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:88
+#: ../tuxcast/tuxcast.cpp:89
 #, c-format
 msgid "Cannot load config file - please create one\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:102
+#: ../tuxcast/tuxcast.cpp:103
 #, c-format
 msgid "Checking all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:106
+#: ../tuxcast/tuxcast.cpp:107
 #, c-format
 msgid "Getting up to date on all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:111
+#: ../tuxcast/tuxcast.cpp:112
 #, c-format
 msgid "Checking feed, \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:115 ../tuxcast/tuxcast.cpp:137
+#: ../tuxcast/tuxcast.cpp:116 ../tuxcast/tuxcast.cpp:138
 #, c-format
 msgid "You must pass a non-blank feed name\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:129 ../tuxcast/tuxcast.cpp:151
+#: ../tuxcast/tuxcast.cpp:130 ../tuxcast/tuxcast.cpp:152
 #, c-format
 msgid "Unknown feed, \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:133
+#: ../tuxcast/tuxcast.cpp:134
 #, c-format
 msgid "Getting up2date on feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:168
+#: ../tuxcast/tuxcast.cpp:169
 #, c-format
 msgid "Usage: tuxcast <option>\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:169
+#: ../tuxcast/tuxcast.cpp:170
 #, c-format
 msgid "where <option> is one of the below:\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:170
+#: ../tuxcast/tuxcast.cpp:171
 #, c-format
 msgid "-c - Check all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:171
+#: ../tuxcast/tuxcast.cpp:172
 #, c-format
 msgid "-u - Download only the latest file from all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:172
+#: ../tuxcast/tuxcast.cpp:173
 #, c-format
 msgid "-C name - Download all episodes of the named feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:173
+#: ../tuxcast/tuxcast.cpp:174
 #, c-format
 msgid "-U name - Download only the latest episode of the named feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:174
+#: ../tuxcast/tuxcast.cpp:175
 #, c-format
 msgid "-h - Show this help message\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:175
+#: ../tuxcast/tuxcast.cpp:176
 #, c-format
 msgid "-f - clean out old podcasts from files.xml\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:176
+#: ../tuxcast/tuxcast.cpp:177
 #, c-format
 msgid "-v - Show version and license information\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:68
+#: ../tuxcast/tuxcast_functions.cpp:69
 #, c-format
 msgid "Oops, couldn't create folder for feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:69 ../tuxcast/tuxcast_functions.cpp:327
-#: ../config/config.cpp:99 ../config/config.cpp:107
-#: ../config/tuxcast-config.cpp:114
+#: ../tuxcast/tuxcast_functions.cpp:70 ../tuxcast/tuxcast_functions.cpp:330
+#: ../config/config.cpp:102 ../config/config.cpp:110
+#: ../config/tuxcast-config.cpp:125
 #, c-format
 msgid "Exception caught: "
 msgstr ""
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Checking feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:125
+#: ../tuxcast/tuxcast_functions.cpp:126
 #, c-format
 msgid "up2date'ing feed \"%s\"\n"
 msgstr ""
@@ -185,187 +185,242 @@ msgstr ""
 msgid "Download %s? (yes/no)\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:243
+#: ../tuxcast/tuxcast_functions.cpp:247
 #, c-format
 msgid "Error opening output file \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:249
+#: ../tuxcast/tuxcast_functions.cpp:253
 #, c-format
 msgid "Downloading %s...\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:316
+#: ../tuxcast/tuxcast_functions.cpp:320
 #, c-format
 msgid "This is an XML file, but does not appear to be RSS 1 (RDF) or RSS 2\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:317
+#: ../tuxcast/tuxcast_functions.cpp:321
 #, c-format
 msgid ""
 "Please check you have the correct URL and that it is an RSS feed, and then "
 "contact your feed maintainer\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:318
+#: ../tuxcast/tuxcast_functions.cpp:322
 #, c-format
 msgid "Exception caught:"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:320 ../tuxcast/tuxcast_functions.cpp:329
+#: ../tuxcast/tuxcast_functions.cpp:324 ../tuxcast/tuxcast_functions.cpp:332
 #, c-format
 msgid "Aborting this feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:325
+#: ../tuxcast/tuxcast_functions.cpp:328
 #, c-format
 msgid "Couldn't parse the feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:326
+#: ../tuxcast/tuxcast_functions.cpp:329
 #, c-format
 msgid "Please check the URL is correct, then contact your feed maintainer.\n"
 msgstr ""
 
-#: ../config/config.cpp:54 ../config/config.cpp:176
+#: ../config/config.cpp:55 ../config/config.cpp:180
 #, c-format
 msgid "Trimming trailing / from podcastdir...\n"
 msgstr ""
 
-#: ../config/config.cpp:98
+#: ../config/config.cpp:101
 #, c-format
 msgid "Ooops, couldn't save your new config:\n"
 msgstr ""
 
-#: ../config/config.cpp:105
+#: ../config/config.cpp:108
 #, c-format
 msgid "Opps, couldn't save your new config,\n"
 msgstr ""
 
-#: ../config/config.cpp:106
+#: ../config/config.cpp:109
 #, c-format
 msgid "~/.tuxcast/config.xml exists but isn't a file\n"
 msgstr ""
 
-#: ../config/config.cpp:132
+#: ../config/config.cpp:135
 #, c-format
 msgid "No config file found...\n"
 msgstr ""
 
-#: ../config/config.cpp:138
+#: ../config/config.cpp:141
 #, c-format
 msgid "No config file found: Aborting\n"
 msgstr ""
 
-#: ../config/config.cpp:147
+#: ../config/config.cpp:150
 #, c-format
 msgid "Error parsing your config file\n"
 msgstr ""
 
-#: ../config/config.cpp:148
+#: ../config/config.cpp:151
 #, c-format
 msgid "Please delete ~/.tuxcast/config.xml and make a new one\n"
 msgstr ""
 
-#: ../config/config.cpp:167
+#: ../config/config.cpp:171
 #, c-format
 msgid ""
 "You have not setup a podcast directory - tuxcast will use your home "
 "directory, ~.\n"
 msgstr ""
 
-#: ../config/config.cpp:177
+#: ../config/config.cpp:181
 #, c-format
 msgid "If you make a custom config file, please be careful\n"
 msgstr ""
 
-#: ../config/config.cpp:201
+#: ../config/config.cpp:202
 #, c-format
 msgid "Warning, empty mime type in config file\n"
 msgstr ""
 
-#: ../config/config.cpp:238
+#: ../config/config.cpp:207
+#, c-format
+msgid "Warning, mime mode with non-textual content in config file\n"
+msgstr ""
+
+#: ../config/config.cpp:233
 #, c-format
 msgid ""
 "Error: blank name or address in config file, please delete and recreate your "
 "config file using tuxcast-config\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:63
+#: ../config/config.cpp:268
+#, c-format
+msgid "Name: %s\n"
+msgstr ""
+
+#: ../config/config.cpp:269
+#, c-format
+msgid "Address: %s\n"
+msgstr ""
+
+#: ../config/config.cpp:270
+#, c-format
+msgid "Folder: %s\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:66
 #, c-format
 msgid "Warning, no config file\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:64
+#: ../config/tuxcast-config.cpp:67
 #, c-format
 msgid ""
 "If you're changing an option or adding a feed, a config file will be created "
 "later\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:113
+#: ../config/tuxcast-config.cpp:124
 #, c-format
 msgid "Cannot save config file\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:127
+#: ../config/tuxcast-config.cpp:138
 #, c-format
 msgid "Permitted MIME types:\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:138
+#: ../config/tuxcast-config.cpp:150 ../config/tuxcast-config.cpp:172
+#, c-format
+msgid "Optarg is NULL... this shouldn't happen.\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:157
+#, c-format
+msgid "\"%s\" is already permitted\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:163
+#, c-format
+msgid "\"%s\" added to list of permitted MIME types\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:180
+#, c-format
+msgid "\"%s\" is no longer permitted\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:186
+#, c-format
+msgid "\"%s\" was not found in the list of permitted MIME types\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:193
 #, c-format
 msgid "Usage: tuxcast-config  [action]\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:139
+#: ../config/tuxcast-config.cpp:194
 #, c-format
 msgid "Actions are:\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:140
+#: ../config/tuxcast-config.cpp:195
 #, c-format
 msgid ""
 "-a -n NAME -A ADDRESS -f FOLDER: Add a feed with the specified name, address "
 "and folder\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:141
+#: ../config/tuxcast-config.cpp:196
 #, c-format
 msgid "-d NAME: Delete the feed with the specified name\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:142
+#: ../config/tuxcast-config.cpp:197
 #, c-format
 msgid "-g OPTION: Get the value of the specified option\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:143
+#: ../config/tuxcast-config.cpp:198
 #, c-format
 msgid "-g feed -n NAME: Get the settings of the specified feed\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:144
+#: ../config/tuxcast-config.cpp:199
 #, c-format
 msgid "-G: Get the value of all options\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:145
+#: ../config/tuxcast-config.cpp:200
 #, c-format
 msgid "-h: Display this help message\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:146
+#: ../config/tuxcast-config.cpp:201
 #, c-format
 msgid "-s: OPTION=VALUE: Set OPTION to VALUE\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:147
+#: ../config/tuxcast-config.cpp:202
 #, c-format
 msgid "-m: List permitted MIME types\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:148
+#: ../config/tuxcast-config.cpp:203
+#, c-format
+msgid "-t TYPE: Allow a new mime type\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:204
+#, c-format
+msgid "-r TYPE: Reject a mime type\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:205
 #, c-format
 msgid ""
 "-u -n NAME [ -A ADDRESS | -f FOLDER | -N NEWNAME ]: Change a property of a "
@@ -373,136 +428,121 @@ msgid ""
 "\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:149
+#: ../config/tuxcast-config.cpp:206
 #, c-format
 msgid "Available options are:\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:150
+#: ../config/tuxcast-config.cpp:207
 #, c-format
 msgid "podcastdir - where to save all your podcasts\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:151
+#: ../config/tuxcast-config.cpp:208
 #, c-format
 msgid "ask - whether or not to ask before downloading any files\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:168
+#: ../config/tuxcast-config.cpp:225
 #, c-format
 msgid "true"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:170
+#: ../config/tuxcast-config.cpp:227
 #, c-format
 msgid "false"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:179
+#: ../config/tuxcast-config.cpp:236
 #, c-format
 msgid "You must pass a feed name with -n NAME\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:188 ../config/tuxcast-config.cpp:205
-#: ../config/tuxcast-config.cpp:230
-#, c-format
-msgid "Name: %s\n"
-msgstr ""
-
-#: ../config/tuxcast-config.cpp:189 ../config/tuxcast-config.cpp:206
-#: ../config/tuxcast-config.cpp:231
-#, c-format
-msgid "Address: %s\n"
-msgstr ""
-
-#: ../config/tuxcast-config.cpp:190 ../config/tuxcast-config.cpp:207
-#: ../config/tuxcast-config.cpp:232
-#, c-format
-msgid "Folder: %s\n"
-msgstr ""
-
-#: ../config/tuxcast-config.cpp:197
+#: ../config/tuxcast-config.cpp:252
 #, c-format
 msgid "Invalid feed name, %s\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:216
+#: ../config/tuxcast-config.cpp:269
 #, c-format
 msgid "Unrecognised option, %s\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:221
+#: ../config/tuxcast-config.cpp:274
 #, c-format
 msgid "podcastdir = %s\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:222
+#: ../config/tuxcast-config.cpp:275
 #, c-format
 msgid "ask = %s\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:226
+#: ../config/tuxcast-config.cpp:279
 #, c-format
 msgid "There is 1 feed:\n"
 msgid_plural "There are %d feeds:\n"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../config/tuxcast-config.cpp:260
+#: ../config/tuxcast-config.cpp:312
 #, c-format
 msgid ""
 "The \"ask\" variable can only be \"true\" or \"false\" -\n"
 "Assuming true\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:288
+#: ../config/tuxcast-config.cpp:339
 #, c-format
 msgid "No name specified!\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:295
+#: ../config/tuxcast-config.cpp:344
+#, c-format
+msgid "No URL specified!\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:354
 #, c-format
 msgid "Feed already exists\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:331
+#: ../config/tuxcast-config.cpp:360
 #, c-format
-msgid ""
-"You must pass the name and address of the feed to add (The folder can be "
-"left blank to just put files in podcastdir)\n"
+msgid "A feed with the same URL already exists\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:358
+#: ../config/tuxcast-config.cpp:382
 #, c-format
 msgid "Feed \"%s\" doesn't exist\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:391
+#: ../config/tuxcast-config.cpp:396
 #, c-format
 msgid "You must pass -n and either -A, -f or -N when updating a feed's info\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:407
+#: ../config/tuxcast-config.cpp:412
 #, c-format
 msgid "Error: Blank address\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:414
+#: ../config/tuxcast-config.cpp:419
 #, c-format
 msgid "Error: Another feed already exists with this address\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:429
+#: ../config/tuxcast-config.cpp:434
 #, c-format
 msgid "Error: Blank name\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:437
+#: ../config/tuxcast-config.cpp:442
 #, c-format
 msgid "Error: Another feed already exists with this name\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:446
+#: ../config/tuxcast-config.cpp:451
 #, c-format
 msgid "You must pass either -A, -f or -N when updating a feed's info\n"
 msgstr ""
