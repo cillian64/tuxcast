@@ -38,7 +38,7 @@ void check(configuration &myconfig, feed &feed);
 void up2date(configuration &myconfig, feed &feed);
 void checkall(configuration &myconfig);
 void up2dateall(configuration &myconfig);
-void get(const string &name, const string &URL, feed &feed, configuration &myconfig);
+void get(const string &name, const string &URL, feed &feed, const string &type, configuration &myconfig);
 void cachefeed(const string &name, const string &URL);
 auto_ptr<filelist> parsefeed(string name);
 #endif

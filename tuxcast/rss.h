@@ -38,19 +38,22 @@ struct file
 {
 	string filename;
 	string URL;
+	string type;
 	off_t length;
 
 	file(void)
 		: filename()
 		, URL()
 		, length(0)
+		, type()
 	{
 	}
 
-	file(const string &filename, const string &URL, off_t length)
+	file(const string &filename, const string &URL, off_t length, string type)
 		: filename(filename)
 		, URL(URL)
 		, length(length)
+		, type(type)
 	{
 	}
 };

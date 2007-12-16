@@ -141,18 +141,19 @@ static void parse_rss_enclosure(xmlNode *enclosure, filelist &enclosed_files)
 {
 	string URL="";
 	off_t size=0;
+	string type="";
 
 	FOREACH_XMLATTR(enclosure, attribute)
 	{
 		if(strcasecmp((char *)attribute->name,"url") == 0)
-		{
 			URL=(char *)attribute->children->content;
-		}
+		
 		else if(strcasecmp((char *)attribute->name,"length") == 0)
-		{
 			size=strtoul((char *)attribute->children->content, NULL, 10);
-		}
-		// Do any type checking here
+		
+		else if(strcasecmp((char *)attribute->name,"type") == 0)
+			type = (char *)attribute->children->content;
+
 	}
 
 	file new_file;
@@ -160,6 +161,7 @@ static void parse_rss_enclosure(xmlNode *enclosure, filelist &enclosed_files)
 	new_file.filename = filenameFromUrl(URL);
 	new_file.URL = URL; // Watch out - filename != name && length != size
 	new_file.length = size;
+	new_file.type = type;
 
 	enclosed_files.push_back(new_file);
 }
@@ -215,7 +217,9 @@ static void parse_atom_link(xmlNode *link_node, filelist &enclosed_files)
 	{
 		// TODO - this might not be a podcast. The type attribute would be useful
 		//  in guessing this with greater reliability
-		enclosed_files.push_back(file(filenameFromUrl(href), href, size));
+		//  TODO: Actually read the type attribute and stick it in the
+		//  file object...
+		enclosed_files.push_back(file(filenameFromUrl(href), href, size, ""));
 	}
 }
 

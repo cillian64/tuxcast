@@ -62,7 +62,7 @@ void check(configuration &myconfig, feed &feed)
 		try
 		{
 			get(file->filename, file->URL,
-				feed, myconfig);
+				feed, file->type, myconfig);
 		}
 		catch(eFilestuff_CannotCreateFolder &e)
 		{
@@ -94,7 +94,7 @@ void up2date(configuration &myconfig, feed &feed)
 	{
 		if(file == myfilelist->begin())
 			get(file->filename, file->URL,
-					feed, myconfig);
+					feed, file->type, myconfig);
 		else
 			newfile(file->filename);
 		// First file, download it
@@ -194,11 +194,12 @@ bool alreadydownloaded(string name)
 }
 
 // Download an episode
-void get(const string &name, const string &URL, feed &feed, configuration &myconfig)
+void get(const string &name, const string &URL, feed &feed, const string &type, configuration &myconfig)
 {
 	string temp;
 	FILE *outputfile=NULL;
 	CURL *mycurl;
+	bool correctmime=false;
 	mycurl = curl_easy_init();
 	if(mycurl == NULL)
 	{
@@ -209,6 +210,26 @@ void get(const string &name, const string &URL, feed &feed, configuration &mycon
 	if(alreadydownloaded(name))
 		// Already downloaded
 		return;
+	
+	if(myconfig.permitted_mimes.size() == 0)
+		correctmime=true; // If they haven't specified any permitted
+		// MIMEs, we'll assume they want all files rather than no
+		// files... Don't output an error either.
+	
+	if(strcmp(type.c_str(),"") == 0)
+		correctmime=true; // If the MIME type of the file in the RSS
+		// feed is blank, we'll download it anyway...
+	
+	FOREACH(configuration::mimelist::iterator, myconfig.permitted_mimes, mime)
+		if(strcasecmp(mime->c_str(), type.c_str()) == 0)
+			correctmime=true;
+
+	if(correctmime == false) // The MIME type isn't blank, the permitted
+	// list isn't empty, and it ain't permitted...
+	{
+		fprintf(stderr,_("Not downloading %s - incorrect MIME type\n"),name.c_str());
+		return;
+	}
 	
 	if(myconfig.ask == true)
 	{
