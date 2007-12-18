@@ -26,6 +26,7 @@
 
 #include <string>
 #include "rss.h"
+#include <vector>
 
 using namespace std;
 
@@ -37,8 +38,10 @@ bool alreadydownloaded(string name); // true if already downloaded
 void check(configuration &myconfig, feed &feed);
 void up2date(configuration &myconfig, feed &feed);
 void checkall(configuration &myconfig);
+void hohoho(configuration &myconfig);
+unsigned int checkx(configuration &myconfig, feed &feed, unsigned int previous, vector<string> &whatihasgot);
 void up2dateall(configuration &myconfig);
-void get(const string &name, const string &URL, feed &feed, const string &type, configuration &myconfig);
+bool get(const string &name, const string &URL, feed &feed, const string &type, configuration &myconfig, bool quiet);
 void cachefeed(const string &name, const string &URL);
 auto_ptr<filelist> parsefeed(string name);
 #endif
