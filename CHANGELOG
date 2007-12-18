@@ -1,3 +1,8 @@
+Revision 153:
+* Changed get() to mark a file as downloaded if the MIME type is wrong, so you
+	don't keep seeing the message over and over again...
+--------------------------------------------------------------------------------
+
 Revision 152:
 * Finished off MIME type filtering (I.e. implemented the tuxcast bit).
 --------------------------------------------------------------------------------

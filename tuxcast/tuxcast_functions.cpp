@@ -228,6 +228,7 @@ void get(const string &name, const string &URL, feed &feed, const string &type, 
 	// list isn't empty, and it ain't permitted...
 	{
 		fprintf(stderr,_("Not downloading %s - incorrect MIME type\n"),name.c_str());
+		newfile(name);
 		return;
 	}
 	
