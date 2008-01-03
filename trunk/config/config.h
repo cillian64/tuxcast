@@ -26,6 +26,7 @@
 
 #include <string>
 #include <vector>
+#include "../compile_flags.h"
 
 using namespace std;
 
@@ -42,6 +43,13 @@ class configuration
 			// it's converted to a bool on load/save
 		feedlist feeds; // A vector of feed pointers
 		mimelist permitted_mimes;
+		
+#ifdef PCREPP
+		string postdownload;
+		string postfeed;
+		string postrun;
+#endif
+
 		void save();
 		void load();
 };

@@ -31,6 +31,9 @@
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
+#ifdef PCREPP
+#include <pcre++.h>
+#endif
 #include "tuxcast.h"
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
@@ -62,7 +65,7 @@ void check(configuration &myconfig, feed &feed)
 		try
 		{
 			get(file->filename, file->URL,
-				feed, file->type, myconfig, false);
+				feed, file->type, myconfig);
 		}
 		catch(eFilestuff_CannotCreateFolder &e)
 		{
@@ -76,70 +79,6 @@ void check(configuration &myconfig, feed &feed)
 	}
 
 }
-
-string pluralise(unsigned int thenum)
-{
-	if((thenum % 10) == 1)
-		return "st";
-	if((thenum % 10) == 2)
-		return "nd";
-	if((thenum % 10) == 3)
-		return "rd";
-	return "th";
-}
-
-// Check a particular feed
-unsigned int checkx(configuration &myconfig, feed &feed, unsigned int previous, vector<string> &whatihasgot)
-{
-	unsigned int i=0;
-	cachefeed(feed.name, feed.address);
-
-	auto_ptr<filelist> myfilelist = parsefeed(feed.name);
-	if(!myfilelist.get())
-		return previous;
-	// TODO: Umm, I really should return an error or warning or something,
-	// shouldn't I...?
-
-	FOREACH(filelist::iterator, *myfilelist, file)
-	{
-		try
-		{
-			if(!alreadydownloaded(file->filename))
-			{
-				if(whatihasgot.size() == 0)
-				{
-					printf("On the %d%s day of xmas, %s gave to me,\n",i+previous,pluralise(i+previous).c_str(),feed.name.c_str());
-					printf("%s\n\n",file->filename.c_str());
-					whatihasgot.push_back(file->filename);
-				}
-				else
-				{
-					printf("On the %d%s day of xmas, %s gave to me: %s...\n",i+previous, pluralise(i+previous).c_str(), feed.name.c_str(), file->filename.c_str());
-					get(file->filename, file->URL,
-						feed, file->type, myconfig,true);
-					whatihasgot.push_back(file->filename);
-
-					for(unsigned j=whatihasgot.size()-2; j>0; j--)
-						printf("%s,\n",whatihasgot[j].c_str());
-					printf("And %s\n\n",whatihasgot[0].c_str());
-				}
-				i++;
-			}
-		}
-		catch(eFilestuff_CannotCreateFolder &e)
-		{
-			fprintf(stderr,_("Oops, couldn't create folder for feed \"%s\"\n"),feed.name.c_str());
-			fprintf(stderr,_("Exception caught: ")); // Yes, no \n.
-			e.print();
-			return previous+i; // Skip this feed:
-			// If we can't create the folder, no point in trying to
-			// get any other files from this feed
-		}
-	}
-	return (previous+i);
-
-}
-
 
 
 
@@ -158,7 +97,7 @@ void up2date(configuration &myconfig, feed &feed)
 	{
 		if(file == myfilelist->begin())
 			get(file->filename, file->URL,
-					feed, file->type, myconfig, false);
+					feed, file->type, myconfig);
 		else
 			newfile(file->filename);
 		// First file, download it
@@ -180,16 +119,6 @@ void checkall(configuration &myconfig)
 		check(myconfig, *feed);
 	}
 }
-
-// This loops through all feeds and passes them to check()
-void hohoho(configuration &myconfig)
-{
-	unsigned int i=1;
-	vector<string> whatihasgot;
-	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
-		i=checkx(myconfig, *feed, i, whatihasgot);
-}
-
 
 // This loops through all feeds and passes them to up2date()
 void up2dateall(configuration &myconfig)
@@ -268,7 +197,7 @@ bool alreadydownloaded(string name)
 }
 
 // Download an episode
-bool get(const string &name, const string &URL, feed &feed, const string &type, configuration &myconfig, bool quiet)
+void get(const string &name, const string &URL, feed &feed, const string &type, configuration &myconfig)
 {
 	string temp;
 	FILE *outputfile=NULL;
@@ -278,12 +207,12 @@ bool get(const string &name, const string &URL, feed &feed, const string &type, 
 	if(mycurl == NULL)
 	{
 		fprintf(stderr,_("Error initializing libcurl\n"));
-		return false;
+		return;
 	}
 	
 	if(alreadydownloaded(name))
 		// Already downloaded
-		return false;
+		return;
 	
 	if(myconfig.permitted_mimes.size() == 0)
 		correctmime=true; // If they haven't specified any permitted
@@ -303,7 +232,7 @@ bool get(const string &name, const string &URL, feed &feed, const string &type, 
 	{
 		fprintf(stderr,_("Not downloading %s - incorrect MIME type\n"),name.c_str());
 		newfile(name);
-		return false;
+		return;
 	}
 	
 	if(myconfig.ask == true)
@@ -315,7 +244,7 @@ bool get(const string &name, const string &URL, feed &feed, const string &type, 
 		temp = "yes";
 
 	if(strcasecmp(temp.c_str(),"yes") != 0)
-		return false;
+		return;
 
 	// Work out path to download file
 	string path;
@@ -342,26 +271,21 @@ bool get(const string &name, const string &URL, feed &feed, const string &type, 
 	{
 		fprintf(stderr,_("Error opening output file \"%s\"\n"),path.c_str());
 		// TODO: throw exception
-		return false; // Abort download
+		return; // Abort download
 	}
 	
-	if(!quiet)
-		printf(_("Downloading %s...\n"),name.c_str());
+
+	printf(_("Downloading %s...\n"),name.c_str());
 	
 	curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
 	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
 	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
-	if(!quiet)
-		curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,0);
-	else
-		curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,1);
+	curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,0);
 	curl_easy_perform(mycurl);
 	fclose(outputfile);
 	newfile(name);
 	
 	curl_easy_cleanup(mycurl);
-
-	return true;
 }
 
 void cachefeed(const string &name, const string &URL)

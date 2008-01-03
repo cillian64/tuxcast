@@ -48,7 +48,7 @@ using namespace std;
 #include <locale.h>
 
 
-const char options[] = "cuC:U:fvhx";
+const char options[] = "cuC:U:fvh";
 #define _(x) gettext(x)
 
 
@@ -154,16 +154,12 @@ int main(int argc, char *argv[])
 			break; // Bah
 
 		case 'f':
-			printf(_("Cleaning out files.xml...\n"));
+			cout << "Cleaning out files.xml..." << endl;
 			clean();
 			break;
 
 		case 'v':
 			version();
-			break;
-
-		case 'x':
-			hohoho(myconfig);
 			break;
 
 		case 'h':
