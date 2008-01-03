@@ -12,7 +12,7 @@
 
 // These are defined for subversion checkouts
 #define SUBVERSION
-#define SUBVERSION_REVISION "154"
+#define SUBVERSION_REVISION "153"
 
 void version();
 

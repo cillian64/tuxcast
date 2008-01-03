@@ -6,7 +6,7 @@
 ifeq ($(OSTYPE),solaris)
 
 CXX=g++
-OPTIM?=
+OPTIM?=-O2
 DEBUG?=-g
 CXXFLAGS=$(DEBUG) $(OPTIM)
 INSTALL=ginstall
@@ -23,11 +23,13 @@ LIBXML2_CFLAGS:=$(shell xml2-config --cflags)
 LIBXML2_LIBS:=$(shell xml2-config --libs)
 LIBCURL_CFLAGS:=$(shell curl-config --cflags)
 LIBCURL_LIBS:=$(shell curl-config --libs)
+PCREPP_CFLAGS:=$(shell pcre-config --cflags) $(shell pcre++-config --cflags)
+PCREPP_LIBS:=$(shell pcre-config --libs) $(shell pcre++-config --libs)
 
 else
 
 CXX=g++
-OPTIM?=
+OPTIM?=-O2
 DEBUG?=-g
 CXXFLAGS=$(DEBUG) $(OPTIM)
 INSTALL=install
@@ -44,6 +46,8 @@ LIBXML2_CFLAGS:=$(shell xml2-config --cflags)
 LIBXML2_LIBS:=$(shell xml2-config --libs)
 LIBCURL_CFLAGS:=$(shell curl-config --cflags)
 LIBCURL_LIBS:=$(shell curl-config --libs)
+PCREPP_CFLAGS:=$(shell pcre-config --cflags) $(shell pcre++-config --cflags)
+PCREPP_LIBS:=$(shell pcre-config --libs) $(shell pcre++-config --libs)
 
 endif
 

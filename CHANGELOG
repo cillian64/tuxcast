@@ -1,3 +1,11 @@
+Revision 155:
+* Reverted out the xmas mode
+* Added in optional PCRE support (The PCREPP define in compile_flags.h)
+* Added in the configuration options to run commands after certain actions
+	complete.  (The meat of the code isn't implemented yet)
+* Removed some old eclipse metadata
+--------------------------------------------------------------------------------
+
 Revision 154:
 * Added in the hidden "xmas" mode....
 --------------------------------------------------------------------------------

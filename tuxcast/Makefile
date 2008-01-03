@@ -16,10 +16,10 @@ TUXCAST_OBJS=\
 main: tuxcast
 
 tuxcast: $(TUXCAST_OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBXML2_LIBS) $(LIBCURL_LIBS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBXML2_LIBS) $(LIBCURL_LIBS) $(PCREPP_LIBS)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $^ $(LIBXML2_CFLAGS) $(LIBCURL_CFLAGS)
+	$(CXX) $(CXXFLAGS) -c $^ $(LIBXML2_CFLAGS) $(LIBCURL_CFLAGS) $(PCREPP_CFLAGS)
 
 ../config/config.o:	
 	$(MAKE) -f ../config/Makefile -C ../config

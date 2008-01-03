@@ -30,3 +30,7 @@
 #define POSIX
 // #define WINDOWS
 
+
+
+// Uncomment for PCREPP-requiring features:
+//#define PCREPP
