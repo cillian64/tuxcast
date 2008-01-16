@@ -1,3 +1,10 @@
+Revision 156:
+* Added the move() call to filestuff
+* Made tuxcast write config.xml and files.xml to temp files, then move the
+	temp over the original - now if it runs out of space, it doesn't
+	wipe the config anymore.  Fixes 1609639.
+--------------------------------------------------------------------------------
+
 Revision 155:
 * Reverted out the xmas mode
 * Added in optional PCRE support (The PCREPP define in compile_flags.h)

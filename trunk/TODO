@@ -13,3 +13,5 @@
 	about this as this makes the XML invalid so libxml is right to abort...)
 * Populate the type property of the file for atom feeds
 * Alter makefiles to make PCRE++ optional
+* Check all calls use exceptions
+* Catch the eTuxcast_FSFull Exception

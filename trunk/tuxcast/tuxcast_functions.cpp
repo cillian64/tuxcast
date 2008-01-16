@@ -1,7 +1,7 @@
 /*
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
- * Copyright (C) 2006-2007 David Turner
+ * Copyright (C) 2006-2008 David Turner
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,13 @@
 #ifdef PCREPP
 #include <pcre++.h>
 #endif
+
+#include <libintl.h>
+#include <locale.h>
+
+#define _(x) gettext(x)
+
+#include "tuxcast_exceptions.h"
 #include "tuxcast.h"
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
@@ -42,10 +49,6 @@
 #include "rss_exceptions.h"
 #include "tuxcast_functions.h"
 
-#include <libintl.h>
-#include <locale.h>
-
-#define _(x) gettext(x)
 
 using namespace std;
 
@@ -140,6 +143,10 @@ void newfile(string name)
         xmlNode *root, curr;
         string path=getenv("HOME");
         path += "/.tuxcast/files.xml";
+	char *temppath=new char[path.size()+7];
+	strcpy(temppath,path.c_str());
+	strcat(temppath,".XXXXXX");
+	mktemp(temppath);
         doc = xmlReadFile(path.c_str(), NULL, 0);
         if(doc == NULL)
         {
@@ -154,7 +161,10 @@ void newfile(string name)
         // Add the new file:
         xmlNewChild(root,NULL,(xmlChar *)"file", (xmlChar *)name.c_str());
         // Save the filelist:
-        xmlSaveFormatFileEnc(path.c_str(), doc, "UTF-8", 1);
+        if(xmlSaveFormatFileEnc(temppath, doc, "UTF-8", 1) == -1)
+		throw eTuxcast_FSFull();
+	if(!move(temppath,path))
+		throw eTuxcast_FSFull();
 }
 
 

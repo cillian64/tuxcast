@@ -1,5 +1,5 @@
 # Tuxcast 0.2
-# Copyright (C) 2006-2007 David Turner
+# Copyright (C) 2006-2008 David Turner
 # This file is distributed under the same license as the Tuxcast package.
 # David Turner <cillian64@users.sourceforge.net>, 2006-2007.
 #
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tuxcast 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-03 14:09+0000\n"
+"POT-Creation-Date: 2008-01-16 19:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,86 +152,86 @@ msgstr ""
 msgid "-v - Show version and license information\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:72
+#: ../tuxcast/tuxcast_functions.cpp:75
 #, c-format
 msgid "Oops, couldn't create folder for feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:73 ../tuxcast/tuxcast_functions.cpp:355
+#: ../tuxcast/tuxcast_functions.cpp:76 ../tuxcast/tuxcast_functions.cpp:365
 #: ../config/config.cpp:110 ../config/config.cpp:118
 #: ../config/tuxcast-config.cpp:125
 #, c-format
 msgid "Exception caught: "
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:117
+#: ../tuxcast/tuxcast_functions.cpp:120
 #, c-format
 msgid "Checking feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:129
+#: ../tuxcast/tuxcast_functions.cpp:132
 #, c-format
 msgid "up2date'ing feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:209
+#: ../tuxcast/tuxcast_functions.cpp:219
 #, c-format
 msgid "Error initializing libcurl\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:233
+#: ../tuxcast/tuxcast_functions.cpp:243
 #, c-format
 msgid "Not downloading %s - incorrect MIME type\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:240
+#: ../tuxcast/tuxcast_functions.cpp:250
 #, c-format
 msgid "Download %s? (yes/no)\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:272
+#: ../tuxcast/tuxcast_functions.cpp:282
 #, c-format
 msgid "Error opening output file \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:278
+#: ../tuxcast/tuxcast_functions.cpp:288
 #, c-format
 msgid "Downloading %s...\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:345
+#: ../tuxcast/tuxcast_functions.cpp:355
 #, c-format
 msgid "This is an XML file, but does not appear to be RSS 1 (RDF) or RSS 2\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:346
+#: ../tuxcast/tuxcast_functions.cpp:356
 #, c-format
 msgid ""
 "Please check you have the correct URL and that it is an RSS feed, and then "
 "contact your feed maintainer\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:347
+#: ../tuxcast/tuxcast_functions.cpp:357
 #, c-format
 msgid "Exception caught:"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:349 ../tuxcast/tuxcast_functions.cpp:357
+#: ../tuxcast/tuxcast_functions.cpp:359 ../tuxcast/tuxcast_functions.cpp:367
 #, c-format
 msgid "Aborting this feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:353
+#: ../tuxcast/tuxcast_functions.cpp:363
 #, c-format
 msgid "Couldn't parse the feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:354
+#: ../tuxcast/tuxcast_functions.cpp:364
 #, c-format
 msgid "Please check the URL is correct, then contact your feed maintainer.\n"
 msgstr ""
 
-#: ../config/config.cpp:55 ../config/config.cpp:188
+#: ../config/config.cpp:55 ../config/config.cpp:207
 #, c-format
 msgid "Trimming trailing / from podcastdir...\n"
 msgstr ""
@@ -251,66 +251,76 @@ msgstr ""
 msgid "~/.tuxcast/config.xml exists but isn't a file\n"
 msgstr ""
 
-#: ../config/config.cpp:143
+#: ../config/config.cpp:132
+#, c-format
+msgid "Failed to save configuration\n"
+msgstr ""
+
+#: ../config/config.cpp:140
+#, c-format
+msgid "Failed to update configuration file\n"
+msgstr ""
+
+#: ../config/config.cpp:162
 #, c-format
 msgid "No config file found...\n"
 msgstr ""
 
-#: ../config/config.cpp:149
+#: ../config/config.cpp:168
 #, c-format
 msgid "No config file found: Aborting\n"
 msgstr ""
 
-#: ../config/config.cpp:158
+#: ../config/config.cpp:177
 #, c-format
 msgid "Error parsing your config file\n"
 msgstr ""
 
-#: ../config/config.cpp:159
+#: ../config/config.cpp:178
 #, c-format
 msgid "Please delete ~/.tuxcast/config.xml and make a new one\n"
 msgstr ""
 
-#: ../config/config.cpp:179
+#: ../config/config.cpp:198
 #, c-format
 msgid ""
 "You have not setup a podcast directory - tuxcast will use your home "
 "directory, ~.\n"
 msgstr ""
 
-#: ../config/config.cpp:189
+#: ../config/config.cpp:208
 #, c-format
 msgid "If you make a custom config file, please be careful\n"
 msgstr ""
 
-#: ../config/config.cpp:210
+#: ../config/config.cpp:229
 #, c-format
 msgid "Warning, empty mime type in config file\n"
 msgstr ""
 
-#: ../config/config.cpp:215
+#: ../config/config.cpp:234
 #, c-format
 msgid "Warning, mime mode with non-textual content in config file\n"
 msgstr ""
 
-#: ../config/config.cpp:241
+#: ../config/config.cpp:260
 #, c-format
 msgid ""
 "Error: blank name or address in config file, please delete and recreate your "
 "config file using tuxcast-config\n"
 msgstr ""
 
-#: ../config/config.cpp:287
+#: ../config/config.cpp:306
 #, c-format
 msgid "Name: %s\n"
 msgstr ""
 
-#: ../config/config.cpp:288
+#: ../config/config.cpp:307
 #, c-format
 msgid "Address: %s\n"
 msgstr ""
 
-#: ../config/config.cpp:289
+#: ../config/config.cpp:308
 #, c-format
 msgid "Folder: %s\n"
 msgstr ""
