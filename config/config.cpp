@@ -1,7 +1,7 @@
 /*
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
- * Copyright (C) 2006-2007 David Turner
+ * Copyright (C) 2006-2008 David Turner
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,8 +121,27 @@ void configuration::save()
 	}
 		
 	path = path + "/config.xml";
-	xmlSaveFormatFileEnc(path.c_str(), doc,  "UTF-8", 1);
+	char *tempsave;
+	tempsave = new char[path.size()+7];
+	strcpy(tempsave,path.c_str());
+	strcat(tempsave,".XXXXXX");
+	mktemp(tempsave);
 
+	if(xmlSaveFormatFileEnc(tempsave, doc,  "UTF-8", 1) < 0)
+	{
+		fprintf(stderr,_("Failed to save configuration\n"));
+		delete[] tempsave;
+		throw eConfig_CannotSaveConfig();
+	} // Nice thing is, if the FS is full, this fails and the old config
+	// is left intact, instead of being truncated.
+
+	if(!move(tempsave,path))
+	{
+		fprintf(stderr,_("Failed to update configuration file\n"));
+		delete[] tempsave;
+		throw eConfig_CannotSaveConfig();
+	}
+	delete[] tempsave;
 	xmlFreeDoc(doc);
 	xmlCleanupParser();
 }

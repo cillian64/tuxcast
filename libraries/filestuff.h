@@ -1,7 +1,7 @@
 /*
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
- * Copyright (C) 2006-2007 David Turner
+ * Copyright (C) 2006-2008 David Turner
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ using namespace std;
 
 bool init(void);
 // If using boost, it does the default_name_check init stuff
-// With POSIX or BSD< it just returns true atm.
+// With POSIX or BSD, it just returns true atm.
 
 bool checkfolderexists(string folder);
 // If the folder doesn't exist, make it, if it does exist, leave it
@@ -39,5 +39,8 @@ bool checkfolderexists(string folder);
 bool checkfileexists(string file);
 // If the file doesn't exist, return false
 // If it does exist, true
+
+bool move(string oldname, string newname);
+// Returns true on success
 
 #endif

@@ -1,7 +1,7 @@
 /*
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
- * Copyright (C) 2006-2007 David Turner
+ * Copyright (C) 2006-2008 David Turner
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -117,3 +117,24 @@ bool checkfileexists(string file)
 	// No boost here yet
 #endif
 }
+
+bool move(string oldname, string newname)
+{
+#ifdef POSIX
+	if((strcmp(oldname.c_str(),"") == 0) || (strcmp(newname.c_str(),"") == 0))
+		return false;
+	if(rename(oldname.c_str(),newname.c_str()) == 0)
+		return true;
+	else
+		return false;
+#endif
+#ifdef BSD
+	throw eFilestuff_NoBSD();
+	// No BSD yet
+#endif
+#ifdef BOOST
+	throw eFilestuff_NoBoost();
+	// No boost here yet
+#endif
+}
+
