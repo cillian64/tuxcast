@@ -1,3 +1,7 @@
+Revision 157:
+* Actually added tuxcast_exceptions.h to SVN - forgot this in last rev.
+--------------------------------------------------------------------------------
+
 Revision 156:
 * Added the move() call to filestuff
 * Made tuxcast write config.xml and files.xml to temp files, then move the
