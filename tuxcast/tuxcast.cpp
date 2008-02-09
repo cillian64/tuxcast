@@ -32,6 +32,7 @@
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
 #include "tuxcast_functions.h"
+#include "tuxcast_exceptions.h"
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
 #include "../libraries/common.h"
@@ -96,85 +97,94 @@ int main(int argc, char *argv[])
 		// b) checkfileexists will return false
 	}
 
-	
-	switch(opt1)
+	try
 	{
-		case 'c':
-			printf(_("Checking all feeds\n"));
-			checkall(myconfig);
-			break;
-		case 'u':
-			printf(_("Getting up to date on all feeds\n"));
-			up2dateall(myconfig);
-			break;
+		switch(opt1)
+		{
+			case 'c':
+				printf(_("Checking all feeds\n"));
+				checkall(myconfig);
+				break;
+			case 'u':
+				printf(_("Getting up to date on all feeds\n"));
+				up2dateall(myconfig);
+				break;
 
-		case 'C':
-			printf(_("Checking feed, \"%s\"\n"), optarg1.c_str());
-			// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
-			if(strcmp(optarg1.c_str(),"") == 0)
-			{
-				fprintf(stderr,_("You must pass a non-blank feed name\n"));
-				return -1;
-			}
-			FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
-			{
-				if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0)
+			case 'C':
+				printf(_("Checking feed, \"%s\"\n"), optarg1.c_str());
+				// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
+				if(strcmp(optarg1.c_str(),"") == 0)
 				{
-					// Found the feed
-					check(myconfig, *feed);
-					return 0;
+					fprintf(stderr,_("You must pass a non-blank feed name\n"));
+					return -1;
 				}
-			}
-			// If we got all through the feeds, and it wasn't found (and we returned),
-			// then the feed doesn't exist:
-			fprintf(stderr,_("Unknown feed, \"%s\"\n"),optarg1.c_str());
-			return -1;
-			break; // Bah
-		case 'U':
-			printf(_("Getting up2date on feed \"%s\"\n"),optarg1.c_str());
-			// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
-			if(strcmp(optarg1.c_str(),"") == 0)
-			{
-				fprintf(stderr,_("You must pass a non-blank feed name\n"));
-				return -1;
-			}
-			FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
-			{
-				if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0)
+				FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 				{
-					// Found the feed
-					up2date(myconfig, *feed);
-					return 0;
+					if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0)
+					{
+						// Found the feed
+						check(myconfig, *feed);
+						return 0;
+					}
 				}
-			}
-			// If we got all through the feeds, and it wasn't found (and we returned),
-			// then the feed doesn't exist:
-			fprintf(stderr,_("Unknown feed, \"%s\"\n"),optarg1.c_str());
-			return -1;
-			break; // Bah
+				// If we got all through the feeds, and it wasn't found (and we returned),
+				// then the feed doesn't exist:
+				fprintf(stderr,_("Unknown feed, \"%s\"\n"),optarg1.c_str());
+				return -1;
+				break; // Bah
+			case 'U':
+				printf(_("Getting up2date on feed \"%s\"\n"),optarg1.c_str());
+				// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
+				if(strcmp(optarg1.c_str(),"") == 0)
+				{
+					fprintf(stderr,_("You must pass a non-blank feed name\n"));
+					return -1;
+				}
+				FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
+				{
+					if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0)
+					{
+						// Found the feed
+						up2date(myconfig, *feed);
+						return 0;
+					}
+				}
+				// If we got all through the feeds, and it wasn't found (and we returned),
+				// then the feed doesn't exist:
+				fprintf(stderr,_("Unknown feed, \"%s\"\n"),optarg1.c_str());
+				return -1;
+				break; // Bah
 
-		case 'f':
-			cout << "Cleaning out files.xml..." << endl;
-			clean();
-			break;
+			case 'f':
+				cout << "Cleaning out files.xml..." << endl;
+				clean();
+				break;
 
-		case 'v':
-			version();
-			break;
+			case 'v':
+				version();
+				break;
 
-		case 'h':
-			// Fallthrough:
+			case 'h':
+				// Fallthrough:
 
-		default:
-			printf(_("Usage: tuxcast <option>\n"));
-			printf(_("where <option> is one of the below:\n"));
-			printf(_("-c - Check all feeds\n"));
-			printf(_("-u - Download only the latest file from all feeds\n"));
-			printf(_("-C name - Download all episodes of the named feed\n"));
-			printf(_("-U name - Download only the latest episode of the named feed\n"));
-			printf(_("-h - Show this help message\n"));
-			printf(_("-f - clean out old podcasts from files.xml\n"));
-			printf(_("-v - Show version and license information\n"));
+			default:
+				printf(_("Usage: tuxcast <option>\n"));
+				printf(_("where <option> is one of the below:\n"));
+				printf(_("-c - Check all feeds\n"));
+				printf(_("-u - Download only the latest file from all feeds\n"));
+				printf(_("-C name - Download all episodes of the named feed\n"));
+				printf(_("-U name - Download only the latest episode of the named feed\n"));
+				printf(_("-h - Show this help message\n"));
+				printf(_("-f - clean out old podcasts from files.xml\n"));
+				printf(_("-v - Show version and license information\n"));
+		}
+	}
+	catch(eTuxcast_FSFull &e)
+	{
+		fprintf(stderr, _("Error: could not save config/state due to full filesystem:\n"));
+		e.print();
+
+		return -1;
 	}
 
 	return 0;

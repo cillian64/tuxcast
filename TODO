@@ -4,7 +4,7 @@
 * Where to save the config file, defined in compile_flags.h
 	(this could help portability)
 * More folder sanity checking
-* Bittorrenting
+* Bittorrenting (with rtorrent, not the rb one)
 * Check no exceptions from the filestuff library can slip through
 * Change all libxml parses to be non-verbose (and not spit out errors)
 * Clean up foldery stuff.
@@ -14,4 +14,3 @@
 * Populate the type property of the file for atom feeds
 * Alter makefiles to make PCRE++ optional
 * Check all calls use exceptions
-* Catch the eTuxcast_FSFull Exception

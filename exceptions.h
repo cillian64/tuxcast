@@ -24,7 +24,11 @@
 #ifndef EXCEPTIONS_H
 #define EXCEPTIONS_H
 
-#include <iostream>
+#include <stdio.h>
+#include <libintl.h>
+#include <locale.h>
+
+#define _(x) gettext(x)
 
 using namespace std;
 
@@ -32,7 +36,7 @@ class eException
 {
         public:
                 virtual void print(void)
-	                { cerr << "Vanilla Exception (This shouldn't happen)" << endl; }
+	                { fprintf(stderr, _("Vanilla Exception (This shouldn't happen)\n")); }
 };
 
 // Each separate module's exception header will include this
