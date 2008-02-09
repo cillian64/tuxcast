@@ -1,3 +1,9 @@
+Revision 158:
+* Caught the eTuxcast_FSFull exception
+* Updated TODO
+* Changed the vanilla exception header to use fprintf and be translateable
+--------------------------------------------------------------------------------
+
 Revision 157:
 * Actually added tuxcast_exceptions.h to SVN - forgot this in last rev.
 --------------------------------------------------------------------------------
