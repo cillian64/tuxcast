@@ -146,7 +146,7 @@ void newfile(string name)
 	char *temppath=new char[path.size()+7];
 	strcpy(temppath,path.c_str());
 	strcat(temppath,".XXXXXX");
-	mktemp(temppath);
+	mkstemp(temppath);
         doc = xmlReadFile(path.c_str(), NULL, 0);
         if(doc == NULL)
         {
