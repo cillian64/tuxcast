@@ -1,3 +1,7 @@
+Revision 160:
+* Replaced mktemp with mkstemp
+--------------------------------------------------------------------------------
+
 Revision 159:
 * Updated TODO
 * Updated compile flags

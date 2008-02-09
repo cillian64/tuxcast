@@ -125,7 +125,7 @@ void configuration::save()
 	tempsave = new char[path.size()+7];
 	strcpy(tempsave,path.c_str());
 	strcat(tempsave,".XXXXXX");
-	mktemp(tempsave);
+	mkstemp(tempsave);
 
 	if(xmlSaveFormatFileEnc(tempsave, doc,  "UTF-8", 1) < 0)
 	{
