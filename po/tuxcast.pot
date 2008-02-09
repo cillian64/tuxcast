@@ -1,7 +1,7 @@
 # Tuxcast 0.2
 # Copyright (C) 2006-2008 David Turner
 # This file is distributed under the same license as the Tuxcast package.
-# David Turner <cillian64@users.sourceforge.net>, 2006-2007.
+# David Turner <cillian64@users.sourceforge.net>, 2006-2008.
 #
 #, fuzzy
 msgid ""
