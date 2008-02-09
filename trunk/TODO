@@ -1,16 +1,15 @@
-* Resuming incomplete downloads (I think it already does this, ust need to confirm)
-* Clear up xml stuff at the end of functions (try valgrind for mem checking?)
-* Ignoring particular file types (i.e. videos, etc.), or putting them in special directories
+* Resuming incomplete downloads (Rather hard to do at the moment)
+* Clear up xml stuff at the end of functions (Confirmed that libcurl and libxml
+	are currently *not* cleaned up properly)
 * Where to save the config file, defined in compile_flags.h
 	(this could help portability)
 * More folder sanity checking
 * Bittorrenting (with rtorrent, not the rb one)
 * Check no exceptions from the filestuff library can slip through
 * Change all libxml parses to be non-verbose (and not spit out errors)
-* Clean up foldery stuff.
 * Stop warnings about missing config.xml and files.xml on first runs
-* Feeds containing an &, as in a GET form, don't play nicely with the XML. (Can't really do anything
-	about this as this makes the XML invalid so libxml is right to abort...)
+* Feeds containing an &, as in a GET form, don't play nicely with the XML.
+	(Can't really do anything about this as this makes the XML invalid so
+	libxml is right to abort...)
 * Populate the type property of the file for atom feeds
-* Alter makefiles to make PCRE++ optional
 * Check all calls use exceptions

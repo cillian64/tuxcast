@@ -1,7 +1,7 @@
 /*
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
- * Copyright (C) 2006-2007 David Turner
+ * Copyright (C) 2006-2008 David Turner
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,17 +20,13 @@
  */
 
 
-// These flags are used in deciding which path name_check to use
-// And where to save the config file:
-// (~/.tuxcast for POSIX, C:\documents and settings\user\application data\tuxcast\ for windows)
-// Well, not yet :-)
-
-// ONLY UNCOMMENT ONE OF THESE!!!:
-
+// ONLY UNCOMMENT ONE OF THESE!:
 #define POSIX
-// #define WINDOWS
+// #define BOOST
+// #define BSD
 
 
 
 // Uncomment for PCREPP-requiring features:
+// Also, remember to comment or uncomment PCRE compile flags in config.mk
 //#define PCREPP
