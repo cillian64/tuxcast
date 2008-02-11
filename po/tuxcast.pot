@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-11 20:51+0000\n"
+"POT-Creation-Date: 2008-02-11 23:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,46 +193,46 @@ msgstr ""
 msgid "Downloading %s...\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:308
+#: ../tuxcast/tuxcast_functions.cpp:314
 #, c-format
 msgid "Oops, couldn't create folder for feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:309 ../tuxcast/tuxcast_functions.cpp:379
+#: ../tuxcast/tuxcast_functions.cpp:315 ../tuxcast/tuxcast_functions.cpp:390
 #: ../config/config.cpp:110 ../config/config.cpp:118
 #: ../config/tuxcast-config.cpp:125
 #, c-format
 msgid "Exception caught: "
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:369
+#: ../tuxcast/tuxcast_functions.cpp:380
 #, c-format
 msgid "This is an XML file, but does not appear to be RSS 1 (RDF) or RSS 2\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:370
+#: ../tuxcast/tuxcast_functions.cpp:381
 #, c-format
 msgid ""
 "Please check you have the correct URL and that it is an RSS feed, and then "
 "contact your feed maintainer\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:371
+#: ../tuxcast/tuxcast_functions.cpp:382
 #, c-format
 msgid "Exception caught:"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:373 ../tuxcast/tuxcast_functions.cpp:381
+#: ../tuxcast/tuxcast_functions.cpp:384 ../tuxcast/tuxcast_functions.cpp:392
 #, c-format
 msgid "Aborting this feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:377
+#: ../tuxcast/tuxcast_functions.cpp:388
 #, c-format
 msgid "Couldn't parse the feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:378
+#: ../tuxcast/tuxcast_functions.cpp:389
 #, c-format
 msgid "Please check the URL is correct, then contact your feed maintainer.\n"
 msgstr ""

@@ -1,3 +1,8 @@
+Revision 162:
+* Added the skeleton of a bittorrent handler subroutine (Possibly replace the
+	current detection method with libmagic in future)
+--------------------------------------------------------------------------------
+
 Revision 161:
 * Changed a bunch of stuff so tuxcast downloads all files after all feeds have
 	been checked (or up2date'ed). (Prelude to bittorrent support)
