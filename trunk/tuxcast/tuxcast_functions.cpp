@@ -53,7 +53,7 @@
 using namespace std;
 
 // Check a particular feed
-void check(configuration &myconfig, feed &feed)
+void check(configuration &myconfig, feed &feed, filelist &allfiles)
 {
 	cachefeed(feed.name, feed.address);
 
@@ -65,29 +65,16 @@ void check(configuration &myconfig, feed &feed)
 
 	FOREACH(filelist::iterator, *myfilelist, file)
 	{
-		try
-		{
-			get(file->filename, file->URL,
-				feed, file->type, myconfig);
-		}
-		catch(eFilestuff_CannotCreateFolder &e)
-		{
-			fprintf(stderr,_("Oops, couldn't create folder for feed \"%s\"\n"),feed.name.c_str());
-			fprintf(stderr,_("Exception caught: ")); // Yes, no \n.
-			e.print();
-			return; // Skip this feed:
-			// If we can't create the folder, no point in trying to
-			// get any other files from this feed
-		}
+		populate_download_path(feed, *file, myconfig);
+		allfiles.push_back(*file);
 	}
-
 }
 
 
 
 // Downloads the latest episode on a particular feed
 // Adds other episodes to files.xml without downloading
-void up2date(configuration &myconfig, feed &feed)
+void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
 {
 	cachefeed(feed.name, feed.address);
 
@@ -95,18 +82,16 @@ void up2date(configuration &myconfig, feed &feed)
 	if(!myfilelist.get())
 		return;
 
-		
 	FOREACH(filelist::iterator, *myfilelist, file)
 	{
 		if(file == myfilelist->begin())
-			get(file->filename, file->URL,
-					feed, file->type, myconfig);
+		{
+			populate_download_path(feed, *file, myconfig);
+			allfiles.push_back(*file);
+		}
 		else
 			newfile(file->filename);
-		// First file, download it
-		// Other files, just pretend
 	}
-
 }
 
 
@@ -115,24 +100,27 @@ void up2date(configuration &myconfig, feed &feed)
 // This loops through all feeds and passes them to check()
 void checkall(configuration &myconfig)
 {
+	filelist allfiles;
 	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
 		printf(_("Checking feed \"%s\"\n"),feed->name.c_str());
 		
-		check(myconfig, *feed);
+		check(myconfig, *feed, allfiles);
 	}
+	getlist(allfiles, myconfig);
 }
 
 // This loops through all feeds and passes them to up2date()
 void up2dateall(configuration &myconfig)
 {
+	filelist allfiles;
 	// God knows why we had a filelist pointer here
 	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
 		printf(_("up2date'ing feed \"%s\"\n"),feed->name.c_str());
-		up2date(myconfig,*feed);
+		up2date(myconfig,*feed, allfiles);
 	}
-	
+	getlist(allfiles, myconfig);
 }
                                                           
 // This adds a file to files.xml
@@ -207,7 +195,7 @@ bool alreadydownloaded(string name)
 }
 
 // Download an episode
-void get(const string &name, const string &URL, feed &feed, const string &type, configuration &myconfig)
+void get(file &file, configuration &myconfig)
 {
 	string temp;
 	FILE *outputfile=NULL;
@@ -220,7 +208,7 @@ void get(const string &name, const string &URL, feed &feed, const string &type, 
 		return;
 	}
 	
-	if(alreadydownloaded(name))
+	if(alreadydownloaded(file.filename))
 		// Already downloaded
 		return;
 	
@@ -229,25 +217,27 @@ void get(const string &name, const string &URL, feed &feed, const string &type, 
 		// MIMEs, we'll assume they want all files rather than no
 		// files... Don't output an error either.
 	
-	if(strcmp(type.c_str(),"") == 0)
+	if(strcmp(file.type.c_str(),"") == 0)
 		correctmime=true; // If the MIME type of the file in the RSS
 		// feed is blank, we'll download it anyway...
 	
 	FOREACH(configuration::mimelist::iterator, myconfig.permitted_mimes, mime)
-		if(strcasecmp(mime->c_str(), type.c_str()) == 0)
+		if(strcasecmp(mime->c_str(), file.type.c_str()) == 0)
 			correctmime=true;
 
 	if(correctmime == false) // The MIME type isn't blank, the permitted
 	// list isn't empty, and it ain't permitted...
 	{
-		fprintf(stderr,_("Not downloading %s - incorrect MIME type\n"),name.c_str());
-		newfile(name);
+		fprintf(stderr,_("Not downloading %s - incorrect MIME type\n"),
+			file.filename.c_str());
+
+		newfile(file.filename);
 		return;
 	}
 	
 	if(myconfig.ask == true)
 	{
-		printf(_("Download %s? (yes/no)\n"));
+		printf(_("Download %s? (yes/no)\n"), file.filename.c_str());
 		cin >> temp; // TODO: Replace this with scanf?
 	}
 	else
@@ -256,6 +246,31 @@ void get(const string &name, const string &URL, feed &feed, const string &type, 
 	if(strcasecmp(temp.c_str(),"yes") != 0)
 		return;
 
+	outputfile = fopen(file.savepath.c_str(), "w");
+
+	if(outputfile == NULL)
+	{
+		fprintf(stderr,_("Error opening output file \"%s\"\n"),file.savepath.c_str());
+		// TODO: throw exception
+		return; // Abort download
+	}
+	
+
+	printf(_("Downloading %s...\n"),file.filename.c_str());
+	
+	curl_easy_setopt(mycurl,CURLOPT_URL,file.URL.c_str());
+	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
+	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
+	curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,0);
+	curl_easy_perform(mycurl);
+	fclose(outputfile);
+	newfile(file.filename);
+	
+	curl_easy_cleanup(mycurl);
+}
+
+void populate_download_path(feed &feed, file &file, configuration &myconfig)
+{
 	// Work out path to download file
 	string path;
 	// If the podcast's folder is absolute, don't prepend podcastdir
@@ -274,28 +289,27 @@ void get(const string &name, const string &URL, feed &feed, const string &type, 
 	// abort everything...
 	
 	path += "/";
-	path += name;
-	
-	outputfile = fopen(path.c_str(), "w");
-	if(outputfile == NULL)
-	{
-		fprintf(stderr,_("Error opening output file \"%s\"\n"),path.c_str());
-		// TODO: throw exception
-		return; // Abort download
-	}
-	
+	path += file.filename;
 
-	printf(_("Downloading %s...\n"),name.c_str());
-	
-	curl_easy_setopt(mycurl,CURLOPT_URL,URL.c_str());
-	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
-	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
-	curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,0);
-	curl_easy_perform(mycurl);
-	fclose(outputfile);
-	newfile(name);
-	
-	curl_easy_cleanup(mycurl);
+	file.savepath = path;
+}
+
+
+void getlist(filelist &files, configuration &myconfig)
+{
+	FOREACH(filelist::iterator, files, file)
+	{
+		try
+		{
+			get(*file, myconfig);
+		}
+		catch(eFilestuff_CannotCreateFolder &e)
+		{
+			fprintf(stderr, _("Oops, couldn't create folder for feed\n"));
+			fprintf(stderr, _("Exception caught: "));
+			e.print();
+		}
+	}
 }
 
 void cachefeed(const string &name, const string &URL)

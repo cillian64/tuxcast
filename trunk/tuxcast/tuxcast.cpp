@@ -123,7 +123,9 @@ int main(int argc, char *argv[])
 					if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0)
 					{
 						// Found the feed
-						check(myconfig, *feed);
+						filelist files;
+						check(myconfig, *feed, files);
+						getlist(files, myconfig);
 						return 0;
 					}
 				}
@@ -145,7 +147,9 @@ int main(int argc, char *argv[])
 					if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0)
 					{
 						// Found the feed
-						up2date(myconfig, *feed);
+						filelist files;
+						up2date(myconfig, *feed, files);
+						getlist(files, myconfig);
 						return 0;
 					}
 				}

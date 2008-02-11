@@ -40,6 +40,7 @@ struct file
 	string URL;
 	string type;
 	off_t length;
+	string savepath;
 
 	file(void)
 		: filename()
