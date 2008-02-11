@@ -302,6 +302,12 @@ void getlist(filelist &files, configuration &myconfig)
 		try
 		{
 			get(*file, myconfig);
+			if(file->filename.size() <= 8) // Name this short cannot
+				continue; // Be a .torrent file.
+			char check[9];
+			strncpy(check, file->filename.c_str() + file->filename.size() - 8, 9);
+			if(strcasecmp(check, ".torrent") == 0)
+				handle_bittorrent(*file);
 		}
 		catch(eFilestuff_CannotCreateFolder &e)
 		{
@@ -310,6 +316,11 @@ void getlist(filelist &files, configuration &myconfig)
 			e.print();
 		}
 	}
+}
+
+void handle_bittorrent(file &file)
+{
+	printf("Bittorrent yay\n");
 }
 
 void cachefeed(const string &name, const string &URL)

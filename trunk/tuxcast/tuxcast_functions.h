@@ -41,6 +41,7 @@ void up2dateall(configuration &myconfig);
 void get(file &file, configuration &myconfig);
 void getlist(filelist &files, configuration &myconfig);
 void populate_download_path(feed &feed, file &file, configuration &myconfig);
+void handle_bittorrent (file &file);
 void cachefeed(const string &name, const string &URL);
 auto_ptr<filelist> parsefeed(string name);
 #endif
