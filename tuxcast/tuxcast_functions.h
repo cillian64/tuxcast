@@ -34,11 +34,13 @@ using namespace std;
 
 void newfile(string name);
 bool alreadydownloaded(string name); // true if already downloaded
-void check(configuration &myconfig, feed &feed);
-void up2date(configuration &myconfig, feed &feed);
+void check(configuration &myconfig, feed &feed, filelist &allfiles);
+void up2date(configuration &myconfig, feed &feed, filelist &allfiles);
 void checkall(configuration &myconfig);
 void up2dateall(configuration &myconfig);
-void get(const string &name, const string &URL, feed &feed, const string &type, configuration &myconfig);
+void get(file &file, configuration &myconfig);
+void getlist(filelist &files, configuration &myconfig);
+void populate_download_path(feed &feed, file &file, configuration &myconfig);
 void cachefeed(const string &name, const string &URL);
 auto_ptr<filelist> parsefeed(string name);
 #endif
