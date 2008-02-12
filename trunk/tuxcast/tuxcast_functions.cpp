@@ -34,6 +34,9 @@
 #ifdef PCREPP
 #include <pcre++.h>
 #endif
+#ifdef TORRENT
+#include "../libraries/torrent/torrent.h"
+#endif
 
 #include <libintl.h>
 #include <locale.h>
@@ -302,12 +305,6 @@ void getlist(filelist &files, configuration &myconfig)
 		try
 		{
 			get(*file, myconfig);
-			if(file->filename.size() <= 8) // Name this short cannot
-				continue; // Be a .torrent file.
-			char check[9];
-			strncpy(check, file->filename.c_str() + file->filename.size() - 8, 9);
-			if(strcasecmp(check, ".torrent") == 0)
-				handle_bittorrent(*file);
 		}
 		catch(eFilestuff_CannotCreateFolder &e)
 		{
@@ -316,11 +313,24 @@ void getlist(filelist &files, configuration &myconfig)
 			e.print();
 		}
 	}
+	// Download all files via HTTP before bittorrent
+	FOREACH(filelist::iterator, files, file)
+	{
+		if(file->filename.size() <= 8) // Name this short cannot
+			continue; // Be a .torrent file.
+		char check[9];
+		strncpy(check, file->filename.c_str() + file->filename.size() - 8, 9);
+		if(strcasecmp(check, ".torrent") == 0)
+			handle_bittorrent(*file);
+	}
+
 }
 
 void handle_bittorrent(file &file)
 {
-	printf("Bittorrent yay\n");
+	printf("Downloading %s via bittorrent\n", file.filename.c_str());
+	bittorrent(file.savepath);
+	printf("Finished %s\n",file.filename.c_str());
 }
 
 void cachefeed(const string &name, const string &URL)
