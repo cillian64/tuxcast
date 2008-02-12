@@ -30,3 +30,7 @@
 // Uncomment for PCREPP-requiring features:
 // Also, remember to comment or uncomment PCRE compile flags in config.mk
 //#define PCREPP
+
+// Uncomment for torrent support
+// Also comment or uncomment libtorrent stuff in config.mk
+#define TORRENT

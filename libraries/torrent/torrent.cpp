@@ -31,16 +31,20 @@
 #include "torrent.h"
 #include "torrent_exceptions.h"
 
+#define VERBOSE
+
 bool doShutdown = false;
 
 void
 chunk_passed(torrent::Download d) {
-  std::cout << d.name() << ' ' << d.chunks_hashed() << '/' << d.chunks_seen() << std::endl;
+//  std::cout << d.name() << ' ' << d.chunks_hashed() << '/' << d.chunks_seen() << std::endl;
+#ifdef VERBOSE
+std::cout << "Chunk passed (out of " << d.chunks_seen() << ")." << std::endl;
+#endif
 }
 
 void
 finished_download(torrent::Download d) {
-  std::cout << "Finished: " << d.name() << std::endl;
 
   d.stop();
 
@@ -58,7 +62,9 @@ finished_download(torrent::Download d) {
 
 void
 hash_check_done(torrent::Download d) {
+#ifdef VERBOSE
   std::cout << "Hash check completed." << std::endl;
+#endif
   d.start();
   chunk_passed(d);
 }
@@ -66,7 +72,9 @@ hash_check_done(torrent::Download d) {
 void
 http_done(torrent::Http* curlGet) {
   curlGet->close();
-  std::cout << "Finished http download." << std::endl << std::flush;
+ #ifdef VERBOSE
+  std::cout << "Finished loading torrent." << std::endl << std::flush;
+ #endif
 
   torrent::Object *obj=new torrent::Object();
   
@@ -84,7 +92,7 @@ http_done(torrent::Http* curlGet) {
 
 void
 http_failed(const std::string& msg, torrent::Http* curlGet) {
-  std::cout << "Failed http download: " << msg << "." << std::endl << std::flush;
+  std::cout << "Failed to load torrent: " << msg << "." << std::endl << std::flush;
 }
 
 void bittorrent(string filename)
@@ -127,7 +135,9 @@ void bittorrent(string filename)
     curlGet->set_stream(&httpDownload);
     curlGet->start();
 
+#ifdef VERBOSE
     std::cout << "Starting download." << std::endl;
+#endif
 
     fd_set readSet;
     fd_set writeSet;
