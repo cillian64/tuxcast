@@ -22,6 +22,7 @@
 #include <torrent/http.h>
 #include <torrent/poll_select.h>
 #include <torrent/connection_manager.h>
+#include <torrent/data/file_list.h>
 #include <sigc++/bind.h>
 #include <sigc++/hide.h>
 
@@ -34,6 +35,13 @@
 #define VERBOSE
 
 bool doShutdown = false;
+string glfilename;
+
+void fixroot(string URL, torrent::Download &d)
+{
+	string base = URL.substr(0,URL.rfind("/"));
+	d.file_list()->set_root_dir(base);
+}
 
 void
 chunk_passed(torrent::Download d) {
@@ -82,6 +90,7 @@ http_done(torrent::Http* curlGet) {
 
   //torrent::Download d = torrent::download_add(curlGet->stream());
   torrent::Download d = torrent::download_add(obj);
+  fixroot(glfilename, d);
 
   d.signal_hash_done(sigc::bind(sigc::ptr_fun(&hash_check_done), d));
   d.signal_download_done(sigc::bind(sigc::ptr_fun(&finished_download), d));
@@ -121,7 +130,7 @@ void bittorrent(string filename)
     // for tracker requests.
     torrent::Http::set_factory(curlStack.get_http_factory());
     torrent::Http* curlGet = torrent::Http::call_factory();
-
+	glfilename = filename;
     torrent::initialize(pollSelect);
 
     // Fix the bug caused by not calling this?
