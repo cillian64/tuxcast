@@ -1,3 +1,8 @@
+Revision 165:
+* Added compile flag info to version output
+* Updated TODO R.e. bittorrents
+--------------------------------------------------------------------------------
+
 Revision 164:
 * Basic bittorrenting is *working* - Now it just needs to work with more than
 	one file a session, among other things

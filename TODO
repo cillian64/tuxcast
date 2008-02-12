@@ -4,7 +4,6 @@
 * Where to save the config file, defined in compile_flags.h
 	(this could help portability)
 * More folder sanity checking
-* Bittorrenting (with rtorrent, not the rb one)
 * Check no exceptions from the filestuff library can slip through
 * Change all libxml parses to be non-verbose (and not spit out errors)
 * Stop warnings about missing config.xml and files.xml on first runs

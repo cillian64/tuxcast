@@ -24,6 +24,7 @@
 #include <locale.h>
 
 #include "version.h"
+#include "compile_flags.h"
 
 using namespace std;
 
@@ -40,6 +41,21 @@ void version()
 #endif
 #ifdef SUBVERSION
 	printf(_("From subversion, release %s revision %s\n"), RELEASE_VERSION, SUBVERSION_REVISION);
+#endif
+#ifdef POSIX
+	printf(_("Compiled for POSIX\n"));
+#endif
+#ifdef BOOST
+	printf(_("Compiled for boost\n"));
+#endif
+#ifdef BSD
+	printf(_("Compiled for BSD\n"));
+#endif
+#ifdef PCREPP
+	printf(_("Compiled with PCRE++ support\n"));
+#endif
+#ifdef TORRENT
+	printf(_("Compiled with libtorrent bittorrent support\n"));
 #endif
 	printf(_("Tuxcast comes with ABSOLUTELY NO WARANTY; for details see COPYING.\n"));
 	printf(_("This is free software, you are welcome to redistribute it under certain conditions; see COPYING for more details\n"));
