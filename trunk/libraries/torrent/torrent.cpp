@@ -57,7 +57,6 @@ finished_download(torrent::Download d) {
 
   // Do a quick shutdown without cleaning up or sending messages to
   // the trackers.
-  std::cout << "Bang!\n";
   doShutdown = true;
 }
 
@@ -177,8 +176,7 @@ void bittorrent(string filename)
       pollSelect->perform(&readSet, &writeSet, &errorSet);
       torrent::perform();
     }
-    std::cout << "dead " << doShutdown << std::endl << std::flush;
-
+   
     // Cleanup is for the weak.
     torrent::cleanup();
 
