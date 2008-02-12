@@ -1,3 +1,8 @@
+Revision 163:
+* Imported libtorrent's example program as a library.
+* Updated make system to facilitate optional torrent support
+--------------------------------------------------------------------------------
+
 Revision 162:
 * Added the skeleton of a bittorrent handler subroutine (Possibly replace the
 	current detection method with libmagic in future)

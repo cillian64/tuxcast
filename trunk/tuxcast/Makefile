@@ -15,8 +15,8 @@ TUXCAST_OBJS=\
 
 main: tuxcast
 
-tuxcast: $(TUXCAST_OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBXML2_LIBS) $(LIBCURL_LIBS) $(PCREPP_LIBS)
+tuxcast: $(TUXCAST_OBJS) $(AB_TORRENT_OBJECTS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBXML2_LIBS) $(LIBCURL_LIBS) $(PCREPP_LIBS) $(TORRENT_LINK) $(LIBTORRENT_LIBS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $^ $(LIBXML2_CFLAGS) $(LIBCURL_CFLAGS) $(PCREPP_CFLAGS)
@@ -26,6 +26,15 @@ tuxcast: $(TUXCAST_OBJS)
 
 ../libraries/filestuff.o: ../libraries/filestuff.cpp
 	$(MAKE) filestuff.o -C ../libraries/
+
+../libraries/torrent/torrent.o: ../libraries/torrent/torrent.cpp
+	$(MAKE) torrent.o -C ../libraries/torrent
+
+../libraries/torrent/curl_get.o: ../libraries/torrent/curl_get.cpp
+	$(MAKE) curl_get.o -C ../libraries/torrent
+
+../libraries/torrent/curl_stack.o: ../libraries/torrent/curl_get.cpp
+	$(MAKE) curl_stack.o -C ../libraries/torrent
 
 ../plugins/amarok-plugin.o: ../plugins/amarok-plugin.cpp
 	$(MAKE) amarok-plugin.o -C ../plugins/
