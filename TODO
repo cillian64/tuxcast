@@ -12,3 +12,4 @@
 	libxml is right to abort...)
 * Populate the type property of the file for atom feeds
 * Check all calls use exceptions
+* Update man pages (Seriously needs doing)

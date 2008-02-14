@@ -1,3 +1,9 @@
+Revision 169:
+* Updated TODO
+* Now installs manpages
+* PCRE now not required by default
+--------------------------------------------------------------------------------
+
 Revision 168:
 * Now saves downloaded torrents in correct folders
 --------------------------------------------------------------------------------
