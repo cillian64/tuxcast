@@ -28,6 +28,8 @@ install: main
 	$(INSTALL) -D -m 755 tuxcast/tuxcast $(DESTDIR)$(PREFIX)/bin/tuxcast
 	$(INSTALL) -D -m 755 config/tuxcast-config $(DESTDIR)$(PREFIX)/bin/tuxcast-config
 	#$(INSTALL) -m 755 plugins/tuxcast-amarok $(DESTDIR)$(PREFIX)/bin/tuxcast-amarok
+	$(INSTALL) -D man/tuxcast.1 $(MANDIR)
+	$(INSTALL) -D man/tuxcast-config.1 $(MANDIR)
 	$(MAKE) -C po install
 	
 uninstall:
