@@ -2,7 +2,7 @@
 #define VERSION_H
 
 // This is ALWAYS defined:
-#define RELEASE_VERSION "0.2"
+#define RELEASE_VERSION "0.3"
 // (It is the major version this is based on - e.g. in SVN it will be the last
 // release)
 
@@ -12,7 +12,7 @@
 
 // These are defined for subversion checkouts
 #define SUBVERSION
-#define SUBVERSION_REVISION "170"
+#define SUBVERSION_REVISION "171"
 
 void version();
 
