@@ -67,7 +67,9 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 	// shouldn't I...?
 
 	FOREACH(filelist::iterator, *myfilelist, file)
-	{
+	{	
+		if(alreadydownloaded(file->filename))
+			continue;
 		populate_download_path(feed, *file, myconfig);
 		allfiles.push_back(*file);
 	}
@@ -87,6 +89,9 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
 
 	FOREACH(filelist::iterator, *myfilelist, file)
 	{
+		if(alreadydownloaded(file->filename))
+			continue;
+
 		if(file == myfilelist->begin())
 		{
 			populate_download_path(feed, *file, myconfig);
