@@ -1,3 +1,7 @@
+Revision 173:
+* Updated translations files to match source
+--------------------------------------------------------------------------------
+
 Revision 172
 * Fixed a bug where all podcast folders were created, even when no new files
 	were downloaded.
