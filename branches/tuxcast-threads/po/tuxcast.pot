@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-18 21:45+0000\n"
+"POT-Creation-Date: 2008-03-20 18:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,7 +199,7 @@ msgid "Oops, couldn't create folder for feed\n"
 msgstr ""
 
 #: ../tuxcast/tuxcast_functions.cpp:317 ../tuxcast/tuxcast_functions.cpp:405
-#: ../config/config.cpp:110 ../config/config.cpp:118
+#: ../config/config.cpp:118 ../config/config.cpp:126
 #: ../config/tuxcast-config.cpp:125
 #, c-format
 msgid "Exception caught: "
@@ -237,96 +237,96 @@ msgstr ""
 msgid "Please check the URL is correct, then contact your feed maintainer.\n"
 msgstr ""
 
-#: ../config/config.cpp:55 ../config/config.cpp:207
+#: ../config/config.cpp:55 ../config/config.cpp:215
 #, c-format
 msgid "Trimming trailing / from podcastdir...\n"
 msgstr ""
 
-#: ../config/config.cpp:109
+#: ../config/config.cpp:117
 #, c-format
 msgid "Ooops, couldn't save your new config:\n"
 msgstr ""
 
-#: ../config/config.cpp:116
+#: ../config/config.cpp:124
 #, c-format
 msgid "Opps, couldn't save your new config,\n"
 msgstr ""
 
-#: ../config/config.cpp:117
+#: ../config/config.cpp:125
 #, c-format
 msgid "~/.tuxcast/config.xml exists but isn't a file\n"
 msgstr ""
 
-#: ../config/config.cpp:132
+#: ../config/config.cpp:140
 #, c-format
 msgid "Failed to save configuration\n"
 msgstr ""
 
-#: ../config/config.cpp:140
+#: ../config/config.cpp:148
 #, c-format
 msgid "Failed to update configuration file\n"
 msgstr ""
 
-#: ../config/config.cpp:162
+#: ../config/config.cpp:170
 #, c-format
 msgid "No config file found...\n"
 msgstr ""
 
-#: ../config/config.cpp:168
+#: ../config/config.cpp:176
 #, c-format
 msgid "No config file found: Aborting\n"
 msgstr ""
 
-#: ../config/config.cpp:177
+#: ../config/config.cpp:185
 #, c-format
 msgid "Error parsing your config file\n"
 msgstr ""
 
-#: ../config/config.cpp:178
+#: ../config/config.cpp:186
 #, c-format
 msgid "Please delete ~/.tuxcast/config.xml and make a new one\n"
 msgstr ""
 
-#: ../config/config.cpp:198
+#: ../config/config.cpp:206
 #, c-format
 msgid ""
 "You have not setup a podcast directory - tuxcast will use your home "
 "directory, ~.\n"
 msgstr ""
 
-#: ../config/config.cpp:208
+#: ../config/config.cpp:216
 #, c-format
 msgid "If you make a custom config file, please be careful\n"
 msgstr ""
 
-#: ../config/config.cpp:229
+#: ../config/config.cpp:241
 #, c-format
 msgid "Warning, empty mime type in config file\n"
 msgstr ""
 
-#: ../config/config.cpp:234
+#: ../config/config.cpp:246
 #, c-format
 msgid "Warning, mime mode with non-textual content in config file\n"
 msgstr ""
 
-#: ../config/config.cpp:260
+#: ../config/config.cpp:272
 #, c-format
 msgid ""
 "Error: blank name or address in config file, please delete and recreate your "
 "config file using tuxcast-config\n"
 msgstr ""
 
-#: ../config/config.cpp:306
+#: ../config/config.cpp:318
 #, c-format
 msgid "Name: %s\n"
 msgstr ""
 
-#: ../config/config.cpp:307
+#: ../config/config.cpp:319
 #, c-format
 msgid "Address: %s\n"
 msgstr ""
 
-#: ../config/config.cpp:308
+#: ../config/config.cpp:320
 #, c-format
 msgid "Folder: %s\n"
 msgstr ""

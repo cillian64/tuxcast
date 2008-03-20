@@ -50,6 +50,10 @@ class configuration
 		string postrun;
 #endif
 
+#ifdef THREADS
+		unsigned int numofdownloaders;
+#endif
+
 		void save();
 		void load();
 };
