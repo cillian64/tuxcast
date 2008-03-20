@@ -1,0 +1,42 @@
+Getting the right libraries, etc.
+---------------------------------
+
+You will need
+o libxml2
+o libcurl
+
+You can get these on debian or ubuntu with the following command:
+apt-get install libcurl3-dev libxml2-dev
+
+To get the libraries on Gentoo:
+emerge -av curl libxml2
+
+Installing from SVN
+-------------------
+
+To get tuxcast from SVN, run:
+svn co https://svn.sourceforge.net/svnroot/tuxcast
+
+Run the following commands
+make clean
+make
+
+To install tuxcast, run as root (or using sudo):
+make install
+
+If you ever wish to remove tuxcast, run:
+make uninstall
+
+Installing from a release
+-------------------------
+
+Extract the release tarball with:
+tar xvf tuxcast-*.tgz
+Or change tuxcast-*.tgz to your release's filename
+Compile with:
+cd tuxcast-*
+make
+make install
+
+As above, use this to remove tuxcast:
+make uninstall

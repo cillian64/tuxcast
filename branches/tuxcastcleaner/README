@@ -1,4 +1,0 @@
-This feature has now been merged into the main trunk.  Therefore this branch is now completely redundant and unmaintained - don't use it, it may destroy your data.  Just use a snapshot of the trunk newer than revision 126 and the -f option.
-
-Thanks
--- David 'Cillian' Turner

@@ -1,0 +1,811 @@
+Revision 173:
+* Updated translations files to match source
+--------------------------------------------------------------------------------
+
+Revision 172
+* Fixed a bug where all podcast folders were created, even when no new files
+	were downloaded.
+--------------------------------------------------------------------------------
+
+Revision 171:
+###############################################################################
+===============================================================================
+------------------------- Tuxcast 0.3 Released! -------------------------------
+----------------------------- Luke warm tea -----------------------------------
+===============================================================================
+###############################################################################
+Actual source tarballs, binaries and stuff will be up when I get around to it.
+Oh, and package control files will be updated in here after the binaries are up
+
+Revision 170:
+* Updated TODO
+* Updated manpages
+--------------------------------------------------------------------------------
+
+Revision 169:
+* Updated TODO
+* Now installs manpages
+* PCRE now not required by default
+--------------------------------------------------------------------------------
+
+Revision 168:
+* Now saves downloaded torrents in correct folders
+--------------------------------------------------------------------------------
+
+Revision 167:
+* Removed a couple of debug messages
+--------------------------------------------------------------------------------
+
+Revision 166:
+* Tuxcast now downloads more than the first torrent
+--------------------------------------------------------------------------------
+
+Revision 165:
+* Added compile flag info to version output
+* Updated TODO R.e. bittorrents
+--------------------------------------------------------------------------------
+
+Revision 164:
+* Basic bittorrenting is *working* - Now it just needs to work with more than
+	one file a session, among other things
+--------------------------------------------------------------------------------
+
+Revision 163:
+* Imported libtorrent's example program as a library.
+* Updated make system to facilitate optional torrent support
+--------------------------------------------------------------------------------
+
+Revision 162:
+* Added the skeleton of a bittorrent handler subroutine (Possibly replace the
+	current detection method with libmagic in future)
+--------------------------------------------------------------------------------
+
+Revision 161:
+* Changed a bunch of stuff so tuxcast downloads all files after all feeds have
+	been checked (or up2date'ed). (Prelude to bittorrent support)
+--------------------------------------------------------------------------------
+
+Revision 160:
+* Replaced mktemp with mkstemp
+--------------------------------------------------------------------------------
+
+Revision 159:
+* Updated TODO
+* Updated compile flags
+* Updated copyright dates
+--------------------------------------------------------------------------------
+
+Revision 158:
+* Caught the eTuxcast_FSFull exception
+* Updated TODO
+* Changed the vanilla exception header to use fprintf and be translateable
+--------------------------------------------------------------------------------
+
+Revision 157:
+* Actually added tuxcast_exceptions.h to SVN - forgot this in last rev.
+--------------------------------------------------------------------------------
+
+Revision 156:
+* Added the move() call to filestuff
+* Made tuxcast write config.xml and files.xml to temp files, then move the
+	temp over the original - now if it runs out of space, it doesn't
+	wipe the config anymore.  Fixes 1609639.
+--------------------------------------------------------------------------------
+
+Revision 155:
+* Reverted out the xmas mode
+* Added in optional PCRE support (The PCREPP define in compile_flags.h)
+* Added in the configuration options to run commands after certain actions
+	complete.  (The meat of the code isn't implemented yet)
+* Removed some old eclipse metadata
+--------------------------------------------------------------------------------
+
+Revision 154:
+* Added in the hidden "xmas" mode....
+--------------------------------------------------------------------------------
+
+Revision 153:
+* Changed get() to mark a file as downloaded if the MIME type is wrong, so you
+	don't keep seeing the message over and over again...
+--------------------------------------------------------------------------------
+
+Revision 152:
+* Finished off MIME type filtering (I.e. implemented the tuxcast bit).
+--------------------------------------------------------------------------------
+
+Revision 151:
+* Added options to tuxcast-config to add and remove permitted MIME types
+--------------------------------------------------------------------------------
+
+Revision 150:
+* Added libxml includes to cleaner.cpp - somehow these disappeared :S
+--------------------------------------------------------------------------------
+
+Revision 149:
+* Applied a patch from greatred to add in atom parsing and generally clean up
+	RSS and RDF parsing
+--------------------------------------------------------------------------------
+
+Revision 148:
+* Applied yet another patch from Greated - this one changes a bunch of stuff
+	all over the place.  It's all internal code changes, there shouldn't
+	be any noticable different on the outside.  Thanks again.
+--------------------------------------------------------------------------------
+
+Revision 147:
+* Applied a second patch from Greated to make gettext string updating a *lot*
+	neater - thanks again :).
+--------------------------------------------------------------------------------
+
+Revision 146:
+* Applied a patch from Greatred to fix pluralisation of strings using gettext
+	and to use ?: for tidying some bits of code.  Thanks :)
+--------------------------------------------------------------------------------
+
+Revision 145:
+* Fixed a bunch of messy optiony errors in tuxcast.cpp caused by the merge going
+	evilish. (i.e. s/optarg/optarg1/g)
+--------------------------------------------------------------------------------
+
+Revision 144:
+* Removed an annoying and questionably useful warning message from the config
+	loader
+--------------------------------------------------------------------------------
+
+Revision 143:
+* Some small updates to the manpages
+* Allowed some options of tuxcast to run without a config file, like -v and -h
+* Added the -h option back to tuxcast - looks like I accidently removed it
+* Fixed some text in the help message
+--------------------------------------------------------------------------------
+
+Revision 142:
+* Imported cypher_'s manpages - thanks :)
+--------------------------------------------------------------------------------
+
+Revision 141:
+* Added the beginnings of the MIME type filter to the config system
+--------------------------------------------------------------------------------
+
+Revision 140:
+* Added a missing newline in cleaner.cpp
+--------------------------------------------------------------------------------
+
+Revision 139:
+* Clarified output of cleaner
+* Prepared cleaner's text for gettext translation
+* Updated TODO
+--------------------------------------------------------------------------------
+
+Revision 138:
+* Fixed some output code in get() (Duplicate cout left in)
+--------------------------------------------------------------------------------
+
+Revision 137:
+* Fixed an issue in po/Makefile which caused the build to stop and ask for
+	confirmation about replacing a po file.
+* Converted class file to struct file (Saves some overhead etc.)
+* Fixed the filelist typedef (It was previously using file * instead of
+	class file * or struct file *.  No idea why this didn't show up problems
+	earlier.)
+--------------------------------------------------------------------------------
+
+Revision 136:
+* Fixed version.cpp....
+--------------------------------------------------------------------------------
+
+Revision 135:
+* Added gettext support in version.cpp
+--------------------------------------------------------------------------------
+
+Revision 133:
+* Merged revisions 96 through 112 into trunk from -translation (The big one.)
+--------------------------------------------------------------------------------
+
+Revision 132:
+* Removed socket.o from libraries/Makefile (Merge from -translation)
+--------------------------------------------------------------------------------
+
+Revision 131:
+* Started merging in -translation branch.  In this rev: merged oojah's makefile
+	modification wizardry (Thanks again to him)
+--------------------------------------------------------------------------------
+
+Revision 130:
+* Fixed a bug where the revision info from -v wasn't updating (make clean wasn't
+	removing version.o)
+--------------------------------------------------------------------------------
+
+Revision 129:
+* Bumped version.h (Forgot to last commit)
+--------------------------------------------------------------------------------
+
+Revision 127:
+* Merged tuxcastcleaner into the trunk as the option, -f
+--------------------------------------------------------------------------------
+
+Revision 126:
+* Updated TODO
+--------------------------------------------------------------------------------
+
+Revision 125:
+* Removed status bar code - it required too much unportable messy stuff.
+--------------------------------------------------------------------------------
+
+Revision 124:
+* Updated TODO.
+--------------------------------------------------------------------------------
+
+Revision 121:
+* Added a branch for the tuxcastcleaner program, hopefully soon to be integrated
+	into the tuxcast trunk as a commandline option.
+--------------------------------------------------------------------------------
+
+Revision 120:
+* Fixed the -v revision counter, it was stuck at 91 for some reason...
+--------------------------------------------------------------------------------
+
+Revision 119:
+* Fixed a pretty stupid segfault.
+--------------------------------------------------------------------------------
+
+Revision 118:
+* Added the rudiments of the new progress bar system.  It's a mess at the moment
+	so it's disabled in favour of the default curl one.  You can enable it
+	in compile_flags.h
+--------------------------------------------------------------------------------
+
+Revision 117:
+(I know it's a big commit, there was a power cut and I was bored...)
+* Added files needed to use eclipse as the IDE (ie configuration) and modded the
+	makefile slightly.
+* Tuxcast now only accepts one option at a time.  This confused some users as it
+	would previously accept multiple options but only execute the first.
+* Changed tuxcast-config to check for feeds with duplicate URLs before adding.
+* Changed TODO to reflect the above.
+* Changed get() in tuxcast to create podcastdir if it doesn't already exist.
+	Also changed cachefeed to create ~/.tuxcast - logically this shouldn't be
+	needed But It Seemed Like a Good Idea at the Time (TM).
+* Updated the documentation files
+* Made it possible to change a feed's name using tuxcast-config -u -n ... -N ...
+* Updated tuxcast-config to check for duplicates when changing a feed's name or
+	address.
+--------------------------------------------------------------------------------
+
+Revision 115:
+* Removed newfile() from cachefeed - this was clogging files.xml with junk
+--------------------------------------------------------------------------------
+
+Revision 111:
+* Bump, I forgot to update version.h in the last 20 revisions
+--------------------------------------------------------------------------------
+
+Revision 110:
+* Changed update to cache the feed.  Oops.
+--------------------------------------------------------------------------------
+
+Revision 109:
+* Recommitting as 108 appears to be a big dodgy
+--------------------------------------------------------------------------------
+
+Revision 108:
+* Changed config.cpp to create ~/.tuxcast/cache is it doesn't already exist, 
+	when saving config
+* Reshuffled the method of checking ask, to remove a massive indent
+* Added the cachefeed function to tuxcast_functions.cpp.  It makes a local cache
+	of the feed, named after the name the user gives the feed, as URL
+	filenames probably aren't unique (Ok, an overwrite wouldn't really
+	matter now I think about it, but meh.)
+* Changed parsefeed to take a string of the feed's name - it uses this to locate
+	it in the cache dir.  It no longer needs or wants to know the feed URL.
+--------------------------------------------------------------------------------
+
+Revision 104:
+* Some TODO updates
+--------------------------------------------------------------------------------
+
+Revision 98:
+* Bump.  Updated changelog anyway.  :P
+--------------------------------------------------------------------------------
+
+Revision 96:
+* Branched out tuxcast-translation.  From now CHANGELOG will stay separate
+	between branches, just the new revisions for each branch goes in that
+	branch's CHANGELOG.  I might merge CHANGELOGs when I merge back in the
+	branch, I might not.  :/
+--------------------------------------------------------------------------------
+
+Revision 95:
+* Finally got the SVN repository sorted - created /trunk, moved everything into
+	it, created /branches.  Thanks (Sarcasm) to SF for moving SVN and not
+	making it more obvious to developers.  *sigh*
+--------------------------------------------------------------------------------
+
+Revision 92:
+* Removed exceptions from TODO - I think everything uses these now.
+--------------------------------------------------------------------------------
+
+Revision 91:
+* Moved all -v outputs to version.cpp, so tuxcast and -config can call the
+	same function, and get consistant output.  Also, version.h must be
+	updated with the SVN checkin/out number or release version and type.
+	Is there a way to grab the checkout number for version.h automagically
+	from SVN? Maybe make version, which parses the SVN control files? TODO!
+--------------------------------------------------------------------------------
+
+Revision 90:
+* Added -g feeds option
+* Changed tuxcast-config to run help() if invalid or no options are pased
+* Changed output of -g feeds and -G to just add newline separators instead of --
+* Updated TODO.
+* Removed libraries/socket*, removed from tuxcast linking and makefiles, etc.
+* Removed /backend, and from makefiles, linking, etc.  RIP Backend...
+* Updated GPL copyright licensey thingies to include 2007
+--------------------------------------------------------------------------------
+
+Revision 89:
+(Special Xalior Edition :P)
+* Updated TOOD.
+* Once configuration::load has thrown the warning about using your home dir,
+	it will save the config with the podcastdir as ~ so the warning will
+	not be thrown in future.
+* podcastdir will not be prepended to folders beginning with /.  This is so
+	you can have a particular podcast go to a different place than the rest
+	without having podcastdir as / and fiddling with lots of absolute paths.
+--------------------------------------------------------------------------------
+
+Revision 88:
+* Added the -g feed -n NAME option to tuxcast-config, so you can retrieve
+	info on just one particular feed, without having to use -G.
+* Changed the arguments to tuxcast-config.cpp:get() to make the above possible.
+* Added the -v option to tuxcast and tuxcast-config
+* Removed "XML" from the -b usage information in tuxcast
+--------------------------------------------------------------------------------
+
+Revision 87:
+* Added a check to see if the root element is NULL in rss.cpp.  This prevents
+	segfaults when passed an empty file as a feed (libxml gives a valid doc
+	for an empty file, but when asked for the root element it chucks out a
+	NULL pointer.  Weird.)
+--------------------------------------------------------------------------------
+
+Revision 86:
+* Added a missing divider to CHANGELOG.  :/
+* Cleaned up INSTALL
+--------------------------------------------------------------------------------
+
+Revision 85:
+* Changed 1 to XML_ELEMENT_NODE in rss.cpp
+--------------------------------------------------------------------------------
+
+Revision 84:
+* Changed filelist to a typedef, and changed relevent stuff...
+--------------------------------------------------------------------------------
+
+Revision 83:
+* Changed all relevent strcmp's to strcasecmp's - meaning now feed names,
+	options and similar are case insensitive.  Also, XML parsing is case
+	insensitive (tag names, anyway).
+--------------------------------------------------------------------------------
+
+Revision 82:
+* Added GPL to amarok and some other files missing it
+--------------------------------------------------------------------------------
+
+Revision 81:
+* Removed debug message from rss.cpp
+--------------------------------------------------------------------------------
+
+Revision 80:
+* Updated TOTO
+--------------------------------------------------------------------------------
+
+Revision 79:
+* Moved exception checking in tuxcast_functions to a new function, for
+	consistant error messages
+* Added a new exception for an invalid or unrecognised root node
+* Instead of the hacky RSS 1.0 compatability mode, tuxcast checks the root
+	node's name and parses appropriately
+* Removed some unnecessary {}s from some places.
+* Changed rss.cpp functions to use exceptions instead of returning NULL, and
+	changed the callers in tuxcast_functions.cpp to catch exceptions
+* Fixed incorrect inclusion guard in tuxcast_functions.h (Oops. :o)
+* Added inclusion guard to rss.h
+--------------------------------------------------------------------------------
+
+Revision 78:
+* Updated TODO
+* Changed the channel loop in rss.cpp so after channel curr != NULL.  Now I
+	can enter my RSS 1.0 compatability mode.
+* Moved the things that add the file to the filelist to a separate function.
+	This saved duplication of code in the RSS 1.0 compatability mode.  This
+	new function includes everything needed to add a new item to filelist
+	from an xmlNode pointer to the enclosure.
+* Now tuxcast supports RSS 1.0 (Somewhat, it's a bit hacky).  See TODO.
+--------------------------------------------------------------------------------
+
+Revision 77:
+* Updated control files for 0.2 release
+* Added ebuild for 0.2
+* Updates Makefile.packages
+--------------------------------------------------------------------------------
+
+Revision 76:
+* Added strips to make install - By the way, release 0.1 wasn't stripped, hence
+	the huge binaries.  0.2 was stripped even though strip wasn't in the
+	makefile - I did it manually.  TODO: Check if strip should go in make
+	or make install.
+--------------------------------------------------------------------------------
+
+Revision 75:
+* Added the add_episode function, and the relevent 'e' option to the
+	tuxcast-amarok test program.
+* In other news, tuxcast-0.2 should be released this weekend - it will use
+	the snapshot from the 0.2 entry earlier (revision 70).  I'm going to
+	carry on committing but new changes won't go into 0.2.
+--------------------------------------------------------------------------------
+
+Revision 74:
+* Added in the basis of the tuxcast->amarok plugin.  This will not build by
+	default - it's all commented out in the makefiles.  Also, since
+	tuxcast-0.2 hasn't officially been released yet, I might add in
+	tuxcast-amarok.
+--------------------------------------------------------------------------------
+
+Revision 73:
+* Added in protocol.h and .cpp - this is the basis of the TCP protocol parser
+--------------------------------------------------------------------------------
+
+Revision 72:
+* Not sure...
+--------------------------------------------------------------------------------
+
+Revision 71:
+* Not sure...
+--------------------------------------------------------------------------------
+
+Revision 71:
+* Added some new TODOs
+--------------------------------------------------------------------------------
+
+###############################################################################
+===============================================================================
+------------------------- Tuxcast 0.2 Released! -------------------------------
+===============================================================================
+###############################################################################
+(Ok, not quite released yet.  I'm going on holiday in a week, but I thought
+	now would be a good time to stick 0.2.  So, 0.2 will be made from
+	subversion at revision 70)
+	Edit: Cypher has disappeared, so I'll try and hack the ebuild together
+	myself, and leave out the manpages till he reappears or someone else
+	volunteers to help.)
+
+Revision 70:
+* Moved many tuxcast functions to tuxcast_functions.cpp
+* Added tuxcast_functions.cpp and .h
+* Added a new backend folder.  At the moment it contains the basic layout,
+	and a simple test program.  It will not compile by default with the
+	rest of tuxcast.  You must compile it manually to test the backend
+--------------------------------------------------------------------------------
+
+Revision 69:
+* Test commit to diagnose an SVN bug
+--------------------------------------------------------------------------------
+
+Revision 68:
+* Applied the GPL to every file, and added COPYING
+--------------------------------------------------------------------------------
+
+Revision 67:
+* Actually added the exception handler for eRSS_CannotParseFeed into tuxcast.cpp
+--------------------------------------------------------------------------------
+
+Revision 66:
+* Actually added rss_exceptions,h into SVN (forgot last time)
+-------------------------------------------------------------------------------
+
+Revision 65:
+* Removed a bug in the last revision - I removed the constructors but forgot
+	to remove them from config.h
+* Removed the filelist constructor and destructor (from the header too :)
+* Added rss_exceptions.h and eRSS_CannotParseFeed
+* Fixed some bugs in the last commit
+-------------------------------------------------------------------------------
+
+Revision 64:
+* Removed the configuration constructor and destructor, as they have been
+	siting around empty for a long time
+* Changed all exception print() functions to use cerr instead of cout
+* Added a new exception, eConfig_CannotSaveConfig
+-------------------------------------------------------------------------------
+
+Revision 63:
+* Removed the bug I fixed below from TODO
+* Added checkfileexists to config::save, so it fails nicely with folders
+	and doesn't hang with fifo's
+-------------------------------------------------------------------------------
+
+Revision 62:
+* Fixed a bug in tuxcast-config where it would segfault with a brand new
+	config file, with no feeds in (Just a simple change to an if in load)
+-------------------------------------------------------------------------------
+
+Revision 61:
+* Added filestuff exception support to tuxcast-config
+-------------------------------------------------------------------------------
+
+Revision 60:
+* Now all of the "filestuff" library uses exceptions.  The vanilla exception
+	has been moved to exceptions.h in the root dir.  Lots of code around
+	the place has been changed to use the new filestuff exceptions
+* Oops, EDIT: All teh stuff above actually happened in r59.  r60 is just this
+	update to CHANGELOG to get things back in sync
+-------------------------------------------------------------------------------
+
+Revision 59:
+* New roadmap for tuxcast on the blog, at http://tuxcast.sf.net
+* All frontend and backend-related code is gone, for now (see above)
+-------------------------------------------------------------------------------
+
+Revision 57:
+* gTuxcast is *gone*
+* Pondering the future of the backend...
+-------------------------------------------------------------------------------
+
+Revision 56:
+* Frontend going rather well, though still some segfaults and some stuff is
+	a mess.  Just committing as a checkpoint
+-------------------------------------------------------------------------------
+
+Revision 55:
+* Given up on gTuxcast.  I'm calling it dead until someone else comes along to
+	revive it.  It won't compile, and it useless even if it does
+* Started the shiny new tuxcast-frontend.  It's a simple frontend to
+	the tuxcast backend server, mainly for testing at the moment
+-------------------------------------------------------------------------------
+
+Revision 54:
+* Converted gTuxcast to c++ (well, it's still mostly C, but it compiles with g++).
+	This means it can use the C++ TCP library for connecting to the backend
+* Fixed a bug caused by the above - some weird stuff in support.h was breaking
+	the compile.  If glade ever regenerates support.h, make sure to comment
+	out all the NLS and gettext stuff
+-------------------------------------------------------------------------------
+
+Revision 53:
+* Added in gTuxcast.  *** WARNING, THIS CODE IS NOT EVEN NEARLY READY FOR USE,
+	YET.  THIS CODE DOES *NOT* WORK UNTIL FURTHER NOTICE ***
+* Mixed around some makefiles, etc....
+-------------------------------------------------------------------------------
+
+Revision 52:
+* Updated the TCP library with a new class, TCPconnecter.  This will be used
+	in the GUIs to connect to the backend
+* Added -f to the rm's in makefiles' cleans.  This means no more errors
+	with permissions when doing sudo make install, and no more
+	errors if cleaning when not built
+-------------------------------------------------------------------------------
+
+Revision 51:
+* Finished the output code (Using pure strings, no libxml - libxml outputting
+	to a file descriptor is a pain, and strings are probably faster too
+-------------------------------------------------------------------------------
+
+Revision 50:
+* Started shuffling around some functions in backend.cpp to convert it to TCP
+* Changed the main backend() function to a basic TCP listener
+* Converted all the input stuff to TCP
+* Got the input parser working with TCP
+-------------------------------------------------------------------------------
+
+Revision 49:
+* The socket exceptions no longer remember errno's.  This makes them a whole
+	lot simpler.  If the main program wants to print an error, it uses
+	errno or strerr itself.  (This also removes the errlist warning)
+-------------------------------------------------------------------------------
+
+Revision 48:
+* Added a new socket library to the libraries folder (It's not yet integrated
+	into anything, but the main program still links against it).
+	This library will play a pretty major part in the upcoming backend,
+	as well as in the first GUI tuxcast client
+-------------------------------------------------------------------------------
+
+Revision 47:
+* Fixed a small yet annoying (to me, anyway) bug in check()
+-------------------------------------------------------------------------------
+
+Revision 46:
+* Altered the way xmlget does statuses, now it can output more detailed info
+-------------------------------------------------------------------------------
+
+Revision 45:
+* Back on track, implemented the xmlcheck function and associated stuff in
+	backend.cpp (Though I'll probably be taking some time off devving
+	for the next few weeks for exams)
+-------------------------------------------------------------------------------
+
+Revision 44:
+* Not absolutely sure what was going on with the last few revisions, but I've
+	converted all boost functions to linux native.  I also fixed a bug
+	causing errors.
+-------------------------------------------------------------------------------
+
+Revision 43:
+* Due to popular demand, I moved most of the file related functions into 
+	libraries/filestuff.[cpp,h].  Now it should be easy to add
+	compile_flags to select whether to use native functions or boost
+
+-------------------------------------------------------------------------------
+
+
+Revision 42:
+* Added the -b option to tuxcast
+* Added the backend.h and backend.cpp files
+* Added sample input and output files for the backend
+* Coded the backend's parser, error handler and basic output
+* Moved some functions from tuxcast.cpp to tuxcast.h, so backend.cpp can
+	call them (though most will need to be rewritten to output to XML)
+-------------------------------------------------------------------------------
+
+Revision 41:
+* Changed configuration::feeds from an array to an STL vector - 
+	now configuration::numoffeeds is replaced by
+	configuration::feeds.size().
+* Lots of code changed to work with vectors instead of arrays,
+	in particular, numoffeeds isn't required in the config file anymore
+* Changed filelist::files from an array to an STL vector.
+	filelist::numoffiles is now filelist::files.size()
+* filelist no longer has accessor functions - now everything just goes
+	directly through filelist::files[i]->...
+* Changed a bunch of code to support the new filelist
+* Fixed a segfault in the above changes :-)
+-------------------------------------------------------------------------------
+
+Revision 40:
+* Updated TODO
+* Updated Makefile so make install builds first
+* Fixed a bug with trailing /s (Thanks cypher_ for noticing this)
+	( Not really a fix, just prevented trailing /s from actually
+	getting into the program and doing any damage)
+-------------------------------------------------------------------------------
+
+Revision 39:
+* I don't have a clue :-)
+-------------------------------------------------------------------------------
+
+###############################################################################
+===============================================================================
+------------------------- Tuxcast 0.1 Released! -------------------------------
+===============================================================================
+###############################################################################
+
+Revision 38:
+* Fixed a bug in the Makefile which could get weird if /usr/bin doesn't
+	exist
+-------------------------------------------------------------------------------
+
+Revision 37:
+* Removed the packaged directory - see the release page for packages
+* Added a package makefile, for creating packages for debian-based distros
+* Added the package-files directory, containing the control files for
+	making packages for different distros, versions and archs
+-------------------------------------------------------------------------------
+
+Revision 36:
+* Fixed the arch in the debian package (was all, now i686)
+-------------------------------------------------------------------------------
+
+Revision 35:
+* Added packages directory
+* Added a debian .deb package (can only be manually installed with dpkg, no
+	dependancies or apt
+-------------------------------------------------------------------------------
+
+Revision 34:
+* Updated TODO
+* Updated some documentation
+-------------------------------------------------------------------------------
+
+Revision 33:
+* Lots of stuff in tuxcast.cpp:
+	* Added the -C and -U options
+	* Split more stuff into separate functions
+	* Lots of other, general, "stuff"
+-------------------------------------------------------------------------------
+
+Revision 32:
+* Added lots of documentation
+* Added individual feeds to TODO
+-------------------------------------------------------------------------------
+
+Revision 31:
+* Added the uninstall Makefile target
+* Changed -u to download the latest file, instead of no files at all
+* Rather major recode in tuxcast, shuffled some stuff around, moved stuff
+	into separate functions
+-------------------------------------------------------------------------------
+
+Revision 30:
+* Changed the Makefile install to install, instead of cp the binaries
+-------------------------------------------------------------------------------
+
+Revision 29:
+* Fixed a bug causing segfault if podcastdir wasn't set before other variables
+	(thanks, Sionide)
+* Added some very basic documentation
+* Added install target to the makefile
+-------------------------------------------------------------------------------
+
+Revision 28:
+* Added the "update" feature to tuxcast-config
+* Some general cleanup
+-------------------------------------------------------------------------------
+
+Revision 27:
+* Check if a feed already exists before adding
+* Check if a feed exists before trying to delete
+* Fixed a bug causing segfault if a feed had a folder of ""
+-------------------------------------------------------------------------------
+
+Revision 26:
+* Individual folders for each podcast, added to config
+* Podcast folder support added to the main program
+-------------------------------------------------------------------------------
+
+Revision 25:
+* Enabled the FOLLOWLOCATION option of libcurl.  This means tuxcast will
+	download podcasts which use a HTTP 403 to link to the actual file
+	like, the Daily Source Code, and the PodShow Devcast
+-------------------------------------------------------------------------------
+
+Revision 24:
+* Checked through all of the code - no errors are going to cout, all to cerr
+* Now the correct default_name_check is used, based on compile_flags.h
+-------------------------------------------------------------------------------
+
+Revision 23:
+* Another bugfix - added the default_name_check init to tuxcast
+* I kinda totally messed up some of the parse() code - it's fixed now
+-------------------------------------------------------------------------------
+
+Revision 22:
+* Small bugfix from the last commit - config.cpp wouldn't compile
+-------------------------------------------------------------------------------
+
+Revision 21:
+* Added boost_filesystem into both makefiles
+* Added checks to see if stuff exists before opening
+* ~/.tuxcast is made if it doesn't exist, when config::save() is caleld
+-------------------------------------------------------------------------------
+
+Revision 20:
+* libxml2 should no longer spit out errors or warnings - if the parse failed
+	then tuxcast should just print a small error and skip that feed
+* libxml2 can now survive some non-perfect RSS feeds, i.e. invalid characters
+-------------------------------------------------------------------------------
+
+Revision 19:
+* Fixed a segfault on broken feeds
+* Cleaned up the output
+-------------------------------------------------------------------------------
+
+Revision 18:
+* Added the "ask" variable - if true, tuxcast
+	asks before downloading any files
+* Implemented "podcastdir" in tuxcast
+-------------------------------------------------------------------------------
+
+Revision 17:
+* Moved old contents of main() to checkall()
+* Added new function, up2date() which adds files to files.xml
+	but doesn't download them all
+* Added options -c and -u to tuxcast
+-------------------------------------------------------------------------------
+
+Revision 16:
+* Added CHANGELOG
+* Added INSTALL
+* Added BSD-compatible makefile - Makefile.BSD
+* Added compile_flags.h to all files
+
