@@ -1,3 +1,9 @@
+Revision 176:
+* Did most of the thread work.  Warning, current fires off as many threads as
+	new episodes are available.  No limiting at the moment.  Use with
+	caution
+--------------------------------------------------------------------------------
+
 Revision 175:
 * Setup config for threads.  Watch out, this branch's config may be incompatible
 	with trunk.  For this reason, using a different config dir location.

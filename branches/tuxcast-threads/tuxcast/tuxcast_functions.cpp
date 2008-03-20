@@ -37,6 +37,9 @@
 #ifdef TORRENT
 #include "../libraries/torrent/torrent.h"
 #endif
+#ifdef THREADS
+#include <pthread.h>
+#endif
 
 #include <libintl.h>
 #include <locale.h>
@@ -71,11 +74,28 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 		if(alreadydownloaded(file->filename))
 			continue;
 		populate_download_path(feed, *file, myconfig);
+#ifdef THREADS
+		struct threaddata *data = new struct threaddata;
+		data->thefile = &(*file);
+		data->myconfig = &myconfig;
+		myconfig.threads.push_back(0);
+		pthread_create(&(myconfig.threads[myconfig.threads.size()-1]),
+			NULL, threadfunc, (void*)data);
+#else
 		allfiles.push_back(*file);
+#endif
+
 	}
 }
 
-
+#ifdef THREADS
+void *threadfunc(void *data)
+{
+	struct threaddata *tdata = (struct threaddata *)data;
+	get(*(tdata->thefile), *(tdata->myconfig));
+	delete (struct threaddata*)data;
+}
+#endif
 
 // Downloads the latest episode on a particular feed
 // Adds other episodes to files.xml without downloading
@@ -115,7 +135,12 @@ void checkall(configuration &myconfig)
 		
 		check(myconfig, *feed, allfiles);
 	}
+#ifdef THREADS
+	for(int i=0; i<myconfig.threads.size(); i++)
+		pthread_join(myconfig.threads[i], NULL);
+#else
 	getlist(allfiles, myconfig);
+#endif
 }
 
 // This loops through all feeds and passes them to up2date()
@@ -128,7 +153,13 @@ void up2dateall(configuration &myconfig)
 		printf(_("up2date'ing feed \"%s\"\n"),feed->name.c_str());
 		up2date(myconfig,*feed, allfiles);
 	}
+#ifdef THREADS
+	for(int i=0; i<myconfig.threads.size(); i++)
+		pthread_join(myconfig.threads[i], NULL);
+#else
 	getlist(allfiles, myconfig);
+#endif
+
 }
                                                           
 // This adds a file to files.xml
@@ -138,7 +169,7 @@ void newfile(string name)
         xmlDoc *doc;
         xmlNode *root, curr;
         string path=getenv("HOME");
-        path += "/.tuxcast/files.xml";
+        path += "/.tuxcast-thread/files.xml";
 	char *temppath=new char[path.size()+7];
 	strcpy(temppath,path.c_str());
 	strcat(temppath,".XXXXXX");
@@ -171,7 +202,7 @@ bool alreadydownloaded(string name)
         xmlDoc *doc;
         xmlNode *root,*curr;
         string path = getenv("HOME");
-        path += "/.tuxcast/files.xml";
+        path += "/.tuxcast-thread/files.xml";
         doc = xmlReadFile(path.c_str(),NULL,0);
         if(doc == NULL)
         {

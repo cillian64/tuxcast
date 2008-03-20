@@ -28,6 +28,10 @@
 #include <vector>
 #include "../compile_flags.h"
 
+#ifdef THREADS
+#include <pthread.h>
+#endif
+
 using namespace std;
 
 class feed;
@@ -52,6 +56,7 @@ class configuration
 
 #ifdef THREADS
 		unsigned int numofdownloaders;
+		vector<pthread_t> threads;
 #endif
 
 		void save();

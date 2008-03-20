@@ -27,6 +27,7 @@ LIBCURL_LIBS:=$(shell curl-config --libs)
 #PCREPP_LIBS:=$(shell pcre-config --libs) $(shell pcre++-config --libs)
 LIBTORRENT_CFLAGS:=$(shell pkg-config --cflags sigc++-2.0 libtorrent)
 LIBTORRENT_LIBS:=$(shell pkg-config --libs sigc++-2.0 libtorrent)
+PTHREAD_LIBS:=-lpthread
 
 TORRENT_BUILD=make -C torrent
 TORRENT_CLEAN=make -C torrent clean
@@ -60,6 +61,7 @@ LIBCURL_LIBS:=$(shell curl-config --libs)
 #PCREPP_LIBS:=$(shell pcre-config --libs) $(shell pcre++-config --libs)
 LIBTORRENT_CFLAGS:=$(shell pkg-config --cflags sigc++-2.0 libtorrent)
 LIBTORRENT_LIBS:=$(shell pkg-config --libs sigc++-2.0 libtorrent)
+PTHREAD_LIBS:=-lpthread
 
 TORRENT_BUILD=make -C torrent
 TORRENT_CLEAN=make -C torrent clean
