@@ -34,7 +34,7 @@ using namespace std;
 #ifdef THREADS
 struct threaddata
 {
-	file *thefile;
+	file thefile;
 	configuration *myconfig;
 };
 void* threadfunc(void* data);

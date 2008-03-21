@@ -39,6 +39,12 @@ class feed;
 class configuration
 {
 	public:
+		configuration()
+		{
+			pthread_mutex_init(&configlock, NULL);
+			numofthreads = 0;
+		}
+	
 		typedef vector<feed> feedlist;
 		typedef vector<string> mimelist;
 	
@@ -57,6 +63,8 @@ class configuration
 #ifdef THREADS
 		unsigned int numofdownloaders;
 		vector<pthread_t> threads;
+		unsigned int numofthreads;
+		pthread_mutex_t configlock;
 #endif
 
 		void save();

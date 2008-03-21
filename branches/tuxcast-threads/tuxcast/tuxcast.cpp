@@ -129,11 +129,10 @@ int main(int argc, char *argv[])
 						// Found the feed
 						filelist files;
 						check(myconfig, *feed, files);
+						getlist(files, myconfig);
 #ifdef THREADS
 						for(int i=0; i<myconfig.threads.size(); i++)
 							pthread_join(myconfig.threads[i], NULL);
-#else
-						getlist(files, myconfig);
 #endif
 						return 0;
 					}
@@ -158,11 +157,10 @@ int main(int argc, char *argv[])
 						// Found the feed
 						filelist files;
 						up2date(myconfig, *feed, files);
+						getlist(files, myconfig);
 #ifdef THREADS
 						for(int i=0; i<myconfig.threads.size(); i++)
 							pthread_join(myconfig.threads[i], NULL);
-#else
-						getlist(files, myconfig);
 #endif
 						return 0;
 					}

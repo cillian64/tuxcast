@@ -1,3 +1,20 @@
+Revision 179:
+* Made curl quiet (Multiple threads can get nasty.  Will do a proper progress
+	meter at some point.
+* Did limiting of number of threads (As well as config mutex locking.)
+ (This build is now safeish)
+-------------------------------------------------------------------------------
+
+Revision 178:
+<< Merged from trunk >>
+* Fixed usage of file as both a type and variable name (Confused GDB)
+--------------------------------------------------------------------------------
+
+Revision 177:
+<< Merged from trunk >>
+* Fixed a bug where empty <file> tags caused a segfault
+--------------------------------------------------------------------------------
+
 Revision 176:
 * Did most of the thread work.  Warning, current fires off as many threads as
 	new episodes are available.  No limiting at the moment.  Use with
