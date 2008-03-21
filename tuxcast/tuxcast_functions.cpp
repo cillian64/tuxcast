@@ -186,11 +186,12 @@ bool alreadydownloaded(string name)
         {
    	if(strcasecmp((char*)curr->name,"file") == 0)
    	{
-                 if(strcasecmp((char *)curr->children->content,name.c_str()) == 0)
-                 {
-                 	return true; // Already downloaded
-                        break;
-                 }
+		 if(curr->children != NULL) /* Empty <file> tags are possible... */
+			 if(strcasecmp((char *)curr->children->content,name.c_str()) == 0)
+			 {
+				return true; // Already downloaded
+				break;
+			 }
    	}
         if(curr->next == NULL)
         {
