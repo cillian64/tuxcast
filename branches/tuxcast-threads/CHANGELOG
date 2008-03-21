@@ -1,3 +1,7 @@
+Revision 180:
+* Added numofdownloaders to tuxcast-config
+-------------------------------------------------------------------------------
+
 Revision 179:
 * Made curl quiet (Multiple threads can get nasty.  Will do a proper progress
 	meter at some point.

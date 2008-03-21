@@ -206,6 +206,7 @@ void help(void)
 	printf(_("Available options are:\n"));
 	printf(_("podcastdir - where to save all your podcasts\n"));
 	printf(_("ask - whether or not to ask before downloading any files\n"));
+	printf(_("threads - number of download threads to spawn\n"));
 }
 
 void get(int argc, char **argv)
@@ -217,6 +218,11 @@ void get(int argc, char **argv)
 	{
 		printf("%s\n",myconfig.podcastdir.c_str()); // No translation
 		// required for just a format string, I spose.
+		return;
+	}
+	if(strcasecmp(args.c_str(), "threads") == 0)
+	{
+		printf("%d\n", myconfig.numofdownloaders);
 		return;
 	}
 	if(strcasecmp(args.c_str(),"ask") == 0)
@@ -273,6 +279,7 @@ void getall(void)
 {
 	printf(_("podcastdir = %s\n"),myconfig.podcastdir.c_str());
 	printf(_("ask = %s\n"), (myconfig.ask?"true":"false"));
+	printf(_("threads = %d\n"), myconfig.numofdownloaders);
 	listmimes();
 	// ...
 	// Let's show some feeds:
@@ -294,6 +301,10 @@ void set()
 	if(strcasecmp(varname.c_str(),"podcastdir") == 0)
 	{
 		myconfig.podcastdir = value;
+	}
+	if(strcasecmp(varname.c_str(), "threads") == 0)
+	{
+		myconfig.numofdownloaders = atoi(value.c_str());
 	}
 	if(strcasecmp(varname.c_str(),"ask") == 0)
 	{
