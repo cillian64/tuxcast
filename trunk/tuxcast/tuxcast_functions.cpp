@@ -204,7 +204,7 @@ bool alreadydownloaded(string name)
 }
 
 // Download an episode
-void get(file &file, configuration &myconfig)
+void get(file &thefile, configuration &myconfig)
 {
 	string temp;
 	FILE *outputfile=NULL;
@@ -217,7 +217,7 @@ void get(file &file, configuration &myconfig)
 		return;
 	}
 	
-	if(alreadydownloaded(file.filename))
+	if(alreadydownloaded(thefile.filename))
 		// Already downloaded
 		return;
 	
@@ -226,27 +226,27 @@ void get(file &file, configuration &myconfig)
 		// MIMEs, we'll assume they want all files rather than no
 		// files... Don't output an error either.
 	
-	if(strcmp(file.type.c_str(),"") == 0)
+	if(strcmp(thefile.type.c_str(),"") == 0)
 		correctmime=true; // If the MIME type of the file in the RSS
 		// feed is blank, we'll download it anyway...
 	
 	FOREACH(configuration::mimelist::iterator, myconfig.permitted_mimes, mime)
-		if(strcasecmp(mime->c_str(), file.type.c_str()) == 0)
+		if(strcasecmp(mime->c_str(), thefile.type.c_str()) == 0)
 			correctmime=true;
 
 	if(correctmime == false) // The MIME type isn't blank, the permitted
 	// list isn't empty, and it ain't permitted...
 	{
 		fprintf(stderr,_("Not downloading %s - incorrect MIME type\n"),
-			file.filename.c_str());
+			thefile.filename.c_str());
 
-		newfile(file.filename);
+		newfile(thefile.filename);
 		return;
 	}
 	
 	if(myconfig.ask == true)
 	{
-		printf(_("Download %s? (yes/no)\n"), file.filename.c_str());
+		printf(_("Download %s? (yes/no)\n"), thefile.filename.c_str());
 		cin >> temp; // TODO: Replace this with scanf?
 	}
 	else
@@ -255,25 +255,25 @@ void get(file &file, configuration &myconfig)
 	if(strcasecmp(temp.c_str(),"yes") != 0)
 		return;
 
-	outputfile = fopen(file.savepath.c_str(), "w");
+	outputfile = fopen(thefile.savepath.c_str(), "w");
 
 	if(outputfile == NULL)
 	{
-		fprintf(stderr,_("Error opening output file \"%s\"\n"),file.savepath.c_str());
+		fprintf(stderr,_("Error opening output file \"%s\"\n"),thefile.savepath.c_str());
 		// TODO: throw exception
 		return; // Abort download
 	}
 	
 
-	printf(_("Downloading %s...\n"),file.filename.c_str());
+	printf(_("Downloading %s...\n"),thefile.filename.c_str());
 	
-	curl_easy_setopt(mycurl,CURLOPT_URL,file.URL.c_str());
+	curl_easy_setopt(mycurl,CURLOPT_URL,thefile.URL.c_str());
 	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
 	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
 	curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,0);
 	curl_easy_perform(mycurl);
 	fclose(outputfile);
-	newfile(file.filename);
+	newfile(thefile.filename);
 	
 	curl_easy_cleanup(mycurl);
 }
