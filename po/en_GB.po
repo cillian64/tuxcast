@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tuxcast 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-18 21:45+0000\n"
+"POT-Creation-Date: 2008-03-21 13:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -167,71 +167,71 @@ msgstr ""
 msgid "up2date'ing feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:215
+#: ../tuxcast/tuxcast_functions.cpp:216
 #, c-format
 msgid "Error initializing libcurl\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:239
+#: ../tuxcast/tuxcast_functions.cpp:240
 #, c-format
 msgid "Not downloading %s - incorrect MIME type\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:248
+#: ../tuxcast/tuxcast_functions.cpp:249
 #, c-format
 msgid "Download %s? (yes/no)\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:261
+#: ../tuxcast/tuxcast_functions.cpp:262
 #, c-format
 msgid "Error opening output file \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:267
+#: ../tuxcast/tuxcast_functions.cpp:268
 #, c-format
 msgid "Downloading %s...\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:316
+#: ../tuxcast/tuxcast_functions.cpp:317
 #, c-format
 msgid "Oops, couldn't create folder for feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:317 ../tuxcast/tuxcast_functions.cpp:405
+#: ../tuxcast/tuxcast_functions.cpp:318 ../tuxcast/tuxcast_functions.cpp:406
 #: ../config/config.cpp:110 ../config/config.cpp:118
 #: ../config/tuxcast-config.cpp:125
 #, c-format
 msgid "Exception caught: "
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:395
+#: ../tuxcast/tuxcast_functions.cpp:396
 #, c-format
 msgid "This is an XML file, but does not appear to be RSS 1 (RDF) or RSS 2\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:396
+#: ../tuxcast/tuxcast_functions.cpp:397
 #, c-format
 msgid ""
 "Please check you have the correct URL and that it is an RSS feed, and then "
 "contact your feed maintainer\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:397
+#: ../tuxcast/tuxcast_functions.cpp:398
 #, c-format
 msgid "Exception caught:"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:399 ../tuxcast/tuxcast_functions.cpp:407
+#: ../tuxcast/tuxcast_functions.cpp:400 ../tuxcast/tuxcast_functions.cpp:408
 #, c-format
 msgid "Aborting this feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:403
+#: ../tuxcast/tuxcast_functions.cpp:404
 #, c-format
 msgid "Couldn't parse the feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:404
+#: ../tuxcast/tuxcast_functions.cpp:405
 #, c-format
 msgid "Please check the URL is correct, then contact your feed maintainer.\n"
 msgstr ""

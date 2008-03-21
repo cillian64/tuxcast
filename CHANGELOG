@@ -1,3 +1,7 @@
+Revision 178:
+* Fixed usage of file as both a type and variable name (Confused GDB)
+--------------------------------------------------------------------------------
+
 Revision 177:
 * Fixed a bug where empty <file> tags caused a segfault
 --------------------------------------------------------------------------------
