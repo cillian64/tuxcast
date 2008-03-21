@@ -1,3 +1,7 @@
+Revision 177:
+* Fixed a bug where empty <file> tags caused a segfault
+--------------------------------------------------------------------------------
+
 Revision 173:
 * Updated translations files to match source
 --------------------------------------------------------------------------------
