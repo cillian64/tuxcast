@@ -13,3 +13,4 @@
 * Populate the type property of the file for atom feeds
 * Check all calls use exceptions
 * Fix syntax errors in tuxcast-config's manpage
+* Don't create folders if incorrect MIME type

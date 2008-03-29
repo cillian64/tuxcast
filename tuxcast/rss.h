@@ -29,6 +29,8 @@
 
 #include <sys/types.h>
 
+#include "../config/config.h"
+
 using namespace std;
 
 extern const string NS_ATOM;
@@ -41,6 +43,7 @@ struct file
 	string type;
 	off_t length;
 	string savepath;
+	feed *parentfeed;
 
 	file(void)
 		: filename()
