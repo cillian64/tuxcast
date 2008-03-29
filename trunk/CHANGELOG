@@ -1,3 +1,11 @@
+Revision 181:
+* Added a parent feed pointer to the file object.
+* Folders are no longer created when files have incorrect MIME types
+* Add files to already downloaded list if the user decides not to download them
+	so as to not have to ask every time.
+* Added a branch identifier thingy to version.h/cpp
+--------------------------------------------------------------------------------
+
 Revision 178:
 * Fixed usage of file as both a type and variable name (Confused GDB)
 --------------------------------------------------------------------------------

@@ -70,7 +70,7 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 	{	
 		if(alreadydownloaded(file->filename))
 			continue;
-		populate_download_path(feed, *file, myconfig);
+		file->parentfeed = &feed;
 		allfiles.push_back(*file);
 	}
 }
@@ -92,11 +92,10 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
 		if(alreadydownloaded(file->filename))
 			continue;
 
+		file->parentfeed = &feed;
+
 		if(file == myfilelist->begin())
-		{
-			populate_download_path(feed, *file, myconfig);
 			allfiles.push_back(*file);
-		}
 		else
 			newfile(file->filename);
 	}
@@ -253,7 +252,12 @@ void get(file &thefile, configuration &myconfig)
 		temp = "yes";
 
 	if(strcasecmp(temp.c_str(),"yes") != 0)
+	{
+		newfile(thefile.filename);
 		return;
+	}
+
+	populate_download_path(*(thefile.parentfeed), thefile, myconfig);
 
 	outputfile = fopen(thefile.savepath.c_str(), "w");
 
