@@ -1,3 +1,20 @@
+Revision 182:
+* Threads now live on and continue downloading all new files seen so far.
+	This might not download quite in the order you want, but it ensures
+	so long as there are files available, there are the number of threads
+	downloading that you asked for.
+* Removed some debug messages
+--------------------------------------------------------------------------------
+
+Revision 181:
+<< Merged from trunk >>
+* Added a parent feed pointer to the file object.
+* Folders are no longer created when files have incorrect MIME types
+* Add files to already downloaded list if the user decides not to download them
+	so as to not have to ask every time.
+* Added a branch identifier thingy to version.h/cpp
+--------------------------------------------------------------------------------
+
 Revision 180:
 * Added numofdownloaders to tuxcast-config
 -------------------------------------------------------------------------------

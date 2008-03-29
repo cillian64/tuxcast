@@ -40,7 +40,11 @@ void version()
 	printf(_("Release source tarball %s\n"), RELEASE_VERSION);
 #endif
 #ifdef SUBVERSION
-	printf(_("From subversion, release %s revision %s\n"), RELEASE_VERSION, SUBVERSION_REVISION);
+#ifdef SUBVERSION_BRANCH
+	printf(_("From subversion branch %s, release %s revision %s\n"), SUBVERSION_BRANCH, RELEASE_VERSION, SUBVERSION_REVISION);
+#else
+	printf(_("From subversion trunk, release %s revision %s\n"), RELEASE_VERSION, SUBVERSION_REVISION);
+#endif
 #endif
 #ifdef POSIX
 	printf(_("Compiled for POSIX\n"));

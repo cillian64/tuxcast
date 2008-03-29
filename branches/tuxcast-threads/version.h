@@ -12,7 +12,8 @@
 
 // These are defined for subversion checkouts
 #define SUBVERSION
-#define SUBVERSION_REVISION "180"
+#define SUBVERSION_REVISION "182"
+#define SUBVERSION_BRANCH "threads"
 
 void version();
 

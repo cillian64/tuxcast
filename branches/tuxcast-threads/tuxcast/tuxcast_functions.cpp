@@ -73,17 +73,17 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 	{	
 		if(alreadydownloaded(file->filename))
 			continue;
-		populate_download_path(feed, *file, myconfig);
+		file->parentfeed = &feed;
 #ifdef THREADS
 		if(myconfig.numofthreads < myconfig.numofdownloaders)
 		{
-			printf("bong\n");
-			pthread_mutex_lock(&(myconfig.configlock));
+				pthread_mutex_lock(&(myconfig.configlock));
 			myconfig.numofthreads++;
 			pthread_mutex_unlock(&(myconfig.configlock));
 			struct threaddata *data = new struct threaddata;
 			data->thefile = *file;
 			data->myconfig = &myconfig;
+			data->allfiles = &allfiles;
 			myconfig.threads.push_back(0);
 			pthread_create(&(myconfig.threads[myconfig.threads.size()-1]),
 				NULL, threadfunc, (void*)data);
@@ -101,10 +101,25 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 void *threadfunc(void *data)
 {
 	struct threaddata *tdata = (struct threaddata *)data;
+	file thefile;
 
-	printf("Newthread, num=%d\n",tdata->myconfig->configlock);
-
+	/* Get the file originally spawned for */
 	get(tdata->thefile, *(tdata->myconfig));
+
+	/* Start nabbing the rest of the files */
+	while(true)
+	{
+		pthread_mutex_lock(&(tdata->myconfig->configlock));
+		if(tdata->allfiles->size() == 0)
+		{
+			pthread_mutex_unlock(&(tdata->myconfig->configlock));
+			break;
+		}
+		thefile = tdata->allfiles->front();
+		tdata->allfiles->erase(tdata->allfiles->begin());
+		pthread_mutex_unlock(&(tdata->myconfig->configlock));
+		get(thefile, *(tdata->myconfig));
+	}
 	
 
 	pthread_mutex_lock(&(tdata->myconfig->configlock));
@@ -131,25 +146,25 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
 		if(alreadydownloaded(file->filename))
 			continue;
 
+		file->parentfeed = &feed;
+
 		if(file == myfilelist->begin())
-		{
-			populate_download_path(feed, *file, myconfig);
 #ifdef THREADS
-		if(myconfig.numofthreads < myconfig.numofdownloaders)
-		{
-			struct threaddata *data = new struct threaddata;
-			data->thefile = *file;
-			data->myconfig = &myconfig;
-			myconfig.threads.push_back(0);
-			pthread_create(&(myconfig.threads[myconfig.threads.size()-1]),
-				NULL, threadfunc, (void*)data);
-		}
-		else
-			allfiles.push_back(*file);
+			if(myconfig.numofthreads < myconfig.numofdownloaders)
+			{
+				struct threaddata *data = new struct threaddata;
+				data->thefile = *file;
+				data->myconfig = &myconfig;
+				data->allfiles = &allfiles;
+				myconfig.threads.push_back(0);
+				pthread_create(&(myconfig.threads[myconfig.threads.size()-1]),
+					NULL, threadfunc, (void*)data);
+			}
+			else
+				allfiles.push_back(*file);
 #else
-		allfiles.push_back(*file);
+			allfiles.push_back(*file);
 #endif
-		}
 		else
 			newfile(file->filename);
 	}
@@ -169,6 +184,7 @@ void checkall(configuration &myconfig)
 		check(myconfig, *feed, allfiles);
 	}
 	getlist(allfiles, myconfig);
+	/* Threads must be joined before allfiles is trashed */
 #ifdef THREADS
 	for(int i=0; i<myconfig.threads.size(); i++)
 		pthread_join(myconfig.threads[i], NULL);
@@ -316,7 +332,12 @@ void get(file &thefile, configuration &myconfig)
 		temp = "yes";
 
 	if(strcasecmp(temp.c_str(),"yes") != 0)
+	{
+		newfile(thefile.filename);
 		return;
+	}
+
+	populate_download_path(*(thefile.parentfeed), thefile, myconfig);
 
 	outputfile = fopen(thefile.savepath.c_str(), "w");
 

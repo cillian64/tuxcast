@@ -35,6 +35,7 @@ using namespace std;
 struct threaddata
 {
 	file thefile;
+	filelist *allfiles;
 	configuration *myconfig;
 };
 void* threadfunc(void* data);
