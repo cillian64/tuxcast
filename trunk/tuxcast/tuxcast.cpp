@@ -42,6 +42,10 @@
 #include "cleaner.h"
 #include "../version.h"
 
+#ifdef THREADS
+#include <pthread.h>
+#endif
+
 using namespace std;
 
 
@@ -126,6 +130,10 @@ int main(int argc, char *argv[])
 						filelist files;
 						check(myconfig, *feed, files);
 						getlist(files, myconfig);
+#ifdef THREADS
+						for(int i=0; i<myconfig.threads.size(); i++)
+							pthread_join(myconfig.threads[i], NULL);
+#endif
 						return 0;
 					}
 				}
@@ -150,6 +158,10 @@ int main(int argc, char *argv[])
 						filelist files;
 						up2date(myconfig, *feed, files);
 						getlist(files, myconfig);
+#ifdef THREADS
+						for(int i=0; i<myconfig.threads.size(); i++)
+							pthread_join(myconfig.threads[i], NULL);
+#endif
 						return 0;
 					}
 				}

@@ -57,6 +57,14 @@ void configuration::save()
 	}
 	xmlNewChild(root_node, NULL, (xmlChar *)"podcastdir",
 			(xmlChar *)podcastdir.c_str());
+#ifdef THREADS
+	char temp[4];
+	snprintf(temp,3,"%d",this->numofdownloaders);
+
+	xmlNewChild(root_node, NULL, (xmlChar *)"numofdownloaders",
+			(xmlChar *)temp);
+#endif
+			
 	
 	if(this->ask == true) // All this to convert a bool to a string...
 	{
@@ -217,6 +225,10 @@ void configuration::load()
 			else
 				this->ask = false;
 		}
+#ifdef THREADS
+		else if(strcasecmp((char *)curr->name, "numofdownloaders") == 0)
+			this->numofdownloaders = atoi((char*)curr->children->content);
+#endif
 		else if(strcasecmp((char *)curr->name, "permittedmimetypes") == 0)
 		{
 			FOREACH_XMLCHILD(curr, mimenode)

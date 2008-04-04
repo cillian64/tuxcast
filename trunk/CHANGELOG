@@ -1,6 +1,23 @@
+Revision 185:
+* Merged in threads branch (off by default)
+* Fixed the THREADS compile flag
+--------------------------------------------------------------------------------
+
+Revision 184:
+* Now uses the normal tuxcast config location.  (Pretty much stable now)
+--------------------------------------------------------------------------------
+
 Revision 183:
 * Reverted TODO
 * Added a confirmation question when deleting feed (Thanks slimeypete)
+--------------------------------------------------------------------------------
+
+Revision 182:
+* Threads now live on and continue downloading all new files seen so far.
+        This might not download quite in the order you want, but it ensures
+	so long as there are files available, there are the number of threads
+	downloading that you asked for.
+* Removed some debug messages
 --------------------------------------------------------------------------------
 
 Revision 181:
@@ -11,12 +28,38 @@ Revision 181:
 * Added a branch identifier thingy to version.h/cpp
 --------------------------------------------------------------------------------
 
+Revision 180:
+* Added numofdownloaders to tuxcast-config
+-------------------------------------------------------------------------------
+
+Revision 179:
+* Made curl quiet (Multiple threads can get nasty.  Will do a proper progress
+        meter at some point.
+* Did limiting of number of threads (As well as config mutex locking.)
+	 (This build is now safeish)
+-------------------------------------------------------------------------------
+
 Revision 178:
 * Fixed usage of file as both a type and variable name (Confused GDB)
 --------------------------------------------------------------------------------
 
 Revision 177:
 * Fixed a bug where empty <file> tags caused a segfault
+--------------------------------------------------------------------------------
+
+Revision 176:
+* Did most of the thread work.  Warning, current fires off as many threads as
+	new episodes are available.  No limiting at the moment.  Use with
+	caution
+--------------------------------------------------------------------------------
+
+Revision 175:
+* Setup config for threads.  Watch out, this branch's config may be incompatible
+	with trunk.  For this reason, using a different config dir location.
+--------------------------------------------------------------------------------
+
+Revision 174:
+* Started threads branch.
 --------------------------------------------------------------------------------
 
 Revision 173:

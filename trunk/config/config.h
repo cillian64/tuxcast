@@ -28,6 +28,10 @@
 #include <vector>
 #include "../compile_flags.h"
 
+#ifdef THREADS
+#include <pthread.h>
+#endif
+
 using namespace std;
 
 class feed;
@@ -35,6 +39,14 @@ class feed;
 class configuration
 {
 	public:
+#ifdef THREADS
+		configuration()
+		{
+			pthread_mutex_init(&configlock, NULL);
+			numofthreads = 0;
+		}
+#endif
+	
 		typedef vector<feed> feedlist;
 		typedef vector<string> mimelist;
 	
@@ -48,6 +60,13 @@ class configuration
 		string postdownload;
 		string postfeed;
 		string postrun;
+#endif
+
+#ifdef THREADS
+		unsigned int numofdownloaders;
+		vector<pthread_t> threads;
+		unsigned int numofthreads;
+		pthread_mutex_t configlock;
 #endif
 
 		void save();

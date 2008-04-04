@@ -37,6 +37,9 @@
 #ifdef TORRENT
 #include "../libraries/torrent/torrent.h"
 #endif
+#ifdef THREADS
+#include <pthread.h>
+#endif
 
 #include <libintl.h>
 #include <locale.h>
@@ -70,12 +73,63 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 	{	
 		if(alreadydownloaded(file->filename))
 			continue;
+
 		file->parentfeed = &feed;
+#ifdef THREADS
+		if(myconfig.numofthreads < myconfig.numofdownloaders)
+		{
+				pthread_mutex_lock(&(myconfig.configlock));
+			myconfig.numofthreads++;
+			pthread_mutex_unlock(&(myconfig.configlock));
+			struct threaddata *data = new struct threaddata;
+			data->thefile = *file;
+			data->myconfig = &myconfig;
+			data->allfiles = &allfiles;
+			myconfig.threads.push_back(0);
+			pthread_create(&(myconfig.threads[myconfig.threads.size()-1]),
+				NULL, threadfunc, (void*)data);
+		}
+		else
+			allfiles.push_back(*file);
+#else
 		allfiles.push_back(*file);
+#endif
 	}
 }
 
+#ifdef THREADS
+void *threadfunc(void *data)
+{
+	struct threaddata *tdata = (struct threaddata *)data;
+	file thefile;
 
+	/* Get the file originally spawned for */
+	get(tdata->thefile, *(tdata->myconfig));
+
+	/* Start nabbing the rest of the files */
+	while(true)
+	{
+		pthread_mutex_lock(&(tdata->myconfig->configlock));
+		if(tdata->allfiles->size() == 0)
+		{
+			pthread_mutex_unlock(&(tdata->myconfig->configlock));
+			break;
+		}
+		thefile = tdata->allfiles->front();
+		tdata->allfiles->erase(tdata->allfiles->begin());
+		pthread_mutex_unlock(&(tdata->myconfig->configlock));
+		get(thefile, *(tdata->myconfig));
+	}
+	
+
+	pthread_mutex_lock(&(tdata->myconfig->configlock));
+	tdata->myconfig->numofthreads--;
+	pthread_mutex_unlock(&(tdata->myconfig->configlock));
+
+	delete (struct threaddata*)data;
+
+}
+#endif
 
 // Downloads the latest episode on a particular feed
 // Adds other episodes to files.xml without downloading
@@ -95,7 +149,22 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
 		file->parentfeed = &feed;
 
 		if(file == myfilelist->begin())
+#ifdef THREADS
+			if(myconfig.numofthreads < myconfig.numofdownloaders)
+			{
+				struct threaddata *data = new struct threaddata;
+				data->thefile = *file;
+				data->myconfig = &myconfig;
+				data->allfiles = &allfiles;
+				myconfig.threads.push_back(0);
+				pthread_create(&(myconfig.threads[myconfig.threads.size()-1]),
+					NULL, threadfunc, (void*)data);
+			}
+			else
+				allfiles.push_back(*file);
+#else
 			allfiles.push_back(*file);
+#endif
 		else
 			newfile(file->filename);
 	}
@@ -115,6 +184,11 @@ void checkall(configuration &myconfig)
 		check(myconfig, *feed, allfiles);
 	}
 	getlist(allfiles, myconfig);
+	/* Threads must be joined before allfiles is trashed */
+#ifdef THREADS
+	for(int i=0; i<myconfig.threads.size(); i++)
+		pthread_join(myconfig.threads[i], NULL);
+#endif
 }
 
 // This loops through all feeds and passes them to up2date()
@@ -128,6 +202,11 @@ void up2dateall(configuration &myconfig)
 		up2date(myconfig,*feed, allfiles);
 	}
 	getlist(allfiles, myconfig);
+#ifdef THREADS
+	for(int i=0; i<myconfig.threads.size(); i++)
+		pthread_join(myconfig.threads[i], NULL);
+#endif
+
 }
                                                           
 // This adds a file to files.xml
@@ -274,7 +353,7 @@ void get(file &thefile, configuration &myconfig)
 	curl_easy_setopt(mycurl,CURLOPT_URL,thefile.URL.c_str());
 	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
 	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
-	curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,0);
+	curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,1);
 	curl_easy_perform(mycurl);
 	fclose(outputfile);
 	newfile(thefile.filename);
