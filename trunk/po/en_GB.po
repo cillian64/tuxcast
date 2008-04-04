@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tuxcast 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-29 17:51+0000\n"
+"POT-Creation-Date: 2008-04-04 14:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -531,42 +531,47 @@ msgstr ""
 msgid "A feed with the same URL already exists\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:382
+#: ../config/tuxcast-config.cpp:377
+#, c-format
+msgid "Are you sure you wish to delete the feed \"%s\"? (yes|no)\n"
+msgstr ""
+
+#: ../config/tuxcast-config.cpp:388
 #, c-format
 msgid "Feed \"%s\" doesn't exist\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:396
+#: ../config/tuxcast-config.cpp:402
 #, c-format
 msgid "You must pass -n and either -A, -f or -N when updating a feed's info\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:412
+#: ../config/tuxcast-config.cpp:418
 #, c-format
 msgid "Error: Blank address\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:419
+#: ../config/tuxcast-config.cpp:425
 #, c-format
 msgid "Error: Another feed already exists with this address\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:434
+#: ../config/tuxcast-config.cpp:440
 #, c-format
 msgid "Error: Blank name\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:442
+#: ../config/tuxcast-config.cpp:448
 #, c-format
 msgid "Error: Another feed already exists with this name\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:451
+#: ../config/tuxcast-config.cpp:457
 #, c-format
 msgid "You must pass either -A, -f or -N when updating a feed's info\n"
 msgstr ""
 
-#: ../config/tuxcast-config.cpp:460
+#: ../config/tuxcast-config.cpp:466
 #, c-format
 msgid "Error: feed \"%s\" doesn't exist.\n"
 msgstr ""

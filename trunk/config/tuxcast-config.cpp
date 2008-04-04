@@ -373,6 +373,12 @@ void del()
 	{
 		if(strcasecmp(optarg,feed->name.c_str()) == 0)
 		{
+			string ans;
+			printf(_("Are you sure you wish to delete the feed \"%s\"? (yes|no)\n"), feed->name.c_str());
+			cin >> ans;
+			if(strcasecmp(ans.c_str(),"yes") != 0)
+				return;
+
 			// We've found the feed - wipe it:
 			myconfig.feeds.erase(feed);
 			myconfig.save();
