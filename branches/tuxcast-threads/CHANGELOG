@@ -1,3 +1,13 @@
+Revision 184:
+* Now uses the normal tuxcast config location.  (Pretty much stable now)
+--------------------------------------------------------------------------------
+
+Revision 183:
+<< Merged from trunk >>
+* Reverted TODO
+* Added a confirmation question when deleting feed (Thanks slimeypete)
+--------------------------------------------------------------------------------
+
 Revision 182:
 * Threads now live on and continue downloading all new files seen so far.
 	This might not download quite in the order you want, but it ensures

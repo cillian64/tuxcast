@@ -216,7 +216,7 @@ void newfile(string name)
         xmlDoc *doc;
         xmlNode *root, curr;
         string path=getenv("HOME");
-        path += "/.tuxcast-thread/files.xml";
+        path += "/.tuxcast/files.xml";
 	char *temppath=new char[path.size()+7];
 	strcpy(temppath,path.c_str());
 	strcat(temppath,".XXXXXX");
@@ -249,7 +249,7 @@ bool alreadydownloaded(string name)
         xmlDoc *doc;
         xmlNode *root,*curr;
         string path = getenv("HOME");
-        path += "/.tuxcast-thread/files.xml";
+        path += "/.tuxcast/files.xml";
         doc = xmlReadFile(path.c_str(),NULL,0);
         if(doc == NULL)
         {

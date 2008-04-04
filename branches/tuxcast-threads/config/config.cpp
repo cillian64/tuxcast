@@ -103,7 +103,7 @@ void configuration::save()
 
 
 	path = getenv("HOME");
-	path = path + "/.tuxcast-thread";
+	path = path + "/.tuxcast";
 	cachepath = path + "/cache";
 	try
 	{
@@ -162,7 +162,7 @@ void configuration::load()
 	string path=getenv("HOME");
 	bool queuesave=false; // This is so something in here can queue a save
 	// which will take place once the XML file is closed.
-	path = path + "/.tuxcast-thread/config.xml";
+	path = path + "/.tuxcast/config.xml";
 	try
 	{
 		if(checkfileexists(path) == false)
