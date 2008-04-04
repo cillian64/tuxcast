@@ -31,6 +31,15 @@ using namespace std;
 
 #include "../config/config.h"
 
+#ifdef THREADS
+struct threaddata
+{
+	file thefile;
+	filelist *allfiles;
+	configuration *myconfig;
+};
+void* threadfunc(void* data);
+#endif
 
 void newfile(string name);
 bool alreadydownloaded(string name); // true if already downloaded
