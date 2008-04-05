@@ -85,9 +85,11 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 			data->thefile = *file;
 			data->myconfig = &myconfig;
 			data->allfiles = &allfiles;
+			pthread_mutex_lock(&(myconfig.configlock));
 			myconfig.threads.push_back(0);
 			pthread_create(&(myconfig.threads[myconfig.threads.size()-1]),
 				NULL, threadfunc, (void*)data);
+			pthread_mutex_unlock(&(myconfig.configlock));
 		}
 		else
 			allfiles.push_back(*file);
@@ -156,9 +158,11 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
 				data->thefile = *file;
 				data->myconfig = &myconfig;
 				data->allfiles = &allfiles;
+				pthread_mutex_lock(&(myconfig.configlock));
 				myconfig.threads.push_back(0);
 				pthread_create(&(myconfig.threads[myconfig.threads.size()-1]),
 					NULL, threadfunc, (void*)data);
+				pthread_mutex_unlock(&(myconfig.configlock));
 			}
 			else
 				allfiles.push_back(*file);
@@ -393,7 +397,22 @@ void getlist(filelist &files, configuration &myconfig)
 	{
 		try
 		{
+#ifdef THREADS
+			if(myconfig.numofthreads < myconfig.numofdownloaders)
+			{
+				struct threaddata *data = new struct threaddata;
+				data->thefile = *file;
+				data->myconfig = &myconfig;
+				data->allfiles = &files;
+				pthread_mutex_lock(&(myconfig.configlock));
+				myconfig.threads.push_back(0);
+				pthread_create(&(myconfig.threads[myconfig.threads.size()-1]),
+					NULL, threadfunc, (void*)data);
+				pthread_mutex_unlock(&(myconfig.configlock));
+			}
+#else
 			get(*file, myconfig);
+#endif
 		}
 		catch(eFilestuff_CannotCreateFolder &e)
 		{
