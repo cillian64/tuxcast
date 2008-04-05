@@ -1,3 +1,8 @@
+Revision 187:
+* Fixed some threading issues
+* Added another mutex lock to prevent a potential race condition
+--------------------------------------------------------------------------------
+
 Revision 185:
 * Merged in threads branch (off by default)
 * Fixed the THREADS compile flag
