@@ -1,3 +1,7 @@
+Revision 189:
+* Added AUTHORS file
+--------------------------------------------------------------------------------
+
 Revision 187:
 * Fixed some threading issues
 * Added another mutex lock to prevent a potential race condition
