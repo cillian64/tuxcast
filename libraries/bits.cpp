@@ -20,14 +20,29 @@
  */
 
 
-// ONLY UNCOMMENT ONE OF THESE!:
-#define POSIX
-// #define BOOST
-// #define BSD
 
-// Uncomment for torrent support
-// Also comment or uncomment libtorrent stuff in config.mk
-#define TORRENT
+#include "../compile_flags.h"
+#include "bits.h"
 
-// Uncomment for thread support:
-//#define THREADS
+using namespace std;
+
+void replace(string &thestring, map<char, string> &vars)
+{
+	int pos=-2; // So the first search starts at 0
+
+	// +2 so the char after each % found is skipped
+	// So %% works a bit more sanely
+	while((pos = thestring.find("%",pos+2)) != -1)
+	{
+		if(pos == thestring.size()-1)
+			// EOF
+			break;
+		if(thestring[pos+1] == '%')
+			// Leave it - %%
+			continue;
+
+		thestring.replace(pos,2,vars[thestring[pos+1]]);
+		// If the var isn't found, life is good - leave it.
+	}
+}
+
