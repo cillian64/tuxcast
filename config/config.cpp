@@ -93,11 +93,9 @@ void configuration::save()
 		node2=xmlNewChild(node,NULL,(xmlChar *)"mimetype",(xmlChar*)mime->c_str());
 	}
 
-#ifdef PCREPP
-	xmlNewChild(root_node,NULL, (xmlChar *)"postdownload", (xmlChar*)postdownload->c_str());
-	xmlNewChild(root_node,NULL, (xmlChar *)"postfeed", (xmlChar*)postfeed->c_str());
-	xmlNewChild(root_node,NULL, (xmlChar *)"postrun", (xmlChar*)postrun->c_str());
-#endif
+	xmlNewChild(root_node,NULL, (xmlChar *)"postdownload", (xmlChar*)postdownload.c_str());
+	xmlNewChild(root_node,NULL, (xmlChar *)"postfeed", (xmlChar*)postfeed.c_str());
+	xmlNewChild(root_node,NULL, (xmlChar *)"postrun", (xmlChar*)postrun.c_str());
 
 
 
@@ -294,16 +292,23 @@ void configuration::load()
 				}
 			}
 		}
-#ifdef PCREPP
 		else if((strcasecmp((char *)curr->name, "postdownload") == 0))
-			postdownload = (char *)curr->children->content;
+		{
+			if(curr->children != NULL)
+				postdownload = (char *)curr->children->content;
+		}
 		
 		else if((strcasecmp((char *)curr->name, "postfeed") == 0))
-			postfeed = (char *)curr->children->content;
-		
+		{
+			if(curr->children != NULL)
+				postfeed = (char *)curr->children->content;
+		}
+
 		else if((strcasecmp((char *)curr->name, "postrun") == 0))
-			postrun = (char *)curr->children->content;
-#endif
+		{
+			if(curr->children != NULL)
+				postrun = (char *)curr->children->content;
+		}
 
 	}
 

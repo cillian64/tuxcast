@@ -56,11 +56,9 @@ class configuration
 		feedlist feeds; // A vector of feed pointers
 		mimelist permitted_mimes;
 		
-#ifdef PCREPP
 		string postdownload;
 		string postfeed;
 		string postrun;
-#endif
 
 #ifdef THREADS
 		unsigned int numofdownloaders;
