@@ -1,4 +1,8 @@
-Revision 180:
+Revision 191:
+* Removed a couple more bits referring to PCRE from config.[h,cpp]
+--------------------------------------------------------------------------------
+
+Revision 190:
 * Removed PCRE from everywhere
 * Added in the new "bits" library, with the replace function to replace what
 	PCRE was going to be used for.
