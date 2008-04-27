@@ -1,3 +1,9 @@
+Revision 192:
+* Removed two more PCRE mentions in tuxcast-config.cpp
+* Added in stuff to tuxcast-config to manipulate postdownload, postfeed and
+	postrun
+--------------------------------------------------------------------------------
+
 Revision 191:
 * Removed a couple more bits referring to PCRE from config.[h,cpp]
 --------------------------------------------------------------------------------

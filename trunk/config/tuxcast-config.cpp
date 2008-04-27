@@ -227,6 +227,23 @@ void get(int argc, char **argv)
 		return;
 	}
 #endif
+
+	if(strcasecmp(args.c_str(), "postdownload") == 0)
+	{
+		printf("%s\n", myconfig.postdownload.c_str());
+		return;
+	}
+	if(strcasecmp(args.c_str(), "postfeed") == 0)
+	{
+		printf("%s\n", myconfig.postfeed.c_str());
+		return;
+	}
+	if(strcasecmp(args.c_str(), "postrun") == 0)
+	{
+		printf("%s\n", myconfig.postrun.c_str());
+		return;
+	}
+
 	if(strcasecmp(args.c_str(),"ask") == 0)
 	{
 		if(myconfig.ask == true)
@@ -284,6 +301,11 @@ void getall(void)
 #ifdef THREADS
 	printf(_("threads = %d\n"), myconfig.numofdownloaders);
 #endif
+
+	printf(_("postdownload = %s\n"), myconfig.postdownload.c_str());
+	printf(_("postfeed = %s\n"), myconfig.postfeed.c_str());
+	printf(_("postrun = %s\n"), myconfig.postrun.c_str());
+
 	listmimes();
 	// ...
 	// Let's show some feeds:
@@ -303,15 +325,20 @@ void set()
 	string value=args.substr(args.find("=",0)+1,args.length()-args.find("=",0)-1);
 
 	if(strcasecmp(varname.c_str(),"podcastdir") == 0)
-	{
 		myconfig.podcastdir = value;
-	}
+
 #ifdef THREADS
 	if(strcasecmp(varname.c_str(), "threads") == 0)
-	{
 		myconfig.numofdownloaders = atoi(value.c_str());
-	}
 #endif
+
+	if(strcasecmp(varname.c_str(), "postdownload") == 0)
+		myconfig.postdownload = value;
+	if(strcasecmp(varname.c_str(), "postfeed") == 0)
+		myconfig.postfeed = value;
+	if(strcasecmp(varname.c_str(), "postrun") == 0)
+		myconfig.postrun = value;
+
 	if(strcasecmp(varname.c_str(),"ask") == 0)
 	{
 		if((strcasecmp(value.c_str(),"true") == 0) || (strcasecmp(value.c_str(),"yes") == 0))
