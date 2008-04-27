@@ -20,14 +20,15 @@
  */
 
 
-// ONLY UNCOMMENT ONE OF THESE!:
-#define POSIX
-// #define BOOST
-// #define BSD
 
-// Uncomment for torrent support
-// Also comment or uncomment libtorrent stuff in config.mk
-#define TORRENT
+#ifndef BITS_H
+#define BITS_H
 
-// Uncomment for thread support:
-//#define THREADS
+#include <string>
+#include <map>
+
+using namespace std;
+
+void replace(string &thestring, map<char,string> &vars);
+
+#endif

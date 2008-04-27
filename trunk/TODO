@@ -13,4 +13,5 @@
 * Populate the type property of the file for atom feeds
 * Check all calls use exceptions
 * Fix syntax errors in tuxcast-config's manpage
-* Fixed libraries/torrent.cpp to work with the latest libsigc++ (2.2.2 or later)
+* Fix libraries/torrent.cpp to work with the latest libsigc++ (2.2.2 or later)
+* Change internal config storage to a map rather than discrete variables

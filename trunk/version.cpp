@@ -55,9 +55,6 @@ void version()
 #ifdef BSD
 	printf(_("Compiled for BSD\n"));
 #endif
-#ifdef PCREPP
-	printf(_("Compiled with PCRE++ support\n"));
-#endif
 #ifdef TORRENT
 	printf(_("Compiled with libtorrent bittorrent support\n"));
 #endif

@@ -1,3 +1,11 @@
+Revision 180:
+* Removed PCRE from everywhere
+* Added in the new "bits" library, with the replace function to replace what
+	PCRE was going to be used for.
+* Updated TODO
+(Thanks to Greated for the help writing the replace function)
+--------------------------------------------------------------------------------
+
 Revision 189:
 * Added AUTHORS file
 --------------------------------------------------------------------------------

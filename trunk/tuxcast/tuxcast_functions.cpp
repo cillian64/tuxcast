@@ -31,9 +31,6 @@
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
-#ifdef PCREPP
-#include <pcre++.h>
-#endif
 #ifdef TORRENT
 #include "../libraries/torrent/torrent.h"
 #endif
