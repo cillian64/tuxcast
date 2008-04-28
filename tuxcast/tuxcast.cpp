@@ -108,10 +108,12 @@ int main(int argc, char *argv[])
 			case 'c':
 				printf(_("Checking all feeds\n"));
 				checkall(myconfig);
+				runhook(POSTRUN, myconfig);
 				break;
 			case 'u':
 				printf(_("Getting up to date on all feeds\n"));
 				up2dateall(myconfig);
+				runhook(POSTRUN, myconfig);
 				break;
 
 			case 'C':
@@ -134,6 +136,7 @@ int main(int argc, char *argv[])
 						for(int i=0; i<myconfig.threads.size(); i++)
 							pthread_join(myconfig.threads[i], NULL);
 #endif
+						runhook(POSTRUN, myconfig);
 						return 0;
 					}
 				}
@@ -162,6 +165,7 @@ int main(int argc, char *argv[])
 						for(int i=0; i<myconfig.threads.size(); i++)
 							pthread_join(myconfig.threads[i], NULL);
 #endif
+						runhook(POSTRUN, myconfig);
 						return 0;
 					}
 				}

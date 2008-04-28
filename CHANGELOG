@@ -1,3 +1,7 @@
+Revision 193:
+* Added in hooks and the main hook handler function
+--------------------------------------------------------------------------------
+
 Revision 192:
 * Removed two more PCRE mentions in tuxcast-config.cpp
 * Added in stuff to tuxcast-config to manipulate postdownload, postfeed and
