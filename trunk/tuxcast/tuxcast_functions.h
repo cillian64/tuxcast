@@ -31,6 +31,8 @@ using namespace std;
 
 #include "../config/config.h"
 
+enum {POSTDOWNLOAD, POSTFEED, POSTRUN};
+
 #ifdef THREADS
 struct threaddata
 {
@@ -53,4 +55,7 @@ void populate_download_path(feed &feed, file &file, configuration &myconfig);
 void handle_bittorrent (file &file);
 void cachefeed(const string &name, const string &URL);
 auto_ptr<filelist> parsefeed(string name);
+
+void runhook(int hook, configuration &myconfig);
+
 #endif

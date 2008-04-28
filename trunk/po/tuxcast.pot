@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-27 21:10+0100\n"
+"POT-Creation-Date: 2008-04-28 20:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -83,156 +83,156 @@ msgstr ""
 msgid "Checking all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:113
+#: ../tuxcast/tuxcast.cpp:114
 #, c-format
 msgid "Getting up to date on all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:118
+#: ../tuxcast/tuxcast.cpp:120
 #, c-format
 msgid "Checking feed, \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:122 ../tuxcast/tuxcast.cpp:150
+#: ../tuxcast/tuxcast.cpp:124 ../tuxcast/tuxcast.cpp:153
 #, c-format
 msgid "You must pass a non-blank feed name\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:142 ../tuxcast/tuxcast.cpp:170
+#: ../tuxcast/tuxcast.cpp:145 ../tuxcast/tuxcast.cpp:174
 #, c-format
 msgid "Unknown feed, \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:146
+#: ../tuxcast/tuxcast.cpp:149
 #, c-format
 msgid "Getting up2date on feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:187
+#: ../tuxcast/tuxcast.cpp:191
 #, c-format
 msgid "Usage: tuxcast <option>\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:188
+#: ../tuxcast/tuxcast.cpp:192
 #, c-format
 msgid "where <option> is one of the below:\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:189
+#: ../tuxcast/tuxcast.cpp:193
 #, c-format
 msgid "-c - Check all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:190
+#: ../tuxcast/tuxcast.cpp:194
 #, c-format
 msgid "-u - Download only the latest file from all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:191
+#: ../tuxcast/tuxcast.cpp:195
 #, c-format
 msgid "-C name - Download all episodes of the named feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:192
+#: ../tuxcast/tuxcast.cpp:196
 #, c-format
 msgid "-U name - Download only the latest episode of the named feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:193
+#: ../tuxcast/tuxcast.cpp:197
 #, c-format
 msgid "-h - Show this help message\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:194
+#: ../tuxcast/tuxcast.cpp:198
 #, c-format
 msgid "-f - clean out old podcasts from files.xml\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:195
+#: ../tuxcast/tuxcast.cpp:199
 #, c-format
 msgid "-v - Show version and license information\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:200
+#: ../tuxcast/tuxcast.cpp:204
 #, c-format
 msgid "Error: could not save config/state due to full filesystem:\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:183
+#: ../tuxcast/tuxcast_functions.cpp:184
 #, c-format
 msgid "Checking feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:202
+#: ../tuxcast/tuxcast_functions.cpp:203
 #, c-format
 msgid "up2date'ing feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:295
+#: ../tuxcast/tuxcast_functions.cpp:296
 #, c-format
 msgid "Error initializing libcurl\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:319
+#: ../tuxcast/tuxcast_functions.cpp:320
 #, c-format
 msgid "Not downloading %s - incorrect MIME type\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:328
+#: ../tuxcast/tuxcast_functions.cpp:329
 #, c-format
 msgid "Download %s? (yes/no)\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:346
+#: ../tuxcast/tuxcast_functions.cpp:347
 #, c-format
 msgid "Error opening output file \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:352
+#: ../tuxcast/tuxcast_functions.cpp:353
 #, c-format
 msgid "Downloading %s...\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:416
+#: ../tuxcast/tuxcast_functions.cpp:419
 #, c-format
 msgid "Oops, couldn't create folder for feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:417 ../tuxcast/tuxcast_functions.cpp:505
+#: ../tuxcast/tuxcast_functions.cpp:420 ../tuxcast/tuxcast_functions.cpp:508
 #: ../config/config.cpp:116 ../config/config.cpp:124
 #: ../config/tuxcast-config.cpp:125
 #, c-format
 msgid "Exception caught: "
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:495
+#: ../tuxcast/tuxcast_functions.cpp:498
 #, c-format
 msgid "This is an XML file, but does not appear to be RSS 1 (RDF) or RSS 2\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:496
+#: ../tuxcast/tuxcast_functions.cpp:499
 #, c-format
 msgid ""
 "Please check you have the correct URL and that it is an RSS feed, and then "
 "contact your feed maintainer\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:497
+#: ../tuxcast/tuxcast_functions.cpp:500
 #, c-format
 msgid "Exception caught:"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:499 ../tuxcast/tuxcast_functions.cpp:507
+#: ../tuxcast/tuxcast_functions.cpp:502 ../tuxcast/tuxcast_functions.cpp:510
 #, c-format
 msgid "Aborting this feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:503
+#: ../tuxcast/tuxcast_functions.cpp:506
 #, c-format
 msgid "Couldn't parse the feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:504
+#: ../tuxcast/tuxcast_functions.cpp:507
 #, c-format
 msgid "Please check the URL is correct, then contact your feed maintainer.\n"
 msgstr ""

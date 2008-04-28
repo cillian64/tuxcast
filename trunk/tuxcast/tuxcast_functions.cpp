@@ -93,6 +93,7 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 #else
 		allfiles.push_back(*file);
 #endif
+	runhook(POSTFEED, myconfig);
 	}
 }
 
@@ -360,6 +361,8 @@ void get(file &thefile, configuration &myconfig)
 	newfile(thefile.filename);
 	
 	curl_easy_cleanup(mycurl);
+
+	runhook(POSTDOWNLOAD, myconfig);
 }
 
 void populate_download_path(feed &feed, file &file, configuration &myconfig)
@@ -509,4 +512,30 @@ auto_ptr<filelist> parsefeed(string name) // This parses the feed, with error ch
 	// myfilelist will be non-NULL if and only if parse(URL) ran okay
 	return myfilelist;
 }
+
+void runhook(int hook, configuration &myconfig)
+{
+	switch(hook)
+	{
+		case POSTDOWNLOAD:
+			if(strcasecmp(myconfig.postdownload.c_str(),"") == 0)
+				return;
+			printf("Postdownload fired: %s\n", myconfig.postdownload.c_str());
+			break;
+		case POSTFEED:
+			if(strcasecmp(myconfig.postfeed.c_str(),"") == 0)
+				return;
+			printf("Postfeed fired: %s\n", myconfig.postfeed.c_str());
+			break;
+		case POSTRUN:
+			if(strcasecmp(myconfig.postrun.c_str(),"") == 0)
+				return;
+			printf("Postrun fired: %s\n", myconfig.postrun.c_str());
+			break;
+		default:
+			// TODO: Exception
+			return;
+	}
+}
+
 
