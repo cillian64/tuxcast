@@ -28,6 +28,7 @@
 #include <curl/curl.h>
 #include <cstdio> // Needed to open a file in the classic way, so libcurl can write to it
 #include <stdio.h>
+#include <stdlib.h>
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
@@ -534,11 +535,13 @@ void runhook(int hook, configuration &myconfig)
 			if(strcasecmp(myconfig.postdownload.c_str(),"") == 0)
 				return;
 			printf("Postdownload fired: %s\n", myconfig.postdownload.c_str());
+			system(myconfig.postdownload.c_str());
 			break;
 		case POSTRUN:
 			if(strcasecmp(myconfig.postrun.c_str(),"") == 0)
 				return;
 			printf("Postrun fired: %s\n", myconfig.postrun.c_str());
+			system(myconfig.postrun.c_str());
 			break;
 		default:
 			// TODO: Exception

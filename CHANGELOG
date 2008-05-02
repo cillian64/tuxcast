@@ -1,3 +1,7 @@
+Revision 196:
+* Hooks are now actually executed.
+--------------------------------------------------------------------------------
+
 Revision 195:
 * Hooks only fire when files have been downloaded
 * Removed the postfeed hook
