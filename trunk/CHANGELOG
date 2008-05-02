@@ -1,3 +1,8 @@
+Revision 195:
+* Hooks only fire when files have been downloaded
+* Removed the postfeed hook
+--------------------------------------------------------------------------------
+
 Revision 194:
 * Turned on threads by default
 --------------------------------------------------------------------------------

@@ -39,13 +39,14 @@ class feed;
 class configuration
 {
 	public:
-#ifdef THREADS
 		configuration()
 		{
+#ifdef THREADS
 			pthread_mutex_init(&configlock, NULL);
 			numofthreads = 0;
-		}
 #endif
+			firehooks=false;
+		}
 	
 		typedef vector<feed> feedlist;
 		typedef vector<string> mimelist;
@@ -57,8 +58,9 @@ class configuration
 		mimelist permitted_mimes;
 		
 		string postdownload;
-		string postfeed;
 		string postrun;
+
+		bool firehooks;
 
 #ifdef THREADS
 		unsigned int numofdownloaders;
