@@ -94,7 +94,6 @@ void configuration::save()
 	}
 
 	xmlNewChild(root_node,NULL, (xmlChar *)"postdownload", (xmlChar*)postdownload.c_str());
-	xmlNewChild(root_node,NULL, (xmlChar *)"postfeed", (xmlChar*)postfeed.c_str());
 	xmlNewChild(root_node,NULL, (xmlChar *)"postrun", (xmlChar*)postrun.c_str());
 
 
@@ -298,12 +297,6 @@ void configuration::load()
 				postdownload = (char *)curr->children->content;
 		}
 		
-		else if((strcasecmp((char *)curr->name, "postfeed") == 0))
-		{
-			if(curr->children != NULL)
-				postfeed = (char *)curr->children->content;
-		}
-
 		else if((strcasecmp((char *)curr->name, "postrun") == 0))
 		{
 			if(curr->children != NULL)

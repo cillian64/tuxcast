@@ -93,7 +93,6 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 #else
 		allfiles.push_back(*file);
 #endif
-	runhook(POSTFEED, myconfig);
 	}
 }
 
@@ -362,6 +361,14 @@ void get(file &thefile, configuration &myconfig)
 	
 	curl_easy_cleanup(mycurl);
 
+#ifdef THREADS
+	pthread_mutex_lock(&(myconfig.configlock));
+#endif
+	myconfig.firehooks = true;
+#ifdef THREADS
+	pthread_mutex_unlock(&(myconfig.configlock));
+#endif
+
 	runhook(POSTDOWNLOAD, myconfig);
 }
 
@@ -515,17 +522,18 @@ auto_ptr<filelist> parsefeed(string name) // This parses the feed, with error ch
 
 void runhook(int hook, configuration &myconfig)
 {
+	/* No eps downloaded - presumably no reason
+	 * for hooks to be run */
+	if(!myconfig.firehooks)
+		return;
+
+
 	switch(hook)
 	{
 		case POSTDOWNLOAD:
 			if(strcasecmp(myconfig.postdownload.c_str(),"") == 0)
 				return;
 			printf("Postdownload fired: %s\n", myconfig.postdownload.c_str());
-			break;
-		case POSTFEED:
-			if(strcasecmp(myconfig.postfeed.c_str(),"") == 0)
-				return;
-			printf("Postfeed fired: %s\n", myconfig.postfeed.c_str());
 			break;
 		case POSTRUN:
 			if(strcasecmp(myconfig.postrun.c_str(),"") == 0)

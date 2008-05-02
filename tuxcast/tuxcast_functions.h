@@ -31,7 +31,7 @@ using namespace std;
 
 #include "../config/config.h"
 
-enum {POSTDOWNLOAD, POSTFEED, POSTRUN};
+enum {POSTDOWNLOAD, POSTRUN};
 
 #ifdef THREADS
 struct threaddata

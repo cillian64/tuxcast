@@ -8,11 +8,11 @@
 
 // These are defined for official releases:
 //#define RELEASE_BINARY
-//#define RELEASE_SORUCE
+//#define RELEASE_SOURCE
 
 // These are defined for subversion checkouts
 #define SUBVERSION
-#define SUBVERSION_REVISION "194"
+#define SUBVERSION_REVISION "195"
 // #define SUBVERSION_BRANCH "branchname"
 
 void version();
