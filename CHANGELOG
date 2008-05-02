@@ -1,3 +1,7 @@
+Revision 194:
+* Turned on threads by default
+--------------------------------------------------------------------------------
+
 Revision 193:
 * Added in hooks and the main hook handler function
 --------------------------------------------------------------------------------
