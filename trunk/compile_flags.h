@@ -30,4 +30,4 @@
 #define TORRENT
 
 // Uncomment for thread support:
-//#define THREADS
+#define THREADS
