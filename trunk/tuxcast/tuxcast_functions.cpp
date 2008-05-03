@@ -49,6 +49,7 @@
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
 #include "../libraries/common.h"
+#include "../libraries/bits.h"
 #include "../config/config_exceptions.h"
 #include "rss_exceptions.h"
 #include "tuxcast_functions.h"
@@ -290,6 +291,8 @@ void get(file &thefile, configuration &myconfig)
 	FILE *outputfile=NULL;
 	CURL *mycurl;
 	bool correctmime=false;
+	map<char,string> vars;
+
 	mycurl = curl_easy_init();
 	if(mycurl == NULL)
 	{
@@ -370,7 +373,7 @@ void get(file &thefile, configuration &myconfig)
 	pthread_mutex_unlock(&(myconfig.configlock));
 #endif
 
-	runhook(POSTDOWNLOAD, myconfig);
+	runhook(POSTDOWNLOAD, vars, myconfig);
 }
 
 void populate_download_path(feed &feed, file &file, configuration &myconfig)
@@ -521,32 +524,34 @@ auto_ptr<filelist> parsefeed(string name) // This parses the feed, with error ch
 	return myfilelist;
 }
 
-void runhook(int hook, configuration &myconfig)
+void runhook(int hook, map<char,string> vars, configuration &myconfig)
 {
+	string command;
 	/* No eps downloaded - presumably no reason
 	 * for hooks to be run */
 	if(!myconfig.firehooks)
 		return;
-
 
 	switch(hook)
 	{
 		case POSTDOWNLOAD:
 			if(strcasecmp(myconfig.postdownload.c_str(),"") == 0)
 				return;
-			printf("Postdownload fired: %s\n", myconfig.postdownload.c_str());
-			system(myconfig.postdownload.c_str());
+			command = myconfig.postdownload;
 			break;
 		case POSTRUN:
 			if(strcasecmp(myconfig.postrun.c_str(),"") == 0)
 				return;
-			printf("Postrun fired: %s\n", myconfig.postrun.c_str());
-			system(myconfig.postrun.c_str());
+			command = myconfig.postrun;
 			break;
 		default:
 			// TODO: Exception
 			return;
 	}
+
+	replace(command, vars);
+	printf("Hook fired: %s\n", command.c_str());
+	system(command.c_str());
 }
 
 
