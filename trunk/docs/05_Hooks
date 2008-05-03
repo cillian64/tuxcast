@@ -1,0 +1,26 @@
+Hooks
+-----
+
+Hooks are commands that are "fired", or executed, at certain points during tuxcast's execution, for example after a file is downloaded.  Certain variables can be added as part of a hook, and tuxcast will substitute out the variable for a particular piece of information before running the hook.
+
+
+Types of hook
+-------------
+Current hooks are:
+o postdownload - run after a file has been downloaded
+o postrun - run when tuxcast finishes executing, *only if files have been downloaded during the execution*
+
+Hook variables
+--------------
+The variables available to the hook command vary depending on which hook has fired.  All variable names take the form of the '%' character followed by a single letter, for example %x.  If you wish to include the % character in your hook command without having tuxcast substitute it for a variable, use '%%'.
+
+Variables available for all hooks are:
+	- %d: the contents of the podcast dir variable
+
+Hook specific variables are:
+o postdownload
+	- %p: the the full path of the file that has been downloaded
+	- %f: the name of the feed from which the file was downloaded
+	- %m: the MIME type of the file downloaded
+
+postrun does not provide any extra variables other than those available to all hooks.

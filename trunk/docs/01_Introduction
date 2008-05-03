@@ -5,5 +5,4 @@ Tuxcast is a podcatcher.  It downloads enclosures from an RSS feed, also known a
 
 It's written in c++, using the libxml2 library to parse RSS feeds, POSIX libraries for filesytstem stuff, and libcurl to download the files.
 
-At the moment, it's command-line only, however in later release there will probably be a GUI, in gtk.
-
+Tuxcast uses a command line interface; there are no current plans for a GUI.
