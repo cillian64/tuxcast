@@ -373,6 +373,10 @@ void get(file &thefile, configuration &myconfig)
 	pthread_mutex_unlock(&(myconfig.configlock));
 #endif
 
+	setvars(vars, myconfig);
+	vars['p'] = thefile.savepath;
+	vars['f'] = thefile.parentfeed->name;
+	vars['m'] = thefile.type;
 	runhook(POSTDOWNLOAD, vars, myconfig);
 }
 
@@ -554,4 +558,7 @@ void runhook(int hook, map<char,string> vars, configuration &myconfig)
 	system(command.c_str());
 }
 
-
+void setvars(map<char,string> &vars, configuration &myconfig)
+{
+	vars['d'] = myconfig.podcastdir;
+}
