@@ -6,6 +6,7 @@ TUXCAST_SOURCES=\
 	cleaner.cpp \
 	../config/config.cpp \
 	../libraries/filestuff.cpp \
+	../libraries/bits.cpp \
 	tuxcast_functions.cpp \
 	../version.cpp
 TUXCAST_OBJS=\
@@ -26,6 +27,9 @@ tuxcast: $(TUXCAST_OBJS) $(AB_TORRENT_OBJECTS)
 
 ../libraries/filestuff.o: ../libraries/filestuff.cpp
 	$(MAKE) filestuff.o -C ../libraries/
+
+../libraries/bits.o: ../libraries/bits.cpp
+	$(MAKE) bits.o -C ../libraries/
 
 ../libraries/torrent/torrent.o: ../libraries/torrent/torrent.cpp
 	$(MAKE) torrent.o -C ../libraries/torrent

@@ -40,6 +40,7 @@
 #include "rss_exceptions.h"
 #include "tuxcast_functions.h"
 #include "cleaner.h"
+#include <map>
 #include "../version.h"
 
 #ifdef THREADS
@@ -60,6 +61,7 @@ const char options[] = "cuC:U:fvh";
 int main(int argc, char *argv[])
 {
 	configuration myconfig;
+	map<char, string> vars;
 
         // TODO: Fix this stuff?:
 	setlocale(LC_ALL,"");
@@ -108,12 +110,12 @@ int main(int argc, char *argv[])
 			case 'c':
 				printf(_("Checking all feeds\n"));
 				checkall(myconfig);
-				runhook(POSTRUN, myconfig);
+				runhook(POSTRUN, vars, myconfig);
 				break;
 			case 'u':
 				printf(_("Getting up to date on all feeds\n"));
 				up2dateall(myconfig);
-				runhook(POSTRUN, myconfig);
+				runhook(POSTRUN, vars, myconfig);
 				break;
 
 			case 'C':
@@ -136,7 +138,7 @@ int main(int argc, char *argv[])
 						for(int i=0; i<myconfig.threads.size(); i++)
 							pthread_join(myconfig.threads[i], NULL);
 #endif
-						runhook(POSTRUN, myconfig);
+						runhook(POSTRUN, vars, myconfig);
 						return 0;
 					}
 				}
@@ -165,7 +167,7 @@ int main(int argc, char *argv[])
 						for(int i=0; i<myconfig.threads.size(); i++)
 							pthread_join(myconfig.threads[i], NULL);
 #endif
-						runhook(POSTRUN, myconfig);
+						runhook(POSTRUN, vars, myconfig);
 						return 0;
 					}
 				}
