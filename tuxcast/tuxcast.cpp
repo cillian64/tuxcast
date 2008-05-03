@@ -138,6 +138,7 @@ int main(int argc, char *argv[])
 						for(int i=0; i<myconfig.threads.size(); i++)
 							pthread_join(myconfig.threads[i], NULL);
 #endif
+						setvars(vars, myconfig);
 						runhook(POSTRUN, vars, myconfig);
 						return 0;
 					}
@@ -167,6 +168,7 @@ int main(int argc, char *argv[])
 						for(int i=0; i<myconfig.threads.size(); i++)
 							pthread_join(myconfig.threads[i], NULL);
 #endif
+						setvars(vars, myconfig);
 						runhook(POSTRUN, vars, myconfig);
 						return 0;
 					}

@@ -57,6 +57,7 @@ void handle_bittorrent (file &file);
 void cachefeed(const string &name, const string &URL);
 auto_ptr<filelist> parsefeed(string name);
 
+void setvars(map<char,string> &vars, configuration &myconfig);
 void runhook(int hook, map<char,string> vars, configuration &myconfig);
 
 #endif
