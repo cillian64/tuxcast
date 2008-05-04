@@ -3,6 +3,8 @@
 # The Solaris section assumes that gnu tools from sunfreeware.org 
 # or blastwave.org are installed and in the path.
 
+APPNAME=tuxcast-0.4
+
 ifeq ($(OSTYPE),solaris)
 
 CXX=g++

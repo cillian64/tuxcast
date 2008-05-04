@@ -1,3 +1,8 @@
+Revision 200:
+* Added in two example hook scripts
+* Added hook example script installation make target
+--------------------------------------------------------------------------------
+
 Revision 199:
 * Added in hook variable values
 --------------------------------------------------------------------------------
