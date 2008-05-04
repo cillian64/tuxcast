@@ -110,11 +110,13 @@ int main(int argc, char *argv[])
 			case 'c':
 				printf(_("Checking all feeds\n"));
 				checkall(myconfig);
+				setvars(vars, myconfig);
 				runhook(POSTRUN, vars, myconfig);
 				break;
 			case 'u':
 				printf(_("Getting up to date on all feeds\n"));
 				up2dateall(myconfig);
+				setvars(vars, myconfig);
 				runhook(POSTRUN, vars, myconfig);
 				break;
 
