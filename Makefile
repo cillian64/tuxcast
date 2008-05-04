@@ -31,9 +31,11 @@ install: main
 	$(INSTALL) -D man/tuxcast.1 $(MANDIR)
 	$(INSTALL) -D man/tuxcast-config.1 $(MANDIR)
 	$(MAKE) -C po install
+	$(MAKE) -C hooks install
 	
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/tuxcast $(DESTDIR)$(PREFIX)/bin/tuxcast-config #$(DESTDIR)$(PREFIX)/bin/tuxcast-amarok
+	rm -rf $(DESTDIR)$(PREFIX)/share/doc/$(APPNAME)
 
 # TODO: Uninstall translation/po stuff?
 
