@@ -32,7 +32,8 @@ using namespace std;
 
 #include "../config/config.h"
 
-enum {POSTDOWNLOAD, POSTRUN};
+// Hooks:
+enum {POSTDOWNLOAD, POSTRUN, INCORRECTMIME};
 
 #ifdef THREADS
 struct threaddata

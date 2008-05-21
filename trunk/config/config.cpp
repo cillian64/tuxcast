@@ -95,7 +95,7 @@ void configuration::save()
 
 	xmlNewChild(root_node,NULL, (xmlChar *)"postdownload", (xmlChar*)postdownload.c_str());
 	xmlNewChild(root_node,NULL, (xmlChar *)"postrun", (xmlChar*)postrun.c_str());
-
+	xmlNewChild(root_node,NULL, (xmlChar *)"incorrectmime", (xmlChar*)incorrectmime.c_str());
 
 
 
@@ -298,6 +298,11 @@ void configuration::load()
 		}
 		
 		else if((strcasecmp((char *)curr->name, "postrun") == 0))
+		{
+			if(curr->children != NULL)
+				postrun = (char *)curr->children->content;
+		}
+		else if((strcasecmp((char *)curr->name, "incorrectmime") == 0))
 		{
 			if(curr->children != NULL)
 				postrun = (char *)curr->children->content;

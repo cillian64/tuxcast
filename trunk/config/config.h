@@ -59,6 +59,7 @@ class configuration
 		
 		string postdownload;
 		string postrun;
+		string incorrectmime;
 
 		bool firehooks;
 
