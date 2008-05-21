@@ -304,7 +304,7 @@ void getall(void)
 
 	printf(_("postdownload = %s\n"), myconfig.postdownload.c_str());
 	printf(_("postrun = %s\n"), myconfig.postrun.c_str());
-	printf(_("incorrectmime = %s\m"), myconfig.incorrectmime.c_str());
+	printf(_("incorrectmime = %s\n"), myconfig.incorrectmime.c_str());
 
 	listmimes();
 	// ...

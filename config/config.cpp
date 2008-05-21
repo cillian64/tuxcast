@@ -305,7 +305,7 @@ void configuration::load()
 		else if((strcasecmp((char *)curr->name, "incorrectmime") == 0))
 		{
 			if(curr->children != NULL)
-				postrun = (char *)curr->children->content;
+				incorrectmime = (char *)curr->children->content;
 		}
 
 	}
