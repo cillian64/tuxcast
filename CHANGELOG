@@ -1,3 +1,7 @@
+Revision 202:
+* Added in the incorrectmime hook, partially
+--------------------------------------------------------------------------------
+
 Revision 201:
 * Changed -c and -u to run setvars in addition to -C and -U
 * Changed the testpostdownload.sh hook to display 4 variables

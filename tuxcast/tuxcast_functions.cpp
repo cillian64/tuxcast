@@ -548,6 +548,10 @@ void runhook(int hook, map<char,string> vars, configuration &myconfig)
 				return;
 			command = myconfig.postrun;
 			break;
+		case INCORRECTMIME:
+			if(strcasecmp(myconfig.incorrectmime.c_str(),"") == 0)
+				return;
+			command = myconfig.incorrectmime;
 		default:
 			// TODO: Exception
 			return;

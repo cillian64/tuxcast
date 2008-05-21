@@ -238,6 +238,11 @@ void get(int argc, char **argv)
 		printf("%s\n", myconfig.postrun.c_str());
 		return;
 	}
+	if(strcasecmp(args.c_str(), "incorrectmime") == 0)
+	{
+		printf("%s\n", myconfig.incorrectmime.c_str());
+		return;
+	}
 
 	if(strcasecmp(args.c_str(),"ask") == 0)
 	{
@@ -299,6 +304,7 @@ void getall(void)
 
 	printf(_("postdownload = %s\n"), myconfig.postdownload.c_str());
 	printf(_("postrun = %s\n"), myconfig.postrun.c_str());
+	printf(_("incorrectmime = %s\m"), myconfig.incorrectmime.c_str());
 
 	listmimes();
 	// ...
@@ -330,6 +336,8 @@ void set()
 		myconfig.postdownload = value;
 	if(strcasecmp(varname.c_str(), "postrun") == 0)
 		myconfig.postrun = value;
+	if(strcasecmp(varname.c_str(), "incorrectmime") == 0)
+		myconfig.incorrectmime = value;
 
 	if(strcasecmp(varname.c_str(),"ask") == 0)
 	{
