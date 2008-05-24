@@ -320,11 +320,17 @@ void get(file &thefile, configuration &myconfig)
 	if(correctmime == false) // The MIME type isn't blank, the permitted
 	// list isn't empty, and it ain't permitted...
 	{
-		fprintf(stderr,_("Not downloading %s - incorrect MIME type\n"),
-			thefile.filename.c_str());
+		if(strcasecmp(myconfig.incorrectmime.c_str(), "") == 0)
+		{
+			fprintf(stderr,_("Not downloading %s - incorrect MIME type\n"),
+				thefile.filename.c_str());
+			newfile(thefile.filename);
+			return;
+		}
+		else
+			printf(_("%s: Incorrect MIME type\n"),
+				thefile.filename.c_str());
 
-		newfile(thefile.filename);
-		return;
 	}
 	
 	if(myconfig.ask == true)
@@ -377,6 +383,8 @@ void get(file &thefile, configuration &myconfig)
 	vars['p'] = thefile.savepath;
 	vars['f'] = thefile.parentfeed->name;
 	vars['m'] = thefile.type;
+	if(!correctmime)
+		runhook(INCORRECTMIME, vars, myconfig);
 	runhook(POSTDOWNLOAD, vars, myconfig);
 }
 
@@ -552,6 +560,7 @@ void runhook(int hook, map<char,string> vars, configuration &myconfig)
 			if(strcasecmp(myconfig.incorrectmime.c_str(),"") == 0)
 				return;
 			command = myconfig.incorrectmime;
+			break;
 		default:
 			// TODO: Exception
 			return;
