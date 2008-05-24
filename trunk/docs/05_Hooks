@@ -9,6 +9,7 @@ Types of hook
 Current hooks are:
 o postdownload - run after a file has been downloaded
 o postrun - run when tuxcast finishes executing, *only if files have been downloaded during the execution*
+o incorrectmime - if this hook is setup, when files with an incorrect MIME type are encountered, they will be downloaded and then this hook fired.
 
 Hook variables
 --------------
@@ -22,5 +23,7 @@ o postdownload
 	- %p: the the full path of the file that has been downloaded
 	- %f: the name of the feed from which the file was downloaded
 	- %m: the MIME type of the file downloaded
+
+incorrectmime provides the same variables as postdownload.
 
 postrun does not provide any extra variables other than those available to all hooks.
