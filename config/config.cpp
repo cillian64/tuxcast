@@ -185,6 +185,7 @@ void configuration::load()
 		// the right thing to call, but it works just fine
 		// Nothing should need to know the difference between
 		// An invalid config or none at all
+		// Shouldn't need to xmlFreeDoc here
 	}
 		
 	
@@ -267,6 +268,7 @@ void configuration::load()
 							if(partnode->children == NULL)
 							{
 								fprintf(stderr,_("Error: blank name or address in config file, please delete and recreate your config file using tuxcast-config\n"));
+								xmlFreeDoc(doc);
 								return;
 							}
 						}
@@ -313,7 +315,7 @@ void configuration::load()
 	if(queuesave == true)
 		this->save();
 
-
+	xmlFreeDoc(doc);
 }
 
 void feed::displayConfig(void) const

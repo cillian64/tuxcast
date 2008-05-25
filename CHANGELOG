@@ -1,3 +1,12 @@
+Revision 206:
+* Fixed memory leak in alreadydownloaded (Not freeing up the libxml doc)
+* Fixed memory leak in config::load (Not freeing libxml doc, again)
+* Fixed a memory leak caused by not cleaning up libxml before ending the program
+	(not in any way a problem, but it's neater)
+* Fixed two memory leaks in newfile
+* Fixed a string overflow in newfile (The temppath string wasn't long enough)
+--------------------------------------------------------------------------------
+
 Revision 205:
 * Updated documentation for the incorrectmime hook
 --------------------------------------------------------------------------------
