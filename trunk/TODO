@@ -1,6 +1,4 @@
 * Resuming incomplete downloads (Rather hard to do at the moment)
-* Clear up xml stuff at the end of functions (Confirmed that libcurl and libxml
-	are currently *not* cleaned up properly)
 * Where to save the config file, defined in compile_flags.h
 	(this could help portability)
 * More folder sanity checking

@@ -112,12 +112,14 @@ int main(int argc, char *argv[])
 				checkall(myconfig);
 				setvars(vars, myconfig);
 				runhook(POSTRUN, vars, myconfig);
+				xmlCleanupParser();
 				break;
 			case 'u':
 				printf(_("Getting up to date on all feeds\n"));
 				up2dateall(myconfig);
 				setvars(vars, myconfig);
 				runhook(POSTRUN, vars, myconfig);
+				xmlCleanupParser();
 				break;
 
 			case 'C':
@@ -142,6 +144,7 @@ int main(int argc, char *argv[])
 #endif
 						setvars(vars, myconfig);
 						runhook(POSTRUN, vars, myconfig);
+						xmlCleanupParser();
 						return 0;
 					}
 				}
@@ -172,6 +175,7 @@ int main(int argc, char *argv[])
 #endif
 						setvars(vars, myconfig);
 						runhook(POSTRUN, vars, myconfig);
+						xmlCleanupParser();
 						return 0;
 					}
 				}

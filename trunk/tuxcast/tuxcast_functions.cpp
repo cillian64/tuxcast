@@ -220,7 +220,7 @@ void newfile(string name)
         xmlNode *root, curr;
         string path=getenv("HOME");
         path += "/.tuxcast/files.xml";
-	char *temppath=new char[path.size()+7];
+	char *temppath=new char[path.size()+8];
 	strcpy(temppath,path.c_str());
 	strcat(temppath,".XXXXXX");
 	mkstemp(temppath);
@@ -240,8 +240,13 @@ void newfile(string name)
         // Save the filelist:
         if(xmlSaveFormatFileEnc(temppath, doc, "UTF-8", 1) == -1)
 		throw eTuxcast_FSFull();
+
 	if(!move(temppath,path))
 		throw eTuxcast_FSFull();
+
+	delete[] temppath;
+
+	xmlFreeDoc(doc);
 }
 
 
@@ -258,6 +263,7 @@ bool alreadydownloaded(string name)
         {
                 // No filelist, so we can be sure the file's not downloaded yet
                 // A new filelist will be created when newfile() is called for this file
+		// Shouldn't need to xmlFreeDoc here.
                 return false; // Not downloaded
                 // Alternately, there could be a syntax error, but since this file should be created/maintained by a (hopefully) sane program...
         }
@@ -270,6 +276,7 @@ bool alreadydownloaded(string name)
 		 if(curr->children != NULL) /* Empty <file> tags are possible... */
 			 if(strcasecmp((char *)curr->children->content,name.c_str()) == 0)
 			 {
+				xmlFreeDoc(doc);
 				return true; // Already downloaded
 				break;
 			 }
@@ -282,6 +289,7 @@ bool alreadydownloaded(string name)
         else
         	curr = curr->next;
         }
+	xmlFreeDoc(doc);
 }
 
 // Download an episode
@@ -465,7 +473,7 @@ void handle_bittorrent(file &file)
 }
 
 void cachefeed(const string &name, const string &URL)
-{ // Yeh, like, I didn't just copy/paste get() and change a couple of bits :P
+{
 	CURL *mycurl;
 	FILE *outputfile=NULL;
 	string path;
