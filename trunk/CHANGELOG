@@ -1,3 +1,7 @@
+Revision 207:
+* Added in the transcode.sh hook script (Not quite finished)
+--------------------------------------------------------------------------------
+
 Revision 206:
 * Fixed memory leak in alreadydownloaded (Not freeing up the libxml doc)
 * Fixed memory leak in config::load (Not freeing libxml doc, again)
