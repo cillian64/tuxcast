@@ -39,6 +39,6 @@ STEM=`basename ${FILENAME} .${FILENAME/*./}`
 
 cd ${WORKINGDIR}
 
-mplayer -ao pcm:file=${STEM}.wav ${FILENAME}
+mplayer -quiet -vo null -ao pcm:file=${STEM}.wav ${FILENAME}
 oggenc ${STEM}.wav
 rm -v ${STEM}.wav

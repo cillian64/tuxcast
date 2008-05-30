@@ -1,3 +1,7 @@
+Revision 208:
+* Updated transcode.sh to make mplayer quieter
+--------------------------------------------------------------------------------
+
 Revision 207:
 * Added in the transcode.sh hook script (Not quite finished)
 --------------------------------------------------------------------------------
