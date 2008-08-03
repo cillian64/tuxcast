@@ -1,3 +1,8 @@
+Revision 209:
+* Updated TODO
+* Added basic dep check shell script
+--------------------------------------------------------------------------------
+
 Revision 208:
 * Updated transcode.sh to make mplayer quieter
 --------------------------------------------------------------------------------
