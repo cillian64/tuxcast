@@ -12,4 +12,6 @@
 * Check all calls use exceptions
 * Fix syntax errors in tuxcast-config's manpage
 * Fix libraries/torrent.cpp to work with the latest libsigc++ (2.2.2 or later)
+* Bandwidth caps (Per download and/or overall)
+* Hook script for portable device syncing
 
