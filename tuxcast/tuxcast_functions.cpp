@@ -75,9 +75,9 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 
 		file->parentfeed = &feed;
 #ifdef THREADS
-		if(myconfig.numofthreads < myconfig.numofdownloaders)
+		if(myconfig.numofthreads < (myconfig.numofdownloaders+1))
 		{
-				pthread_mutex_lock(&(myconfig.configlock));
+			pthread_mutex_lock(&(myconfig.configlock));
 			myconfig.numofthreads++;
 			pthread_mutex_unlock(&(myconfig.configlock));
 			struct threaddata *data = new struct threaddata;
@@ -153,6 +153,9 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
 #ifdef THREADS
 			if(myconfig.numofthreads < myconfig.numofdownloaders)
 			{
+				pthread_mutex_lock(&(myconfig.configlock));
+				myconfig.numofthreads++;
+				pthread_mutex_unlock(&(myconfig.configlock));
 				struct threaddata *data = new struct threaddata;
 				data->thefile = *file;
 				data->myconfig = &myconfig;
@@ -429,8 +432,11 @@ void getlist(filelist &files, configuration &myconfig)
 		try
 		{
 #ifdef THREADS
-			if(myconfig.numofthreads < myconfig.numofdownloaders)
+			if(myconfig.numofthreads < (myconfig.numofdownloaders+1))
 			{
+				pthread_mutex_lock(&(myconfig.configlock));
+				myconfig.numofthreads++;
+				pthread_mutex_unlock(&(myconfig.configlock));
 				struct threaddata *data = new struct threaddata;
 				data->thefile = *file;
 				data->myconfig = &myconfig;
@@ -452,6 +458,7 @@ void getlist(filelist &files, configuration &myconfig)
 			e.print();
 		}
 	}
+#ifdef TORRENT
 	// Download all files via HTTP before bittorrent
 	FOREACH(filelist::iterator, files, file)
 	{
@@ -462,15 +469,18 @@ void getlist(filelist &files, configuration &myconfig)
 		if(strcasecmp(check, ".torrent") == 0)
 			handle_bittorrent(*file);
 	}
+#endif
 
 }
 
+#ifdef TORRENT
 void handle_bittorrent(file &file)
 {
 	printf("Downloading %s via bittorrent\n", file.filename.c_str());
 	bittorrent(file.savepath);
 	printf("Finished %s\n",file.filename.c_str());
 }
+#endif
 
 void cachefeed(const string &name, const string &URL)
 {

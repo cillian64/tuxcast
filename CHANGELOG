@@ -1,3 +1,13 @@
+Revision 210:
+* Fixed a buffer overflow off-by-one error
+* Set the minimum number of threads to 1
+* Disabled optimisation by default
+* Disabled building handle_bittorrent when torrenting is disabled
+* Added the code to increment the thread counter to getlist & up2date
+* Updated TODO
+(Thanks to Mathew Cucuzella for pointing out the first two)
+--------------------------------------------------------------------------------
+
 Revision 209:
 * Updated TODO
 * Added basic dep check shell script

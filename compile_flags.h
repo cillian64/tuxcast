@@ -27,7 +27,7 @@
 
 // Uncomment for torrent support
 // Also comment or uncomment libtorrent stuff in config.mk
-#define TORRENT
+//#define TORRENT
 
 // Uncomment for thread support:
 #define THREADS

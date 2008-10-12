@@ -8,7 +8,7 @@ APPNAME=tuxcast-0.4
 ifeq ($(OSTYPE),solaris)
 
 CXX=g++
-OPTIM?=-O2
+OPTIM?=
 DEBUG?=-g
 CXXFLAGS=$(DEBUG) $(OPTIM)
 INSTALL=ginstall
@@ -40,7 +40,7 @@ MANDIR=/usr/share/man/man1/
 else
 
 CXX=g++
-OPTIM?=-O2
+OPTIM?=
 DEBUG?=-g
 CXXFLAGS=$(DEBUG) $(OPTIM)
 INSTALL=install
