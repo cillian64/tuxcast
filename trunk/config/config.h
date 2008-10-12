@@ -43,7 +43,8 @@ class configuration
 		{
 #ifdef THREADS
 			pthread_mutex_init(&configlock, NULL);
-			numofthreads = 0;
+			numofthreads = 1;
+			numofdownloaders=1;
 #endif
 			firehooks=false;
 		}

@@ -127,7 +127,7 @@ void configuration::save()
 		
 	path = path + "/config.xml";
 	char *tempsave;
-	tempsave = new char[path.size()+7];
+	tempsave = new char[path.size()+8];
 	strcpy(tempsave,path.c_str());
 	strcat(tempsave,".XXXXXX");
 	mkstemp(tempsave);
@@ -225,7 +225,10 @@ void configuration::load()
 		}
 #ifdef THREADS
 		else if(strcasecmp((char *)curr->name, "numofdownloaders") == 0)
-			this->numofdownloaders = atoi((char*)curr->children->content);
+		{
+			if(atoi((char*)curr->children->content) > 0)
+				this->numofdownloaders = atoi((char*)curr->children->content);
+		}
 #endif
 		else if(strcasecmp((char *)curr->name, "permittedmimetypes") == 0)
 		{

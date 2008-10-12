@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-25 22:37+0100\n"
+"POT-Creation-Date: 2008-10-12 12:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -158,86 +158,86 @@ msgstr ""
 msgid "Error: could not save config/state due to full filesystem:\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:185
+#: ../tuxcast/tuxcast_functions.cpp:188
 #, c-format
 msgid "Checking feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:204
+#: ../tuxcast/tuxcast_functions.cpp:207
 #, c-format
 msgid "up2date'ing feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:307
+#: ../tuxcast/tuxcast_functions.cpp:310
 #, c-format
 msgid "Error initializing libcurl\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:333
+#: ../tuxcast/tuxcast_functions.cpp:336
 #, c-format
 msgid "Not downloading %s - incorrect MIME type\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:339
+#: ../tuxcast/tuxcast_functions.cpp:342
 #, c-format
 msgid "%s: Incorrect MIME type\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:346
+#: ../tuxcast/tuxcast_functions.cpp:349
 #, c-format
 msgid "Download %s? (yes/no)\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:364
+#: ../tuxcast/tuxcast_functions.cpp:367
 #, c-format
 msgid "Error opening output file \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:370
+#: ../tuxcast/tuxcast_functions.cpp:373
 #, c-format
 msgid "Downloading %s...\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:450
+#: ../tuxcast/tuxcast_functions.cpp:456
 #, c-format
 msgid "Oops, couldn't create folder for feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:451 ../tuxcast/tuxcast_functions.cpp:539
+#: ../tuxcast/tuxcast_functions.cpp:457 ../tuxcast/tuxcast_functions.cpp:549
 #: ../config/config.cpp:115 ../config/config.cpp:123
 #: ../config/tuxcast-config.cpp:125
 #, c-format
 msgid "Exception caught: "
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:529
+#: ../tuxcast/tuxcast_functions.cpp:539
 #, c-format
 msgid "This is an XML file, but does not appear to be RSS 1 (RDF) or RSS 2\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:530
+#: ../tuxcast/tuxcast_functions.cpp:540
 #, c-format
 msgid ""
 "Please check you have the correct URL and that it is an RSS feed, and then "
 "contact your feed maintainer\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:531
+#: ../tuxcast/tuxcast_functions.cpp:541
 #, c-format
 msgid "Exception caught:"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:533 ../tuxcast/tuxcast_functions.cpp:541
+#: ../tuxcast/tuxcast_functions.cpp:543 ../tuxcast/tuxcast_functions.cpp:551
 #, c-format
 msgid "Aborting this feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:537
+#: ../tuxcast/tuxcast_functions.cpp:547
 #, c-format
 msgid "Couldn't parse the feed.\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast_functions.cpp:538
+#: ../tuxcast/tuxcast_functions.cpp:548
 #, c-format
 msgid "Please check the URL is correct, then contact your feed maintainer.\n"
 msgstr ""
@@ -304,34 +304,34 @@ msgstr ""
 msgid "If you make a custom config file, please be careful\n"
 msgstr ""
 
-#: ../config/config.cpp:239
+#: ../config/config.cpp:242
 #, c-format
 msgid "Warning, empty mime type in config file\n"
 msgstr ""
 
-#: ../config/config.cpp:244
+#: ../config/config.cpp:247
 #, c-format
 msgid "Warning, mime mode with non-textual content in config file\n"
 msgstr ""
 
-#: ../config/config.cpp:270
+#: ../config/config.cpp:273
 #, c-format
 msgid ""
 "Error: blank name or address in config file, please delete and recreate your "
 "config file using tuxcast-config\n"
 msgstr ""
 
-#: ../config/config.cpp:323
+#: ../config/config.cpp:326
 #, c-format
 msgid "Name: %s\n"
 msgstr ""
 
-#: ../config/config.cpp:324
+#: ../config/config.cpp:327
 #, c-format
 msgid "Address: %s\n"
 msgstr ""
 
-#: ../config/config.cpp:325
+#: ../config/config.cpp:328
 #, c-format
 msgid "Folder: %s\n"
 msgstr ""

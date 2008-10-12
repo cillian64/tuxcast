@@ -14,4 +14,6 @@
 * Fix libraries/torrent.cpp to work with the latest libsigc++ (2.2.2 or later)
 * Bandwidth caps (Per download and/or overall)
 * Hook script for portable device syncing
-
+* Make some config error messages a bit less nonsensical (In particular where
+	they appear
+* Clarify numofdownloaders/numofthreads in config class
