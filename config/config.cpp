@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <sstream>
 #include <stdlib.h>
+#include <string.h>
 #include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
 #include "../libraries/common.h"

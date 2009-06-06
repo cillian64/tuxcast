@@ -26,7 +26,7 @@
 #include "unistd.h"
 #include "../compile_flags.h"
 #include "filestuff_exceptions.h"
-
+#include <string.h>
 
 bool init(void)
 {

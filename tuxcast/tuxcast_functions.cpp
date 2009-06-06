@@ -29,6 +29,7 @@
 #include <cstdio> // Needed to open a file in the classic way, so libcurl can write to it
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>

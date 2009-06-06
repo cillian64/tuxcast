@@ -32,6 +32,7 @@
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 const char options[] = "aA:d:n:N:hs:g:Gf:umvt:r:";
 #define _(x) gettext(x)
@@ -42,7 +43,7 @@ void help(void);
 void get(int argc, char **argv);
 void getall(void);
 void set();
-void add(int argc,char *argc[]);
+void add(int argc,char *argv[]);
 void del();
 void update(int argc, char *argv[]);
 void listmimes(void);

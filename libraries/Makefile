@@ -10,5 +10,5 @@ bits.o: bits.cpp
 	$(CXX) $(CXXFLAGS) -c $^
 
 clean:
-	rm -f filestuff.o
+	rm -f filestuff.o bits.o
 	$(TORRENT_CLEAN)

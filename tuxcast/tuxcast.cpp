@@ -28,6 +28,7 @@
 #include "../config/config.h"
 #include <curl/curl.h>
 #include <cstdio> // Needed to open a file in the classic way, so libcurl can write to it
+#include <string.h>
 #include <libxml/tree.h>   // V----------------V
 #include <libxml/parser.h> // for filelist stuff
 #include <unistd.h>
