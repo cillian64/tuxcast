@@ -1,3 +1,14 @@
+Revision 211:
+(It's been a while)
+* Added string.h to various things.  For some reason it worked without it. Until now
+* Fixed a typo in config/tuxcast-config.cpp that for some reason didn't break anything until now.
+* Updated the libraries/Makefile to correctly clean bits.o
+* Added the sendmail.sh hook script.  Pass it two arguments, preferably %f %p.  And have a working local mail sending system.  Stick your email address into the script.
+TTFN.
+(l)
+(This commit dedicated to Her)
+--------------------------------------------------------------------------------
+
 Revision 210:
 * Fixed a buffer overflow off-by-one error
 * Set the minimum number of threads to 1

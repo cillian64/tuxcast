@@ -17,3 +17,4 @@
 * Make some config error messages a bit less nonsensical (In particular where
 	they appear
 * Clarify numofdownloaders/numofthreads in config class
+* Quiet mode

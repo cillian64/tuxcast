@@ -5,7 +5,7 @@
 #include "../config/config.h"
 #include <libxml/tree.h>
 #include <libxml/parser.h>
-
+#include <string.h>
 #include <libintl.h>
 #include <locale.h>
 

@@ -27,7 +27,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <string>
-
+#include <string.h>
 #include <libintl.h>
 #include <locale.h>
 
