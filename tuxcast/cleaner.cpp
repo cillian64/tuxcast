@@ -58,10 +58,10 @@ void clean()
 
 	// Read the old XML file:
 	unsigned long numold = count("files.xml");
-	printf(ngettext("Old files.xml contains %d element\n", "Old files.xml contains %d elements\n",
+	printf(ngettext("Old files.xml contains %lu element\n", "Old files.xml contains %lu elements\n",
 				numold), numold);
 	unsigned long numnew = count("files.xml.new");
-	printf(ngettext("New files.xml.new contains %d element\n", "New files.xml.new contains %d elements\n",
+	printf(ngettext("New files.xml.new contains %lu element\n", "New files.xml.new contains %lu elements\n",
 				numnew), numnew);
 	printf(_("(I won't replace your files.xml as this feature is still immature.\n"));
 	printf(_("If you're feeling brave, replace ~/.tuxcast/files.xml with ~/.tuxcast/files.xml.new)\n"));
