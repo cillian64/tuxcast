@@ -1,3 +1,10 @@
+Revision 212:
+(And when you're compiling I'll be still alive)
+* Patched cleaner.cpp to use correct output format string for the data type
+	(i.e. preventing compiler warnings on newer systems.)
+(Thanks to Mathew Cucuzella)
+--------------------------------------------------------------------------------
+
 Revision 211:
 (It's been a while)
 * Added string.h to various things.  For some reason it worked without it. Until now
