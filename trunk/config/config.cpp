@@ -2,6 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
+ * Copyright (C) 2009 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,6 +87,10 @@ void configuration::save()
 		xmlNewChild(node2,NULL,(xmlChar *)"name",(xmlChar *)feed->name.c_str());
 		xmlNewChild(node2,NULL,(xmlChar *)"address",(xmlChar *)feed->address.c_str());
 		xmlNewChild(node2,NULL,(xmlChar *)"folder",(xmlChar *)feed->folder.c_str());
+                FOREACH(vector<string>::const_iterator, feed->exclude_pats, pattern)
+                {
+                    xmlNewChild(node2,NULL,(xmlChar *)"exclude",(xmlChar *)(pattern->c_str()));
+                }
 	}
 
 	node=xmlNewChild(root_node,NULL, (xmlChar *)"permittedmimetypes", NULL);
@@ -291,6 +296,11 @@ void configuration::load()
 							// so feednode->children->content threw a segfault
 							// Since a blank folder is perfectly valid, we must be nice about it
 						}
+						else if(strcasecmp((char *)partnode->name, "exclude") == 0)
+						{
+                                                    if(partnode->children != NULL)
+                                                        new_feed.exclude_pats.push_back(string((char* )partnode->children->content));
+						}
 					}
 
 					feeds.push_back(new_feed);
@@ -327,9 +337,30 @@ void feed::displayConfig(void) const
 	printf(_("Name: %s\n"),name.c_str());
 	printf(_("Address: %s\n"),address.c_str());
 	printf(_("Folder: %s\n"),folder.c_str());
+        if (exclude_pats.size() > 0)
+        {
+            printf(_("Exclude patterns:"));
+            FOREACH(vector<string>::const_iterator, exclude_pats, pattern)
+            {
+                printf(_(" [%s]"), pattern->c_str());
+            }
+            printf(_("\n"));
+        }
 }
 
 void feed::displayConfig(int max_feed_width, map<string,int>& dirs) const
 {
-    printf(_("%*s %2d %s\n"), max_feed_width, name.c_str(),  dirs[folder], address.c_str());
+    if (exclude_pats.size() > 0)
+    {
+        string patterns;
+
+        FOREACH(vector<string>::const_iterator, exclude_pats, pattern)
+        {
+            patterns.append(" [" + *pattern + "]");
+        }
+
+        printf(_("%*s %2d %s%s\n"), max_feed_width, name.c_str(),  dirs[folder], address.c_str(), patterns.c_str());
+    }
+    else
+        printf(_("%*s %2d %s\n"), max_feed_width, name.c_str(),  dirs[folder], address.c_str());
 }

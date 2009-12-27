@@ -82,6 +82,7 @@ class feed
 		string name;
 		string address;
 		string folder;
+                vector<string> exclude_pats;
 
 		feed(void)
 		{

@@ -2,6 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
+ * Copyright (C) 2009 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -359,6 +360,13 @@ void get(file &thefile, configuration &myconfig)
 		return;
 	}
 
+	if(exclude_file(thefile))
+	{
+                printf(_("Excluding %s...\n"),thefile.filename.c_str());
+		newfile(thefile.filename);
+		return;
+	}
+
 	populate_download_path(*(thefile.parentfeed), thefile, myconfig);
 
 	outputfile = fopen(thefile.savepath.c_str(), "w");
@@ -593,4 +601,19 @@ void runhook(int hook, map<char,string> vars, configuration &myconfig)
 void setvars(map<char,string> &vars, configuration &myconfig)
 {
 	vars['d'] = myconfig.podcastdir;
+}
+
+bool exclude_file(file &thefile)
+{
+    bool excluded = false;
+
+    FOREACH(vector<string>::iterator, thefile.parentfeed->exclude_pats, pattern)
+    {
+        if (thefile.filename.find(*pattern) != string::npos) {
+            excluded = true;
+            break;
+        }
+    }
+
+    return excluded;
 }
