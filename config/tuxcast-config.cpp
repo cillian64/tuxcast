@@ -2,6 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
+ * Copyright (C) 2009 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +36,7 @@
 #include <string.h>
 #include <map>
 
-const char options[] = "aA:d:n:N:hs:g:Gf:umvt:r:";
+const char options[] = "aA:d:n:N:hs:g:Gf:umvt:r:p:";
 #define _(x) gettext(x)
 
 #ifndef MAX
@@ -208,7 +209,7 @@ void help(void)
 	printf(_("-m: List permitted MIME types\n"));
 	printf(_("-t TYPE: Allow a new mime type\n"));
 	printf(_("-r TYPE: Reject a mime type\n"));
-	printf(_("-u -n NAME [ -A ADDRESS | -f FOLDER | -N NEWNAME ]: Change a property of a feed\n\n"));
+	printf(_("-u -n NAME [ -A ADDRESS | -f FOLDER | -N NEWNAME | -p PATTERN ]: Change a property of a feed\n\n"));
 	printf(_("Available options are:\n"));
 	printf(_("podcastdir - where to save all your podcasts\n"));
 	printf(_("ask - whether or not to ask before downloading any files\n"));
@@ -464,7 +465,7 @@ void update(int argc, char *argv[])
 	myopt = getopt(argc,argv,options);
 	if(myopt != 'n')
 	{
-		fprintf(stderr,_("You must pass -n and either -A, -f or -N when updating a feed's info\n"));
+		fprintf(stderr,_("You must pass -n and either -A, -f, -N or -p when updating a feed's info\n"));
 		return;
 	}
 	name = optarg;
@@ -518,8 +519,12 @@ void update(int argc, char *argv[])
 					feed->name=optarg;
 					break;
 					
+				case 'p':
+                                        feed->exclude_pats.push_back(optarg);
+					break;
+					
 				default:
-					fprintf(stderr,_("You must pass either -A, -f or -N when updating a feed's info\n"));
+					fprintf(stderr,_("You must pass either -A, -f, -N or -p when updating a feed's info\n"));
 					return;
 			}
 

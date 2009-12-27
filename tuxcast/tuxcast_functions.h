@@ -60,5 +60,6 @@ auto_ptr<filelist> parsefeed(string name);
 
 void setvars(map<char,string> &vars, configuration &myconfig);
 void runhook(int hook, map<char,string> vars, configuration &myconfig);
+bool exclude_file(file &thefile);
 
 #endif

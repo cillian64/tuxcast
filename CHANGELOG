@@ -1,3 +1,13 @@
+Revision 215:
+* Allow exclusion of certain podcast episodes.
+Some podcast feeds have more than one type of episode. Added the
+ability to apply exclusion patterns that when matched that episode
+will be treated like it is downloaded, but it will not be. Currently
+the patterns are case sensitive strings. Added a -p to the -u option
+of tuxcast-config to add patterns. All versions of feed display also
+display the patterns.
+--------------------------------------------------------------------------------
+
 Revision 214:
 * Added formatted printout for feeds in tuxcast-config -G.
 Each feed is printed on one line, with the feed name, dir (id) and
