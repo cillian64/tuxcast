@@ -71,3 +71,11 @@ MANDIR=/usr/share/man/man1/
 
 endif
 
+
+# dynamically set repository revision if available
+REPOS = $(shell svn info 2>/dev/null | grep "^Revision:" | sed 's/^Revision: //')
+ifneq ("$(REPOS)","")
+CXXFLAGS += -DSUBVERSION_REVISION=\"$(REPOS)\"
+else
+CXXFLAGS += -DSUBVERSION_REVISION=\"unknown\"
+endif
