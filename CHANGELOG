@@ -1,3 +1,7 @@
+Revision 213:
+* Define SUBVERSION_REVISION dynamically so you don't have to remember to change version.h each commit.
+--------------------------------------------------------------------------------
+
 Revision 212:
 (And when you're compiling I'll be still alive)
 * Patched cleaner.cpp to use correct output format string for the data type

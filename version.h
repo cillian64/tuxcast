@@ -12,8 +12,10 @@
 
 // These are defined for subversion checkouts
 #define SUBVERSION
-#define SUBVERSION_REVISION "212"
 // #define SUBVERSION_BRANCH "branchname"
+// DO NOT define SUBVERSION_REVISION here, it is dynamically
+// defined in config.mk now
+//   #define SUBVERSION_REVISION "212"
 
 void version();
 
