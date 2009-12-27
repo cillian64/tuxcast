@@ -26,6 +26,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "../compile_flags.h"
 
 #ifdef THREADS
@@ -92,6 +93,7 @@ class feed
 		}
 	
 		void displayConfig(void) const;
+		void displayConfig(int max_feed_width, map<string,int>& dirs) const;
 };
 
 #endif

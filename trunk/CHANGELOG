@@ -1,3 +1,12 @@
+Revision 214:
+* Added formatted printout for feeds in tuxcast-config -G.
+Each feed is printed on one line, with the feed name, dir (id) and
+feed. The columns are constant width and dynamically calculated.
+The feed dir to id mapping is printed before the feeds. To minimize
+the changes, I overloaded the feed::displayConfig method so other
+places it is called can still have the original format.
+--------------------------------------------------------------------------------
+
 Revision 213:
 * Define SUBVERSION_REVISION dynamically so you don't have to remember to change version.h each commit.
 --------------------------------------------------------------------------------
