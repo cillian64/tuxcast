@@ -33,9 +33,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <map>
 
 const char options[] = "aA:d:n:N:hs:g:Gf:umvt:r:";
 #define _(x) gettext(x)
+
+#ifndef MAX
+#define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
+#endif
 
 configuration myconfig;
 
@@ -312,9 +317,24 @@ void getall(void)
 	// Let's show some feeds:
 	printf(ngettext("There is 1 feed:\n", "There are %d feeds:\n",
 				myconfig.feeds.size()),myconfig.feeds.size());
+        map<string,int> dirs;
+        int id = 0;
+        int max_width = 0;
+        // 1. get mapping between id and feed folder
+        // 2. get max feed name width
 	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
-		feed->displayConfig();
+            if (dirs.find(feed->folder) == dirs.end())
+            {
+                dirs[feed->folder] = id;
+                printf(_("Folder: %s = %d\n"), feed->folder.c_str(), id);
+                id++;
+            }
+            max_width = MAX(max_width, feed->name.size());
+	}
+	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
+	{
+		feed->displayConfig(max_width, dirs);
 	}
 
 }

@@ -328,3 +328,8 @@ void feed::displayConfig(void) const
 	printf(_("Address: %s\n"),address.c_str());
 	printf(_("Folder: %s\n"),folder.c_str());
 }
+
+void feed::displayConfig(int max_feed_width, map<string,int>& dirs) const
+{
+    printf(_("%*s %2d %s\n"), max_feed_width, name.c_str(),  dirs[folder], address.c_str());
+}
