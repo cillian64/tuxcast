@@ -2,6 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
+ * Copyright (C) 2009 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +56,7 @@ using namespace std;
 #include <locale.h>
 
 
-const char options[] = "cuC:U:fvh";
+const char options[] = "scuC:U:fvh";
 #define _(x) gettext(x)
 
 
@@ -108,7 +109,10 @@ int main(int argc, char *argv[])
 	{
 		switch(opt1)
 		{
+                        case 's':
 			case 'c':
+                                if (opt1 == 's')
+                                    myconfig.progress = true;
 				printf(_("Checking all feeds\n"));
 				checkall(myconfig);
 				setvars(vars, myconfig);
@@ -201,6 +205,7 @@ int main(int argc, char *argv[])
 			default:
 				printf(_("Usage: tuxcast <option>\n"));
 				printf(_("where <option> is one of the below:\n"));
+				printf(_("-s - Check all feeds, verbose output\n"));
 				printf(_("-c - Check all feeds\n"));
 				printf(_("-u - Download only the latest file from all feeds\n"));
 				printf(_("-C name - Download all episodes of the named feed\n"));

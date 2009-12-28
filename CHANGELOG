@@ -1,3 +1,12 @@
+Revision 216:
+* Add enhanced status for downloading podcasts.
+Add printing for podcast queuing to awaiting threads, and download
+progress from curl downloads. All status prints are now thread
+safe so the messages are not intermingled. Added -s option to
+tuxcast to enable this printing. This can be used in combination
+with tuxstatus (see: http://github.com/kookjr/tuxstatus).
+--------------------------------------------------------------------------------
+
 Revision 215:
 * Allow exclusion of certain podcast episodes.
 Some podcast feeds have more than one type of episode. Added the

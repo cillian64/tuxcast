@@ -24,6 +24,8 @@
 #ifndef TUXCAST_FUNCTIONS_H
 #define TUXCAST_FUNCTIONS_H
 
+#include <stdio.h>
+#include <stdarg.h>
 #include <string>
 #include "rss.h"
 #include <map>
@@ -61,5 +63,6 @@ auto_ptr<filelist> parsefeed(string name);
 void setvars(map<char,string> &vars, configuration &myconfig);
 void runhook(int hook, map<char,string> vars, configuration &myconfig);
 bool exclude_file(file &thefile);
+int s_printf(const char* format, ...);
 
 #endif
