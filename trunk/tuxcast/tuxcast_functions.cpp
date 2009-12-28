@@ -59,6 +59,41 @@
 
 using namespace std;
 
+/*
+ * This function gets called a lot, even when the number of bytes
+ * is the same as the last time. It's is also called from each thread
+ * so locking is required. Note that s_printf has its own lock to keep
+ * from interlacing output, so don't hold one while calling it.
+ */
+static pthread_mutex_t progress_lock = PTHREAD_MUTEX_INITIALIZER;
+static std::map<string,int>prog_per_thread;
+int progress_func(void* p,
+                  double dltotal, double dlnow,
+                  double ultotal, double ulnow)
+{
+    if (dlnow > 0.0 && dltotal > 0.0) {
+        int prog = (int )((dlnow/dltotal) * 100.0);
+        std::string filename( (const char* )p );
+        bool print_flag = false;
+
+        // Try and limit the number of times we display progress
+        // with the exact same data. Note if this is the first callback
+        // for a file, the test will add an entry to prog_per_thread with
+        // a progress of zero (by using operator[]).
+        pthread_mutex_lock(&progress_lock);
+        if (prog_per_thread[filename] != prog) {
+            prog_per_thread[filename]  = prog;
+            print_flag = true;
+        }
+        pthread_mutex_unlock(&progress_lock);
+
+        if (print_flag)
+            s_printf(_("Progress %d %s\n"), prog, (const char* )p);
+    }
+
+    return 0;
+}
+
 // Check a particular feed
 void check(configuration &myconfig, feed &feed, filelist &allfiles)
 {
@@ -92,9 +127,14 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 				NULL, threadfunc, (void*)data);
 			pthread_mutex_unlock(&(myconfig.configlock));
 		}
-		else
+		else {
+                        if (myconfig.progress)
+                            s_printf(_("Queuing %s for download\n"), file->filename.c_str());
 			allfiles.push_back(*file);
+                }
 #else
+                if (myconfig.progress)
+                    s_printf(_("Queuing %s for download\n"), file->filename.c_str());
 		allfiles.push_back(*file);
 #endif
 	}
@@ -187,7 +227,7 @@ void checkall(configuration &myconfig)
 	filelist allfiles;
 	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
-		printf(_("Checking feed \"%s\"\n"),feed->name.c_str());
+		s_printf(_("Checking feed \"%s\"\n"),feed->name.c_str());
 		
 		check(myconfig, *feed, allfiles);
 	}
@@ -362,7 +402,7 @@ void get(file &thefile, configuration &myconfig)
 
 	if(exclude_file(thefile))
 	{
-                printf(_("Excluding %s...\n"),thefile.filename.c_str());
+                s_printf(_("Excluding %s...\n"),thefile.filename.c_str());
 		newfile(thefile.filename);
 		return;
 	}
@@ -379,12 +419,19 @@ void get(file &thefile, configuration &myconfig)
 	}
 	
 
-	printf(_("Downloading %s...\n"),thefile.filename.c_str());
+	s_printf(_("Downloading %s...\n"),thefile.filename.c_str());
 	
 	curl_easy_setopt(mycurl,CURLOPT_URL,thefile.URL.c_str());
 	curl_easy_setopt(mycurl,CURLOPT_WRITEDATA,outputfile);
 	curl_easy_setopt(mycurl,CURLOPT_FOLLOWLOCATION,1);
-	curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,1);
+        if (myconfig.progress) {
+            curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,0);
+            curl_easy_setopt(mycurl,CURLOPT_PROGRESSFUNCTION,progress_func);
+            curl_easy_setopt(mycurl,CURLOPT_PROGRESSDATA, thefile.filename.c_str());
+        }
+        else {
+            curl_easy_setopt(mycurl,CURLOPT_NOPROGRESS,1);
+        }
 	curl_easy_perform(mycurl);
 	fclose(outputfile);
 	newfile(thefile.filename);
@@ -616,4 +663,22 @@ bool exclude_file(file &thefile)
     }
 
     return excluded;
+}
+
+static pthread_mutex_t prt_lock = PTHREAD_MUTEX_INITIALIZER;
+int s_printf(const char* format, ...)
+{
+    va_list ap;
+    int r;
+
+    va_start(ap, format);
+
+    pthread_mutex_lock(&prt_lock);
+    vprintf(format, ap);
+    fflush(stdout);
+    pthread_mutex_unlock(&prt_lock);
+
+    va_end(ap);
+
+    return r;
 }

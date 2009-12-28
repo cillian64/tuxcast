@@ -48,6 +48,7 @@ class configuration
 			numofdownloaders=1;
 #endif
 			firehooks=false;
+                        progress=false;
 		}
 	
 		typedef vector<feed> feedlist;
@@ -64,6 +65,7 @@ class configuration
 		string incorrectmime;
 
 		bool firehooks;
+                bool progress;
 
 #ifdef THREADS
 		unsigned int numofdownloaders;
