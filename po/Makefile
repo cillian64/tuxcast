@@ -45,6 +45,7 @@ uninstall:
 		k=`basename $$j`; \
 		country=`echo $$k | cut -d "." -f 1`; \
 		dir=$(DESTDIR)$(PREFIX)/share/locale/$$country/LC_MESSAGES; \
+		echo "uninstalling $$dir/tuxcast.mo ($$k)"; \
 		rm -f $$dir/tuxcast.mo; \
 	done
 
