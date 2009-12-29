@@ -199,7 +199,7 @@ void help(void)
 
 	printf(_("Usage: tuxcast-config  [action]\n"));
 	printf(_("Actions are:\n"));
-	printf(_("-a -n NAME -A ADDRESS -f FOLDER: Add a feed with the specified name, address and folder\n"));
+	printf(_("-a -n NAME -A ADDRESS [-f FOLDER]: Add a feed with the specified name, address and folder\n"));
 	printf(_("-d NAME: Delete the feed with the specified name\n"));
 	printf(_("-g OPTION: Get the value of the specified option\n"));
 	printf(_("-g feed -n NAME: Get the settings of the specified feed\n"));
@@ -328,7 +328,10 @@ void getall(void)
             if (dirs.find(feed->folder) == dirs.end())
             {
                 dirs[feed->folder] = id;
-                printf(_("Folder: %s = %d\n"), feed->folder.c_str(), id);
+                string prt_name = feed->folder;
+                if (prt_name.size() == 0)
+                    prt_name = "[none]";
+                printf(_("Folder: %s = %d\n"), prt_name.c_str(), id);
                 id++;
             }
             max_width = MAX(max_width, feed->name.size());

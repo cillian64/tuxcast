@@ -8,17 +8,20 @@ tuxcast \- The Linux Podcast Client
 .B tuxcast 
 [\fIOPTION\fR]
 .SH DESCRIPTION
-Tuxcast is a minimal, portable podcatcher written in C++, with 
+Tuxcast is a minimal, portable podcatcher written in C++ with 
 an interactive command line interface. 
 
-Its configuration is performed by the included
-.B tuxcast-config 
-utility which must be
-run to configure feeds and generate tuxcast's configuration
-file to make it functional.
-
+Options and podcast feeds must be configured with
+.B tuxcast-config
+to make it functional. Then episodes can be downloaded
+regularly using the \fB-c\fR option. When feeds are checked, all
+undownloaded episodes are gotten unless an option specifies
+otherwise.
 
 .SH OPTIONS
+.TP 
+\fB\-s\fR
+Check all configured feeds, very verbose output (intended for \fBtuxstatus\fR)
 .TP 
 \fB\-c\fR
 Check all configured feeds
@@ -33,7 +36,7 @@ Download only the latest episode from all configured feeds
 Download only the latest episode from the specified configured feed 
 .TP
 \fB\-f\fR
-Forget about older downloaded podcasts
+Forget about older downloaded episodes (that are no longer in the feeds)
 .TP
 \fB\-v\fR
 Show version, licensing and build configuration information
@@ -41,11 +44,28 @@ Show version, licensing and build configuration information
 \fB\-h\fR
 Show a help message
 
+.SH FILES
+.TP
+$HOME/.tuxcast
+Directory containing configuration data.
+.TP
+$HOME/.tuxcast/cache
+Directory containing cached feed files.
+.TP
+$HOME/.tuxcast/config.xml
+Main configuration file.
+.TP
+$HOME/.tuxcast/files.xml
+List of episodes downloaded or skipped.
 .SH BUGS
 There are no known issues in this version of tuxcast.
 .SH AUTHOR
-Tuxcast is written by David 'Cillian' Turner assistance from Roger 'Oojah' Light, and Greatred.  Bittorrent support is based on the simple_client program for libtorrent, written by Jari 'Rakshasa' Sundell.
+Tuxcast is written by David 'Cillian' Turner assistance from Roger 'Oojah' Light, Greatred, and Mathew 'kookjr' Cucuzella.  Bittorrent support is based on the simple_client program for libtorrent, written by Jari 'Rakshasa' Sundell.
 
 These manpages were written by cypher_ of Linux User Group Radio channel (#lugradio) on the freenode network.
 .SH "SEE ALSO"
 .BR tuxcast-config(1),
+.BR tuxstatus(1)
+
+.BR tuxstatus
+can be obtained from http://github.com/kookjr/tuxstatus

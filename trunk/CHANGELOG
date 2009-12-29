@@ -1,3 +1,9 @@
+Revision 217:
+* display feeds with empty folders better
+* fix uninstall to clean up man pages and translation files
+* rewrote man pages to be more useful
+--------------------------------------------------------------------------------
+
 Revision 216:
 * Add enhanced status for downloading podcasts.
 Add printing for podcast queuing to awaiting threads, and download
