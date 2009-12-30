@@ -2,7 +2,7 @@
 #define VERSION_H
 
 // This is ALWAYS defined:
-#define RELEASE_VERSION "0.3"
+#define RELEASE_VERSION "0.4"
 // (It is the major version this is based on - e.g. in SVN it will be the last
 // release)
 

@@ -1,7 +1,7 @@
 .\" Process this file with
 .\" groff -man -Tascii foo.1
 .\"
-.TH tuxcast-config 1 "MAY 2008" 0.3 "tuxcast 0.3"
+.TH tuxcast-config 1 "DECEMBER 2009" 0.4 "tuxcast 0.4"
 .SH NAME
 tuxcast-config \- tuxcast configuration utility
 .SH SYNOPSIS
@@ -64,7 +64,8 @@ postdownload
 External command to be run after download completes
 .TP
 postrun
-External command to be run after all work is completed (before exiting)
+External command to be run after all work is completed (before exiting only if
+at least one file has been downloaded)
 .TP
 incorrectmime
 External command to be run if the mime type is incorrect
@@ -133,3 +134,6 @@ Tuxcast is written by David 'Cillian' Turner assistance from Roger 'Oojah' Light
 These manpages were written by cypher_ of Linux User Group Radio channel (#lugradio) on the freenode network.
 .SH "SEE ALSO"
 .BR tuxcast (1)
+
+.BR docs
+subdirectory in the source distribuion
