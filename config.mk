@@ -35,7 +35,7 @@ TORRENT_LINK=-L../libraries/torrent/torrent.o -L../libraries/torrent/curl_stack.
 TORRENT_OBJECTS=torrent/torrent.o torrent/curl_stack.o torrent/curl_get.o
 AB_TORRENT_OBJECTS=../libraries/torrent/torrent.o ../libraries/torrent/curl_stack.o ../libraries/torrent/curl_get.o
 
-MANDIR=/usr/share/man/man1/
+MANDIR=share/man/man1/
 
 else
 
@@ -67,7 +67,7 @@ PTHREAD_LIBS:=-lpthread
 #TORRENT_OBJECTS=torrent/torrent.o torrent/curl_stack.o torrent/curl_get.o
 #AB_TORRENT_OBJECTS=../libraries/torrent/torrent.o ../libraries/torrent/curl_stack.o ../libraries/torrent/curl_get.o
 
-MANDIR=/usr/share/man/man1/
+MANDIR=share/man/man1/
 
 endif
 

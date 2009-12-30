@@ -7,7 +7,7 @@ Priority: optional
 Architecture: i386
 Essential: no
 Depends: libcurl3, libxml2
-Installed-Size: 60724
+Installed-Size: 148185
 Maintainer: David Turner <cillian64@hotmail.com>
 Conflicts:
 Replaces:

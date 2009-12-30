@@ -1,6 +1,11 @@
 include config.mk
 
-all : debian-package-stable debian-package-testing ubuntu-package-dapper ubuntu-package-edgy
+SRCURL = https://tuxcast.svn.sourceforge.net/svnroot/tuxcast/trunk
+SRCDIR = $(APPNAME)
+
+# debian-package-stable debian-package-testing ubuntu-package-dapper ubuntu-package-edgy
+
+all : $(APPNAME).tar.gz ubuntu-package-jaunty
 
 debian-package-stable: package-files/control_debian_stable
 	rm -rf $@
@@ -49,3 +54,21 @@ ubuntu-package-edgy: package-files/control_ubuntu_edgy
 	dpkg -b $@ tuxcast
 	mv tuxcast/*.deb .
 	rm -rf $@
+
+ubuntu-package-jaunty: package-files/control_ubuntu_jaunty
+	rm -rf $@
+	mkdir $@
+	mkdir $@/usr
+	mkdir $@/usr/bin
+	mkdir $@/DEBIAN
+	cp $< $@/DEBIAN/control
+	$(MAKE) DESTDIR=`pwd`/$@ install
+	dpkg -b $@ $(APPNAME)_`echo $@ | sed 's/-package-/_/'`_i386.deb
+	#mv tuxcast/*.deb .
+	rm -rf $@
+
+$(APPNAME).tar.gz:
+	rm -rf $(SRCDIR)
+	svn export $(SRCURL) $(SRCDIR)
+	tar czf $@ $(SRCDIR)
+	rm -rf $(SRCDIR)

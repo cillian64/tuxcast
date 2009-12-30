@@ -28,8 +28,8 @@ install: main
 	$(INSTALL) -D -m 755 tuxcast/tuxcast $(DESTDIR)$(PREFIX)/bin/tuxcast
 	$(INSTALL) -D -m 755 config/tuxcast-config $(DESTDIR)$(PREFIX)/bin/tuxcast-config
 	# $(INSTALL) -m 755 plugins/tuxcast-amarok $(DESTDIR)$(PREFIX)/bin/tuxcast-amarok
-	$(INSTALL) -D man/tuxcast.1 $(MANDIR)
-	$(INSTALL) -D man/tuxcast-config.1 $(MANDIR)
+	$(INSTALL) -D man/tuxcast.1 $(DESTDIR)$(PREFIX)/$(MANDIR)/tuxcast.1
+	$(INSTALL) -D man/tuxcast-config.1 $(DESTDIR)$(PREFIX)/$(MANDIR)/tuxcast-config.1
 	$(MAKE) -C po install
 	$(MAKE) -C hooks install
 	
@@ -37,6 +37,6 @@ uninstall:
 	$(MAKE) -C po uninstall
 	# rm -f $(DESTDIR)$(PREFIX)/bin/tuxcast-amarok
 	rm -f $(DESTDIR)$(PREFIX)/bin/tuxcast $(DESTDIR)$(PREFIX)/bin/tuxcast-config
-	rm -f $(MANDIR)/tuxcast.1
-	rm -f $(MANDIR)/tuxcast-config.1
+	rm -f $(DESTDIR)$(PREFIX)/$(MANDIR)/tuxcast.1
+	rm -f $(DESTDIR)$(PREFIX)/$(MANDIR)/tuxcast-config.1
 	rm -rf $(DESTDIR)$(PREFIX)/share/doc/$(APPNAME)
