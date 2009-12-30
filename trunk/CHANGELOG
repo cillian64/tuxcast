@@ -1,3 +1,10 @@
+Revision 219:
+Some minor makefile and packaging fixes before releasing tarball and DEB package
+* po and hooks were installing in wrong directories during package build, fixed
+* added tarball build for packaging
+* man install/uninstall was not using prefix correctly
+--------------------------------------------------------------------------------
+
 Revision 218:
 ###############################################################################
 ===============================================================================
