@@ -1,0 +1,15 @@
+
+
+Package: tuxcast
+Version: 0.4
+Section: Web
+Priority: optional
+Architecture: i386
+Essential: no
+Depends: libcurl3, libxml2
+Installed-Size: 60724
+Maintainer: David Turner <cillian64@hotmail.com>
+Conflicts:
+Replaces:
+Provides:
+Description: A podcatcher, designed to be light-weight and portable, yet feature-complete.  Currently CLI-only - no GUI.
