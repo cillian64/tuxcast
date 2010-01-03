@@ -2,7 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
- * Copyright (C) 2009 Mathew Cucuzella (kookjr@gmail.com)
+ * Copyright (C) 2009, 2010 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,6 +111,7 @@ int main(int argc, char *argv[])
 		{
                         case 's':
 			case 'c':
+                                set_lock();
                                 if (opt1 == 's')
                                     myconfig.progress = true;
 				printf(_("Checking all feeds\n"));
@@ -120,6 +121,7 @@ int main(int argc, char *argv[])
 				xmlCleanupParser();
 				break;
 			case 'u':
+                                set_lock();
 				printf(_("Getting up to date on all feeds\n"));
 				up2dateall(myconfig);
 				setvars(vars, myconfig);
@@ -128,6 +130,7 @@ int main(int argc, char *argv[])
 				break;
 
 			case 'C':
+                                set_lock();
 				printf(_("Checking feed, \"%s\"\n"), optarg1.c_str());
 				// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
 				if(strcmp(optarg1.c_str(),"") == 0)
@@ -159,6 +162,7 @@ int main(int argc, char *argv[])
 				return -1;
 				break; // Bah
 			case 'U':
+                                set_lock();
 				printf(_("Getting up2date on feed \"%s\"\n"),optarg1.c_str());
 				// We need to loop through myconfig.feeds to find the feed ID corresponding to the passed name
 				if(strcmp(optarg1.c_str(),"") == 0)
@@ -191,18 +195,22 @@ int main(int argc, char *argv[])
 				break; // Bah
 
 			case 'f':
+                                set_lock();
 				cout << "Cleaning out files.xml..." << endl;
 				clean();
 				break;
 
 			case 'v':
+                                // no lock checking needed here, just info
 				version();
 				break;
 
 			case 'h':
+                                // no lock checking needed here, just info
 				// Fallthrough:
 
 			default:
+                                // no lock checking needed here, just info
 				printf(_("Usage: tuxcast <option>\n"));
 				printf(_("where <option> is one of the below:\n"));
 				printf(_("-s - Check all feeds, verbose output\n"));
@@ -222,7 +230,12 @@ int main(int argc, char *argv[])
 
 		return -1;
 	}
+	catch(eProcessLock &e)
+	{
+		e.print();
+
+		return -1;
+	}
 
 	return 0;
 }
-

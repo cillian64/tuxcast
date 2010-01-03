@@ -2,6 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
+ * Copyright (C) 2010 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +25,16 @@
 #include "filestuff.h"
 #include "sys/stat.h"
 #include "unistd.h"
+#include <fcntl.h>
+#include <sys/types.h>
 #include "../compile_flags.h"
 #include "filestuff_exceptions.h"
 #include <string.h>
+
+#include <sstream>
+
+#define LOCKDIR1 "/var/lock"
+#define LOCKDIR2 "/tmp"
 
 bool init(void)
 {
@@ -138,3 +146,55 @@ bool move(string oldname, string newname)
 #endif
 }
 
+/*
+ * Try /var/locks first, but fall back to /tmp
+ */
+static std::string mk_lock_file_name(void) {
+    std::string name = LOCKDIR1;
+
+    if (access(name.c_str(), W_OK) == -1) {
+        name = LOCKDIR2;  // /tmp is always around
+    }
+
+    return name + "/tuxcast.lck";
+}
+
+/*
+ * Limit execution to one process per system. Note the lock is
+ * automatically released when lock_fd is closed, which happens
+ * when this process exits.
+ */
+void set_lock(void) {
+    static int lock_fd = -1;
+    struct flock fl;
+
+    if (lock_fd != -1) {
+        return;
+    }
+
+    std::string lock_file = mk_lock_file_name();
+
+    fl.l_type   = F_WRLCK;
+    fl.l_whence = SEEK_SET;
+    fl.l_start  = 0;
+    fl.l_len    = 1;
+    fl.l_pid    = 0;
+
+    if ( (lock_fd=open(lock_file.c_str(), O_WRONLY|O_CREAT, 0666)) == -1 ) {
+        throw eProcessLock("Process lock failed, could not open " + lock_file);
+    }
+
+    if (fcntl(lock_fd, F_SETLK, &fl) == -1) {
+        std::string msg("Process lock failed, fcntl failed");
+        if (fcntl(lock_fd, F_GETLK, &fl) != -1) {
+            ostringstream newmsg;
+            newmsg << "Another process has lock: PID " << fl.l_pid;
+            msg = newmsg.str();
+        }
+        close(lock_fd);
+        lock_fd = -1;
+        throw eProcessLock(msg);
+    }
+
+    return;
+}

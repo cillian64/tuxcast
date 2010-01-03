@@ -2,6 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
+ * Copyright (C) 2010 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,6 +84,17 @@ class eFilestuff_NotAFile : public eException
 		{ cerr << "\"" << name << "\" exists, but isn't a file.  Please delete it and try again" << endl; }
 	private:
 		string name;
+};
+
+class eProcessLock : public eException
+{
+	public:
+		eProcessLock(string msg)
+		{ this->msg = msg; }
+		virtual void print(void)
+		{ cerr << msg << endl; }
+	private:
+		string msg;
 };
 
 #endif // End of inclusion guard
