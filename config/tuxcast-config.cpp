@@ -2,7 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
- * Copyright (C) 2009 Mathew Cucuzella (kookjr@gmail.com)
+ * Copyright (C) 2009, 2010 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include "config.h"
 #include <unistd.h>
 #include "config_exceptions.h"
+#include "../libraries/filestuff.h"
 #include "../libraries/filestuff_exceptions.h"
 #include "../libraries/common.h"
 #include "../version.h"
@@ -79,26 +80,32 @@ int main(int argc, char *argv[])
 		switch(getopt(argc,argv,options))
 		{
 			case 'a':
+                                set_lock();
 				add(argc,argv);
 				break;
 			
 			case 'd':
+                                set_lock();
 				del();
 				break;
 			
 			case 'g':
+                                // no lock checking needed here, just info
 				get(argc,argv); // Get needs to use the options
 				// for a few things.
 				break;
 
 			case 'G':
+                                // no lock checking needed here, just info
 				getall();
 				break;
 
 			case 's':
+                                set_lock();
 				set();
 				break;
 			case 'u':
+                                set_lock();
 				update(argc,argv);
 				break;
 
@@ -107,25 +114,32 @@ int main(int argc, char *argv[])
 				break;
 
 			case 't':
+                                set_lock();
 				addmime(); // Nothing is passed as the function
 				// can access optarg...
 				break;
 
 			case 'r':
+                                set_lock();
 				removemime(); // "
 				break;
 
 			case 'v':
+                                // no lock checking needed here, just info
 				version();
 				break;
 
 			case 'h':
+                                // no lock checking needed here, just info
 				// Fallthrough
 		
 			default:
+                                // no lock checking needed here, just info
 				help();
 			}
 	}
+	// No point in catching that exception separatly in every action
+	// Just catch here to avoid SIGABRT and exit cleanly
 	catch(eConfig_CannotSaveConfig &e)
 	{
 		fprintf(stderr,_("Cannot save config file\n"));
@@ -134,8 +148,12 @@ int main(int argc, char *argv[])
 		fprintf(stderr,"\n");
 		return -1;
 	}
-	// No point in catching that exception separatly in every action
-	// Just catch here to avoid SIGABRT and exit cleanly
+	catch(eProcessLock &e)
+	{
+		e.print();
+
+		return -1;
+	}
 		
 	return 0;
 }

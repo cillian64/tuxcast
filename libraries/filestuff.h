@@ -2,6 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
+ * Copyright (C) 2010 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,5 +43,8 @@ bool checkfileexists(string file);
 
 bool move(string oldname, string newname);
 // Returns true on success
+
+void set_lock(void);
+// Returns with lock set, throw eProcessLock if unable
 
 #endif
