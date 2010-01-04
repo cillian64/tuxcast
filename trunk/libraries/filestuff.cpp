@@ -150,13 +150,19 @@ bool move(string oldname, string newname)
  * Try /var/locks first, but fall back to /tmp
  */
 static std::string mk_lock_file_name(void) {
-    std::string name = LOCKDIR1;
+    ostringstream path;
 
-    if (access(name.c_str(), W_OK) == -1) {
-        name = LOCKDIR2;  // /tmp is always around
+    if (access(LOCKDIR1, W_OK) == 0) {
+        path << LOCKDIR1;
+    }
+    else {
+        path << LOCKDIR2;  // /tmp is always around
     }
 
-    return name + "/tuxcast.lck";
+    // lock file name must be user specific
+    path << "/tuxcast." << (long )geteuid() << ".lck";
+
+    return path.str();
 }
 
 /*

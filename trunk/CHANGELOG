@@ -1,9 +1,12 @@
+Revision 222
+Make process lock user specific by adding user id to lockname.
+--------------------------------------------------------------------------------
+
 Revision 220, 221:
 Added process lock that will keep two tuxcast/tuxcast-config's from
 running at the same time (except for simple data reporting). Use
 fcntl() file lock to make lock cleanup more robust.
 --------------------------------------------------------------------------------
-
 
 Revision 219:
 Some minor makefile and packaging fixes before releasing tarball and DEB package
