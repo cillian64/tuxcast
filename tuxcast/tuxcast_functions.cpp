@@ -594,7 +594,7 @@ auto_ptr<filelist> parsefeed(string name) // This parses the feed, with error ch
 	{
 		 fprintf(stderr,_("This is an XML file, but does not appear to be RSS 1 (RDF) or RSS 2\n"));
 		 fprintf(stderr,_("Please check you have the correct URL and that it is an RSS feed, and then contact your feed maintainer\n"));
-		 fprintf(stderr,_("Exception caught:")); // No \n, I know
+		 fprintf(stderr,_("Exception caught: %s - "), URL.c_str()); // No \n, I know
 		 e.print();
 		 fprintf(stderr,_("Aborting this feed.\n"));
 	}
@@ -602,7 +602,7 @@ auto_ptr<filelist> parsefeed(string name) // This parses the feed, with error ch
 	{
 		fprintf(stderr,_("Couldn't parse the feed.\n"));
 		fprintf(stderr,_("Please check the URL is correct, then contact your feed maintainer.\n"));
-		fprintf(stderr,_("Exception caught: ")); // No \n
+		fprintf(stderr,_("Exception caught: %s - "), URL.c_str()); // No \n
 		e.print();
 		fprintf(stderr,_("Aborting this feed.\n"));
 	}

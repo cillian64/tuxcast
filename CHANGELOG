@@ -1,3 +1,8 @@
+Revision 223
+Fix feed parse error messages to include the feed (URL)
+that failed.
+--------------------------------------------------------------------------------
+
 Revision 222
 Make process lock user specific by adding user id to lockname.
 --------------------------------------------------------------------------------
