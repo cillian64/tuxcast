@@ -2,7 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
- * Copyright (C) 2009 Mathew Cucuzella (kookjr@gmail.com)
+ * Copyright (C) 2009, 2010 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -130,7 +130,10 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 		else {
                         if (myconfig.progress)
                             s_printf(_("Queuing %s for download\n"), file->filename.c_str());
+
+			pthread_mutex_lock(&(myconfig.configlock));
 			allfiles.push_back(*file);
+			pthread_mutex_unlock(&(myconfig.configlock));
                 }
 #else
                 if (myconfig.progress)
@@ -258,6 +261,9 @@ void up2dateall(configuration &myconfig)
 }
                                                           
 // This adds a file to files.xml
+//
+// Files lock must be held just before reading current contents to just
+// after moving the temp file over the original.
 void newfile(string name)
 {
         // Load the current filelist:
@@ -268,6 +274,10 @@ void newfile(string name)
 	char *temppath=new char[path.size()+8];
 	strcpy(temppath,path.c_str());
 	strcat(temppath,".XXXXXX");
+#ifdef THREADS
+        static pthread_mutex_t files_lock = PTHREAD_MUTEX_INITIALIZER;
+        pthread_mutex_lock(&files_lock);
+#endif
 	mkstemp(temppath);
         doc = xmlReadFile(path.c_str(), NULL, 0);
         if(doc == NULL)
@@ -284,12 +294,28 @@ void newfile(string name)
         xmlNewChild(root,NULL,(xmlChar *)"file", (xmlChar *)name.c_str());
         // Save the filelist:
         if(xmlSaveFormatFileEnc(temppath, doc, "UTF-8", 1) == -1)
+        {
+#ifdef THREADS
+                pthread_mutex_unlock(&files_lock);
+#endif
+                delete[] temppath;
 		throw eTuxcast_FSFull();
+        }
 
 	if(!move(temppath,path))
+        {
+#ifdef THREADS
+                pthread_mutex_unlock(&files_lock);
+#endif
+                delete[] temppath;
 		throw eTuxcast_FSFull();
+        }
 
 	delete[] temppath;
+
+#ifdef THREADS
+        pthread_mutex_unlock(&files_lock);
+#endif
 
 	xmlFreeDoc(doc);
 }
@@ -656,7 +682,8 @@ bool exclude_file(file &thefile)
 
     FOREACH(vector<string>::iterator, thefile.parentfeed->exclude_pats, pattern)
     {
-        if (thefile.filename.find(*pattern) != string::npos) {
+        // @all@ means exclude all files on this feed
+        if (*pattern == "@all@" || thefile.filename.find(*pattern) != string::npos) {
             excluded = true;
             break;
         }
