@@ -1,7 +1,7 @@
 .\" Process this file with
 .\" groff -man -Tascii foo.1
 .\"
-.TH tuxcast-config 1 "DECEMBER 2009" 0.4 "tuxcast 0.4"
+.TH tuxcast-config 1 "JANUARY 2010" 0.4 "tuxcast 0.4"
 .SH NAME
 tuxcast-config \- tuxcast configuration utility
 .SH SYNOPSIS
@@ -40,7 +40,7 @@ Permit the MIME type "type" to be downloaded
 Remove the MIME type "type" from the list of permitted MIME types
 .IP "-u -n name [ -A address | -f folder | -N newname | -p PATTERN ]"
 Change a property of an existing feed.  You can only change one property at a time.  Use -A to set the address to "address", -f to set the folder in which to save podcasts to "folder", -N to change the name of the feed to "newname"
-and -p to add an "exclude pattern".
+and -p to add an "exclude pattern". If the pattern already exists on the feed, it is deleted. The special wildcard pattern, @all@, matches all podcast names and can be used to keep a feed updated but not download any of the podcasts.
 
 .SH "CONFIGURATION VARIABLES"
 There are several options which can be set with the \fB-s\fR option and are listed below.

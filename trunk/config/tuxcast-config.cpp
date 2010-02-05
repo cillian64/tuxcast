@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <map>
+#include <algorithm>
 
 const char options[] = "aA:d:n:N:hs:g:Gf:umvt:r:p:";
 #define _(x) gettext(x)
@@ -541,8 +542,23 @@ void update(int argc, char *argv[])
 					break;
 					
 				case 'p':
-                                        feed->exclude_pats.push_back(optarg);
-					break;
+                                        {
+                                            vector<string>::iterator result;
+                                            result = std::find(feed->exclude_pats.begin(),
+                                                               feed->exclude_pats.end(),
+                                                               optarg);
+                                            if (result == feed->exclude_pats.end())
+                                            {
+                                                // not currently an exclude pattern so add it
+                                                feed->exclude_pats.push_back(optarg);
+                                            }
+                                            else
+                                            {
+                                                // pattern exists, this is a flag to remove it
+                                                feed->exclude_pats.erase(result);
+                                            }
+                                            break;
+                                        }
 					
 				default:
 					fprintf(stderr,_("You must pass either -A, -f, -N or -p when updating a feed's info\n"));

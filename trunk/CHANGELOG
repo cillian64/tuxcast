@@ -1,3 +1,13 @@
+Revision 224
+* Fixed two race conditions; accessing allfiles download list and
+read-write of files.xml.
+* Allow special exclude patterns and pattern deletion.  The special
+pattern, @all@, now matches all podcast names. This can be used to
+keep up to date with feed, but not actually download any
+episodes. Also allow deleting patterns by adding a name that
+already exists. Fixed man page for new handling of patterns.
+--------------------------------------------------------------------------------
+
 Revision 223
 Fix feed parse error messages to include the feed (URL)
 that failed.
