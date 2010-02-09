@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tuxcast 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-30 19:29-0700\n"
+"POT-Creation-Date: 2010-02-07 17:33-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,92 +72,92 @@ msgid ""
 "xml.new)\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:98
+#: ../tuxcast/tuxcast.cpp:104
 #, c-format
 msgid "Cannot load config file - please create one\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:117
+#: ../tuxcast/tuxcast.cpp:126
 #, c-format
 msgid "Checking all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:125
+#: ../tuxcast/tuxcast.cpp:138
 #, c-format
 msgid "Getting up to date on all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:134
+#: ../tuxcast/tuxcast.cpp:147
 #, c-format
 msgid "Checking feed, \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:138 ../tuxcast/tuxcast.cpp:170
+#: ../tuxcast/tuxcast.cpp:151 ../tuxcast/tuxcast.cpp:183
 #, c-format
 msgid "You must pass a non-blank feed name\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:161 ../tuxcast/tuxcast.cpp:193
+#: ../tuxcast/tuxcast.cpp:174 ../tuxcast/tuxcast.cpp:206
 #, c-format
 msgid "Unknown feed, \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:166
+#: ../tuxcast/tuxcast.cpp:179
 #, c-format
 msgid "Getting up2date on feed \"%s\"\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:214
+#: ../tuxcast/tuxcast.cpp:227
 #, c-format
 msgid "Usage: tuxcast <option>\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:215
+#: ../tuxcast/tuxcast.cpp:228
 #, c-format
 msgid "where <option> is one of the below:\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:216
+#: ../tuxcast/tuxcast.cpp:229
 #, c-format
 msgid "-s - Check all feeds, verbose output\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:217
+#: ../tuxcast/tuxcast.cpp:230
 #, c-format
 msgid "-c - Check all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:218
+#: ../tuxcast/tuxcast.cpp:231
 #, c-format
 msgid "-u - Download only the latest file from all feeds\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:219
+#: ../tuxcast/tuxcast.cpp:232
 #, c-format
 msgid "-C name - Download all episodes of the named feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:220
+#: ../tuxcast/tuxcast.cpp:233
 #, c-format
 msgid "-U name - Download only the latest episode of the named feed\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:221
+#: ../tuxcast/tuxcast.cpp:234
 #, c-format
 msgid "-h - Show this help message\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:222
+#: ../tuxcast/tuxcast.cpp:235
 #, c-format
 msgid "-f - clean out old podcasts from files.xml\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:223
+#: ../tuxcast/tuxcast.cpp:236
 #, c-format
 msgid "-v - Show version and license information\n"
 msgstr ""
 
-#: ../tuxcast/tuxcast.cpp:228
+#: ../tuxcast/tuxcast.cpp:241
 #, c-format
 msgid "Error: could not save config/state due to full filesystem:\n"
 msgstr ""
