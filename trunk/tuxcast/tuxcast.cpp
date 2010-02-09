@@ -23,6 +23,11 @@
 
 
 #include "../compile_flags.h"
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <string.h>
 #include <iostream>
 #include <stdio.h> // :)
 #include "rss.h"
@@ -59,6 +64,7 @@ using namespace std;
 const char options[] = "scuC:U:fvh";
 #define _(x) gettext(x)
 
+static bool setup_output(void);
 
 int main(int argc, char *argv[])
 {
@@ -107,18 +113,25 @@ int main(int argc, char *argv[])
 
 	try
 	{
+                bool subprocess;
 		switch(opt1)
 		{
                         case 's':
 			case 'c':
                                 set_lock();
-                                if (opt1 == 's')
+                                if (opt1 == 's') {
                                     myconfig.progress = true;
+                                    subprocess = setup_output();
+                                }
 				printf(_("Checking all feeds\n"));
 				checkall(myconfig);
 				setvars(vars, myconfig);
 				runhook(POSTRUN, vars, myconfig);
 				xmlCleanupParser();
+                                if (subprocess) {
+                                    fclose(stdout);  /* tuxstatus will see EOF */
+                                    wait(NULL);      /* wait for child */
+                                }
 				break;
 			case 'u':
                                 set_lock();
@@ -238,4 +251,77 @@ int main(int argc, char *argv[])
 	}
 
 	return 0;
+}
+
+/*
+ * If possible redirect the standard output to child process of
+ * tuxstatus through a pipe. Return true if success and the
+ * child process is spawned.
+ */
+static bool setup_output(void) {
+    int pipefd[2];
+    pid_t cpid;
+    struct stat st;
+    const char* tuxstatus_prog = "/usr/bin/tuxstatus";
+
+    /*
+     * If stdout is already a pipe, assume the user has already
+     * done something line, "tuxcast -s | tuxstatus" and abort.
+     */
+    if (fstat(STDOUT_FILENO, &st) == -1 || (st.st_mode & S_IFIFO)) {
+        return false;
+    }
+
+    /*
+     * Make sure the program tuxstatus is available to exec
+     */
+    if (stat(tuxstatus_prog, &st) == -1) {
+        return false;
+    }
+
+    /*
+     * Create a pipe that will be used for tuxcast's stdout to be
+     * hooked to tuxstatus' stdin.
+     */
+    if (pipe(pipefd) == -1) {
+        return false;
+    }
+
+    /*
+     * Fork the process. The child will become tuxstatus.
+     */
+    if ( (cpid=fork()) == -1 ) {
+        return false;
+    }
+
+    if (cpid == 0) {   /* this is the child process, setup pipe as stdin */
+
+        close(pipefd[1]);  /* close unused write end */
+
+        /* redirect stdin to the pipe */
+        FILE* tmp = fdopen(pipefd[0], "r");
+        dup2(tmp->_fileno, STDIN_FILENO);
+        fclose(tmp);
+
+        /* exec the tuxstatus program */
+        execl(tuxstatus_prog, "tuxstatus", "-d", (char* )NULL);
+
+        /* only get here if exec fails */
+        _exit(EXIT_SUCCESS);
+
+    }
+    else {    /* parent */
+
+        close(pipefd[0]);   /* close unused read end */
+
+        /* redirect stdout to pipe */
+        FILE* tmp = fdopen(pipefd[1], "w");
+        dup2(tmp->_fileno, STDOUT_FILENO);
+        fclose(tmp);
+
+        /* keep error messages from messing up ncurses formatted output */
+        fclose(stderr);
+
+        return true;
+    }
 }

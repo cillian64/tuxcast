@@ -1,12 +1,12 @@
 .\" Process this file with
 .\" groff -man -Tascii foo.1
 .\"
-.TH tuxcast 1 "DECEMBER 2009" 0.4 "tuxcast 0.4"
+.TH tuxcast 1 "FEBRUARY 2010" 0.4 "tuxcast 0.4"
 .SH NAME
 tuxcast \- The Linux Podcast Client
 .SH SYNOPSIS
 .B tuxcast 
-[\fIOPTION\fR]
+[\fIOPTIONS\fR]
 .SH DESCRIPTION
 Tuxcast is a minimal, portable podcatcher written in C++ with 
 an interactive command line interface. 
@@ -20,11 +20,12 @@ otherwise.
 
 .SH OPTIONS
 .TP 
-\fB\-s\fR
-Check all configured feeds, very verbose output (intended for \fBtuxstatus\fR)
-.TP 
 \fB\-c\fR
-Check all configured feeds
+Check all configured feeds, print status to screen
+.TP 
+\fB\-s\fR
+Check all configured feeds, very verbose output or graphical mode if
+\fBtuxstatus\fR is installed (see GRAPHICAL MODE)
 .TP 
 \fB\-C name\fR
 Check only the specified configured feed
@@ -43,6 +44,19 @@ Show version, licensing and build configuration information
 .TP
 \fB\-h\fR
 Show a help message
+
+.SH GRAPHICAL MODE
+Tuxcast can automatically detect and use the tuxstatus graphical front
+end for download status using the \fB-s\fR option. It is enabled if
+tuxstatus is installed and the standard output is not going to a
+pipe. In this case, the following two commands are identical.
+.IP
+.B tuxcast -s
+.br
+.B tuxcast -s 2>/dev/null | tuxstatus -d
+.PP
+If either of these conditions are not true the original behavior
+of very verbose output is used.
 
 .SH FILES
 .TP

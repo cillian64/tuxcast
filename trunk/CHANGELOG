@@ -1,3 +1,15 @@
+Revision 225
+Directly use the tuxstatus graphical front end with the -s option
+unless any of the following are true.
+* tuxcast's stdout is not a pipe
+* tuxstatus is not installed on the system in /usr/bin
+* tuxcast is unable to create a pipe or fork
+If any of these exceptions are true it behaves as it has in the past
+and prints extra verbose output to the screen. This feature gives the
+appearance that tuxcast now has an optional graphical mode from the
+user's perspective.
+--------------------------------------------------------------------------------
+
 Revision 224
 * Fixed two race conditions; accessing allfiles download list and
 read-write of files.xml.
