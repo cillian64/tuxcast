@@ -2,6 +2,7 @@
  * 
  * This file is part of Tuxcast, "The linux podcatcher"
  * Copyright (C) 2006-2008 David Turner
+ * Copyright (C) 2010 Mathew Cucuzella (kookjr@gmail.com)
  * 
  * Tuxcast is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,9 +51,9 @@ void* threadfunc(void* data);
 void newfile(string name);
 bool alreadydownloaded(string name); // true if already downloaded
 void check(configuration &myconfig, feed &feed, filelist &allfiles);
-void up2date(configuration &myconfig, feed &feed, filelist &allfiles);
+void up2date(configuration &myconfig, feed &feed, filelist &allfiles, int episodes);
 void checkall(configuration &myconfig);
-void up2dateall(configuration &myconfig);
+void up2dateall(configuration &myconfig, int episodes);
 void get(file &file, configuration &myconfig);
 void getlist(filelist &files, configuration &myconfig);
 void populate_download_path(feed &feed, file &file, configuration &myconfig);
@@ -64,5 +65,6 @@ void setvars(map<char,string> &vars, configuration &myconfig);
 void runhook(int hook, map<char,string> vars, configuration &myconfig);
 bool exclude_file(file &thefile);
 int s_printf(const char* format, ...);
+void show_episodes(configuration &myconfig, string &url);
 
 #endif

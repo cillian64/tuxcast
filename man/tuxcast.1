@@ -30,11 +30,17 @@ Check all configured feeds, very verbose output or graphical mode if
 \fB\-C name\fR
 Check only the specified configured feed
 .TP 
-\fB\-u\fR
-Download only the latest episode from all configured feeds
+\fB\-u [-e num]\fR
+Download only the latest episode from all configured feeds or the
+latest \fInum\fR episodes using \fB-e\fR
 .TP 
-\fB\-U name\fR
-Download only the latest episode from the specified configured feed 
+\fB\-U name [-e num]\fR
+Download only the latest episode from the specified configured feed or the
+latest \fInum\fR episodes using \fB-e\fR
+.TP
+\fB\-q name | URL\fR
+Query the given named feed or URL for the available episodes, printing
+the episode file names and sizes in bytes
 .TP
 \fB\-f\fR
 Forget about older downloaded episodes (that are no longer in the feeds)

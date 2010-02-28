@@ -179,7 +179,7 @@ void *threadfunc(void *data)
 
 // Downloads the latest episode on a particular feed
 // Adds other episodes to files.xml without downloading
-void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
+void up2date(configuration &myconfig, feed &feed, filelist &allfiles, int episodes)
 {
 	cachefeed(feed.name, feed.address);
 
@@ -187,14 +187,17 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
 	if(!myfilelist.get())
 		return;
 
+        int ep_num = 0;
 	FOREACH(filelist::iterator, *myfilelist, file)
 	{
+                ep_num++;
+
 		if(alreadydownloaded(file->filename))
 			continue;
 
 		file->parentfeed = &feed;
 
-		if(file == myfilelist->begin())
+                if (ep_num <= episodes)
 #ifdef THREADS
 			if(myconfig.numofthreads < myconfig.numofdownloaders)
 			{
@@ -221,9 +224,6 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles)
 	}
 }
 
-
-
-
 // This loops through all feeds and passes them to check()
 void checkall(configuration &myconfig)
 {
@@ -243,14 +243,14 @@ void checkall(configuration &myconfig)
 }
 
 // This loops through all feeds and passes them to up2date()
-void up2dateall(configuration &myconfig)
+void up2dateall(configuration &myconfig, int episodes)
 {
 	filelist allfiles;
 	// God knows why we had a filelist pointer here
 	FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed)
 	{
 		printf(_("up2date'ing feed \"%s\"\n"),feed->name.c_str());
-		up2date(myconfig,*feed, allfiles);
+		up2date(myconfig,*feed, allfiles, episodes);
 	}
 	getlist(allfiles, myconfig);
 #ifdef THREADS
@@ -258,6 +258,37 @@ void up2dateall(configuration &myconfig)
 		pthread_join(myconfig.threads[i], NULL);
 #endif
 
+}
+
+void show_episodes(configuration &myconfig, string &url)
+{
+    string feed("__TempFeed");
+
+    cachefeed(feed, url);
+
+    auto_ptr<filelist> myfilelist;
+    string file_url=getenv("HOME");
+    file_url+="/.tuxcast/cache/";
+    file_url+=feed;
+
+    try {
+        myfilelist = parse(file_url);
+    }
+    catch(eRSS_InvalidRootNode &e) {
+        fprintf(stderr,_("Invalid root node in feed\n"));
+        e.print();
+    }
+    catch(eRSS_CannotParseFeed &e) {
+        fprintf(stderr,_("Invalid feed content\n"));
+        e.print();
+    }
+
+    if(!myfilelist.get())
+        return;
+
+    FOREACH(filelist::iterator, *myfilelist, file) {
+        printf(_("%s (%u bytes)\n"), file->filename.c_str(), (unsigned int)file->length);
+    }
 }
                                                           
 // This adds a file to files.xml

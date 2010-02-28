@@ -1,3 +1,10 @@
+Revision 226
+* Added option to query a named feed or a URL not subscribed to, to get
+  a list of available episodes.
+* Added option to download more than one episode when updating a feed.
+* Fixed man page example for setting podcast directory.
+--------------------------------------------------------------------------------
+
 Revision 225
 Directly use the tuxstatus graphical front end with the -s option
 unless any of the following are true.
