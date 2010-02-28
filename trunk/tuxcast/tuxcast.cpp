@@ -61,7 +61,7 @@ using namespace std;
 #include <locale.h>
 
 
-const char options[] = "scuC:U:fvh";
+const char options[] = "scuC:U:q:fvhe:";
 #define _(x) gettext(x)
 
 static bool setup_output(void);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	textdomain("tuxcast");
 	
 	
-	// Remember, we can only take one option.
+	// Remember, we can only take one primary option.
 	// We store the first option, then check - if there's another, we bork out and moan.
 	
 	char opt1=getopt(argc,argv,options);
@@ -86,12 +86,20 @@ int main(int argc, char *argv[])
 		optarg1=optarg;
 	else
 		optarg1="";
-
-	if(getopt(argc,argv,options) != -1)
+	
+        // -u and -U may have second option of -e num
+	char opt2=getopt(argc,argv,options);
+        int episode_cnt = 1;
+        if (opt2 != -1 && opt2 != 'e')
 	{
-		cerr << "Error, more than one option was passed.  You must only pass one option." << endl;
+		cerr << "Error, more than one option was passed and not -u or -U.  You must only pass one option." << endl;
 		return -1;
 	}
+        else if (opt2 == 'e' && (episode_cnt = atoi(optarg)) <= 0)
+        {
+		cerr << "Error, invalid episode count for -e." << endl;
+		return -1;
+        }
 
 	if(!((opt1 == 'h') || (opt1 == 'v'))) // Load config if option isn't h or v
 	{
@@ -136,7 +144,7 @@ int main(int argc, char *argv[])
 			case 'u':
                                 set_lock();
 				printf(_("Getting up to date on all feeds\n"));
-				up2dateall(myconfig);
+				up2dateall(myconfig, episode_cnt);
 				setvars(vars, myconfig);
 				runhook(POSTRUN, vars, myconfig);
 				xmlCleanupParser();
@@ -189,7 +197,7 @@ int main(int argc, char *argv[])
 					{
 						// Found the feed
 						filelist files;
-						up2date(myconfig, *feed, files);
+						up2date(myconfig, *feed, files, episode_cnt);
 						getlist(files, myconfig);
 #ifdef THREADS
 						for(int i=0; i<myconfig.threads.size(); i++)
@@ -207,6 +215,27 @@ int main(int argc, char *argv[])
 				return -1;
 				break; // Bah
 
+			case 'q':
+                                set_lock();
+				cout << "Querying feed for available episodes..." << endl;
+
+                                if (optarg1.find("http://") == 0 || optarg1.find("https://") == 0) {
+                                    show_episodes(myconfig, optarg1);
+                                }
+                                else {
+                                    if (optarg1.size() == 0) {
+					fprintf(stderr,_("You must pass a non-blank feed name\n"));
+					return -1;
+                                    }
+                                    FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed) {
+					if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0) {
+                                            show_episodes(myconfig, feed->address);
+                                        }
+                                    }
+                                }
+				xmlCleanupParser();
+				break;
+                                
 			case 'f':
                                 set_lock();
 				cout << "Cleaning out files.xml..." << endl;
@@ -228,9 +257,10 @@ int main(int argc, char *argv[])
 				printf(_("where <option> is one of the below:\n"));
 				printf(_("-s - Check all feeds, verbose output\n"));
 				printf(_("-c - Check all feeds\n"));
-				printf(_("-u - Download only the latest file from all feeds\n"));
+				printf(_("-u [-e num] - Download only the latest num files from all feeds (default 1)\n"));
 				printf(_("-C name - Download all episodes of the named feed\n"));
-				printf(_("-U name - Download only the latest episode of the named feed\n"));
+				printf(_("-U name [-e num] - Download only the latest episode of the named feed (default 1)\n"));
+				printf(_("-q name|URL - Query feed for available episodes\n"));
 				printf(_("-h - Show this help message\n"));
 				printf(_("-f - clean out old podcasts from files.xml\n"));
 				printf(_("-v - Show version and license information\n"));
