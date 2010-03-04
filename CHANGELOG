@@ -1,3 +1,7 @@
+Revision 227
+* Fixed uninitialized variable when using the -c option of tuxcast.
+--------------------------------------------------------------------------------
+
 Revision 226
 * Added option to query a named feed or a URL not subscribed to, to get
   a list of available episodes.
