@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 
 	try
 	{
-                bool subprocess;
+                bool subprocess = false;
 		switch(opt1)
 		{
                         case 's':
