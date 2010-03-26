@@ -174,6 +174,7 @@ int main(int argc, char *argv[])
 						setvars(vars, myconfig);
 						runhook(POSTRUN, vars, myconfig);
 						xmlCleanupParser();
+                                                newfiles();
 						return 0;
 					}
 				}
@@ -206,6 +207,7 @@ int main(int argc, char *argv[])
 						setvars(vars, myconfig);
 						runhook(POSTRUN, vars, myconfig);
 						xmlCleanupParser();
+                                                newfiles();
 						return 0;
 					}
 				}
@@ -265,6 +267,10 @@ int main(int argc, char *argv[])
 				printf(_("-f - clean out old podcasts from files.xml\n"));
 				printf(_("-v - Show version and license information\n"));
 		}
+
+                // update files.xml
+                newfiles();
+
 	}
 	catch(eTuxcast_FSFull &e)
 	{

@@ -1,3 +1,10 @@
+Revision 228
+Improved performance of file.xml handling by caching it in
+memory during process runtime. This is in contrast to reading
+and writing the file many times per process invocation. Appropriate
+locks to keep thread safety.
+--------------------------------------------------------------------------------
+
 Revision 227
 * Fixed uninitialized variable when using the -c option of tuxcast.
 --------------------------------------------------------------------------------

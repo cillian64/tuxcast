@@ -4,6 +4,7 @@ TUXCAST_SOURCES=\
 	tuxcast.cpp \
 	rss.cpp \
 	cleaner.cpp \
+	episode_history.cpp \
 	../config/config.cpp \
 	../libraries/filestuff.cpp \
 	../libraries/bits.cpp \
