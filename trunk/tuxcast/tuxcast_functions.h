@@ -49,6 +49,7 @@ void* threadfunc(void* data);
 #endif
 
 void newfile(string name);
+void newfiles(void);
 bool alreadydownloaded(string name); // true if already downloaded
 void check(configuration &myconfig, feed &feed, filelist &allfiles);
 void up2date(configuration &myconfig, feed &feed, filelist &allfiles, int episodes);

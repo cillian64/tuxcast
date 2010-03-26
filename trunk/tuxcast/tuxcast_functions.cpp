@@ -55,6 +55,7 @@
 #include "../config/config_exceptions.h"
 #include "rss_exceptions.h"
 #include "tuxcast_functions.h"
+#include "episode_history.h"
 
 
 using namespace std;
@@ -105,9 +106,11 @@ void check(configuration &myconfig, feed &feed, filelist &allfiles)
 	// TODO: Umm, I really should return an error or warning or something,
 	// shouldn't I...?
 
+        episode_history* ep_hist = episode_history::getInstance();
+
 	FOREACH(filelist::iterator, *myfilelist, file)
 	{	
-		if(alreadydownloaded(file->filename))
+                if(ep_hist->exists(file->URL, file->filename))
 			continue;
 
 		file->parentfeed = &feed;
@@ -187,12 +190,13 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles, int episod
 	if(!myfilelist.get())
 		return;
 
+        episode_history* ep_hist = episode_history::getInstance();
         int ep_num = 0;
 	FOREACH(filelist::iterator, *myfilelist, file)
 	{
                 ep_num++;
 
-		if(alreadydownloaded(file->filename))
+                if(ep_hist->exists(file->URL, file->filename))
 			continue;
 
 		file->parentfeed = &feed;
@@ -220,7 +224,7 @@ void up2date(configuration &myconfig, feed &feed, filelist &allfiles, int episod
 			allfiles.push_back(*file);
 #endif
 		else
-			newfile(file->filename);
+                	ep_hist->add_episode(file->URL, file->filename);
 	}
 }
 
@@ -291,107 +295,26 @@ void show_episodes(configuration &myconfig, string &url)
     }
 }
                                                           
-// This adds a file to files.xml
-//
-// Files lock must be held just before reading current contents to just
-// after moving the temp file over the original.
-void newfile(string name)
+void newfiles(void)
 {
-        // Load the current filelist:
-        xmlDoc *doc;
-        xmlNode *root, curr;
-        string path=getenv("HOME");
-        path += "/.tuxcast/files.xml";
-	char *temppath=new char[path.size()+8];
-	strcpy(temppath,path.c_str());
-	strcat(temppath,".XXXXXX");
-#ifdef THREADS
-        static pthread_mutex_t files_lock = PTHREAD_MUTEX_INITIALIZER;
-        pthread_mutex_lock(&files_lock);
-#endif
-	mkstemp(temppath);
-        doc = xmlReadFile(path.c_str(), NULL, 0);
-        if(doc == NULL)
-        {
-		doc = xmlNewDoc((xmlChar *)"1.0");
-		root = xmlNewNode(NULL,(xmlChar *)"filelist");
-		xmlDocSetRootElement(doc,root);
-        }
-	else
-        	root = xmlDocGetRootElement(doc);
+        episode_history* ep_hist = episode_history::getInstance();
+        if (ep_hist->needs_flush()) {
+            string path=getenv("HOME");
+            path += "/.tuxcast/files.xml";
+            char *temppath=new char[path.size()+8];
+            strcpy(temppath,path.c_str());
+            strcat(temppath,".XXXXXX");
+            mkstemp(temppath);
+            string newpath(temppath);
 
+            delete[] temppath;
 
-        // Add the new file:
-        xmlNewChild(root,NULL,(xmlChar *)"file", (xmlChar *)name.c_str());
-        // Save the filelist:
-        if(xmlSaveFormatFileEnc(temppath, doc, "UTF-8", 1) == -1)
-        {
-#ifdef THREADS
-                pthread_mutex_unlock(&files_lock);
-#endif
-                delete[] temppath;
+            if (! ep_hist->flush(newpath))
+		throw eTuxcast_FSFull();
+
+            if(!move(newpath,path))
 		throw eTuxcast_FSFull();
         }
-
-	if(!move(temppath,path))
-        {
-#ifdef THREADS
-                pthread_mutex_unlock(&files_lock);
-#endif
-                delete[] temppath;
-		throw eTuxcast_FSFull();
-        }
-
-	delete[] temppath;
-
-#ifdef THREADS
-        pthread_mutex_unlock(&files_lock);
-#endif
-
-	xmlFreeDoc(doc);
-}
-
-
-// This returns true if a file is already in files.xml
-bool alreadydownloaded(string name)
-{
-        // Load the filelist:
-        xmlDoc *doc;
-        xmlNode *root,*curr;
-        string path = getenv("HOME");
-        path += "/.tuxcast/files.xml";
-        doc = xmlReadFile(path.c_str(),NULL,0);
-        if(doc == NULL)
-        {
-                // No filelist, so we can be sure the file's not downloaded yet
-                // A new filelist will be created when newfile() is called for this file
-		// Shouldn't need to xmlFreeDoc here.
-                return false; // Not downloaded
-                // Alternately, there could be a syntax error, but since this file should be created/maintained by a (hopefully) sane program...
-        }
-        root = xmlDocGetRootElement(doc);
-        curr = root->children;
-        while(true) // is this portable...?
-        {
-   	if(strcasecmp((char*)curr->name,"file") == 0)
-   	{
-		 if(curr->children != NULL) /* Empty <file> tags are possible... */
-			 if(strcasecmp((char *)curr->children->content,name.c_str()) == 0)
-			 {
-				xmlFreeDoc(doc);
-				return true; // Already downloaded
-				break;
-			 }
-   	}
-        if(curr->next == NULL)
-        {
-        	// No more nodes, if not already break'ed (or broken...?) then the file hasn't been downloaded
-                	return false;
-        }
-        else
-        	curr = curr->next;
-        }
-	xmlFreeDoc(doc);
 }
 
 // Download an episode
@@ -410,7 +333,8 @@ void get(file &thefile, configuration &myconfig)
 		return;
 	}
 	
-	if(alreadydownloaded(thefile.filename))
+        episode_history* ep_hist = episode_history::getInstance();
+        if(ep_hist->exists(thefile.URL, thefile.filename))
 		// Already downloaded
 		return;
 	
@@ -434,7 +358,7 @@ void get(file &thefile, configuration &myconfig)
 		{
 			fprintf(stderr,_("Not downloading %s - incorrect MIME type\n"),
 				thefile.filename.c_str());
-			newfile(thefile.filename);
+                	ep_hist->add_episode(thefile.URL, thefile.filename);
 			return;
 		}
 		else
@@ -453,14 +377,14 @@ void get(file &thefile, configuration &myconfig)
 
 	if(strcasecmp(temp.c_str(),"yes") != 0)
 	{
-		newfile(thefile.filename);
+        	ep_hist->add_episode(thefile.URL, thefile.filename);
 		return;
 	}
 
 	if(exclude_file(thefile))
 	{
                 s_printf(_("Excluding %s...\n"),thefile.filename.c_str());
-		newfile(thefile.filename);
+               	ep_hist->add_episode(thefile.URL, thefile.filename);
 		return;
 	}
 
@@ -491,7 +415,7 @@ void get(file &thefile, configuration &myconfig)
         }
 	curl_easy_perform(mycurl);
 	fclose(outputfile);
-	newfile(thefile.filename);
+	ep_hist->add_episode(thefile.URL, thefile.filename);
 	
 	curl_easy_cleanup(mycurl);
 
