@@ -19,7 +19,7 @@
  * 
  */
 
-#include <iostream>
+#include <stdio.h>
 #include <libintl.h>
 #include <locale.h>
 
