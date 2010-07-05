@@ -1,3 +1,8 @@
+Revision 231:
+* Add the -Q option to tuxcast. It behaves just like -q, except prints
+  out wget commands that would allow downloading of individual episodes.
+--------------------------------------------------------------------------------
+
 Revision 230:
 * Changed the include in version.cpp from iostream to stdio.h.  Somehow this
   slipped in despite version.cpp using printf rather than streams for output.

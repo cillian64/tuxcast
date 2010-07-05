@@ -66,6 +66,6 @@ void setvars(map<char,string> &vars, configuration &myconfig);
 void runhook(int hook, map<char,string> vars, configuration &myconfig);
 bool exclude_file(file &thefile);
 int s_printf(const char* format, ...);
-void show_episodes(configuration &myconfig, string &url);
+void show_episodes(configuration &myconfig, string &url, bool fetch_format);
 
 #endif
