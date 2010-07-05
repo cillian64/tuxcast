@@ -61,7 +61,7 @@ using namespace std;
 #include <locale.h>
 
 
-const char options[] = "scuC:U:q:fvhe:";
+const char options[] = "scuC:U:q:Q:fvhe:";
 #define _(x) gettext(x)
 
 static bool setup_output(void);
@@ -122,6 +122,7 @@ int main(int argc, char *argv[])
 	try
 	{
                 bool subprocess = false;
+                bool full_format;
 		switch(opt1)
 		{
                         case 's':
@@ -218,11 +219,18 @@ int main(int argc, char *argv[])
 				break; // Bah
 
 			case 'q':
+			case 'Q':
                                 set_lock();
+
+                                full_format = (opt1 == 'Q');
+
+                                if (full_format)
+                                    cout << "# ";
+
 				cout << "Querying feed for available episodes..." << endl;
 
                                 if (optarg1.find("http://") == 0 || optarg1.find("https://") == 0) {
-                                    show_episodes(myconfig, optarg1);
+                                    show_episodes(myconfig, optarg1, full_format);
                                 }
                                 else {
                                     if (optarg1.size() == 0) {
@@ -231,7 +239,7 @@ int main(int argc, char *argv[])
                                     }
                                     FOREACH(configuration::feedlist::iterator, myconfig.feeds, feed) {
 					if(strcasecmp(optarg1.c_str(),feed->name.c_str()) == 0) {
-                                            show_episodes(myconfig, feed->address);
+                                            show_episodes(myconfig, feed->address, full_format);
                                         }
                                     }
                                 }

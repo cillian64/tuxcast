@@ -1,7 +1,7 @@
 .\" Process this file with
 .\" groff -man -Tascii foo.1
 .\"
-.TH tuxcast 1 "FEBRUARY 2010" 0.4 "tuxcast 0.4"
+.TH tuxcast 1 "JULY 2010" 0.4 "tuxcast 0.4"
 .SH NAME
 tuxcast \- The Linux Podcast Client
 .SH SYNOPSIS
@@ -41,6 +41,12 @@ latest \fInum\fR episodes using \fB-e\fR
 \fB\-q name | URL\fR
 Query the given named feed or URL for the available episodes, printing
 the episode file names and sizes in bytes
+.TP
+\fB\-Q name | URL\fR
+Query the given named feed or URL for the available episodes, printing
+a wget command that will allow downloading of one or more episodes
+(printed in the form of a shell script with each line commented out; redirect
+to a file, uncomment individual lines and run with shell)
 .TP
 \fB\-f\fR
 Forget about older downloaded episodes (that are no longer in the feeds)

@@ -264,7 +264,7 @@ void up2dateall(configuration &myconfig, int episodes)
 
 }
 
-void show_episodes(configuration &myconfig, string &url)
+void show_episodes(configuration &myconfig, string &url, bool fetch_format)
 {
     string feed("__TempFeed");
 
@@ -291,7 +291,12 @@ void show_episodes(configuration &myconfig, string &url)
         return;
 
     FOREACH(filelist::iterator, *myfilelist, file) {
-        printf(_("%s (%u bytes)\n"), file->filename.c_str(), (unsigned int)file->length);
+        if (fetch_format) {
+            printf(_("# wget -O '%s' '%s'\n"), file->filename.c_str(), file->URL.c_str());
+        }
+        else {
+            printf(_("%s (%u bytes)\n"), file->filename.c_str(), (unsigned int)file->length);
+        }
     }
 }
                                                           
